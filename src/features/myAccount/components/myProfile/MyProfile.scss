@@ -1,0 +1,90 @@
+.myprofile-container {
+  &_main-container {
+    border: 1px solid $border-color;
+    margin-bottom: 25px;
+
+    &_title {
+      font-size: $font-size-base;
+      line-height: 1;
+      color: $black-color;
+      font-weight: $font-weight-semibold;
+      padding: 10px 15px;
+      border-bottom: 1px solid $border-color;
+      margin-bottom: 0;
+    }
+
+    &_edit-profile-form {
+      padding: 15px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 25px;
+      row-gap: 15px;
+
+      &_full-group {
+        grid-column: span 2;
+        column-gap: 25px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 25px;
+      }
+    }
+  }
+}
+@include respond(lg) {
+  .myprofile-container {
+    &_main-container {
+      &_edit-profile-form {
+        column-gap: 15px;
+
+        &_full-group {
+          column-gap: 15px;
+          row-gap: 15px;
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+  }
+}
+
+@include respond(md) {
+  .myprofile-container {
+    &_main-container {
+      &_edit-profile-form {
+        column-gap: 15px;
+
+        &_group {
+          grid-column: span 2;
+        }
+
+        &_full-group {
+          column-gap: 15px;
+          row-gap: 15px;
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+  }
+}
+
+@include custom-media(600px) {
+  .myprofile-container {
+    &_main-container {
+      &_edit-profile-form {
+        column-gap: 15px;
+
+        &_full-group {
+          column-gap: 15px;
+
+          .save-btn {
+            grid-column: span 2;
+            width: 100%;
+
+            .button {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}

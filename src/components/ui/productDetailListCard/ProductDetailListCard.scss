@@ -1,0 +1,154 @@
+.product-detail-list-card-container {
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+  gap: 15px;
+
+  @include custom-media(550px) {
+    flex-direction: column;
+  }
+
+  &__image-container {
+    @include flex-center;
+    position: relative;
+    background-color: $background-light-grey;
+    min-height: 200px;
+    width: 250px;
+    @include custom-media(550px) {
+      width: 100%;
+    }
+
+    .product-detail-availability-tag {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      @include flex-center;
+      gap: 3px;
+      padding: 3px 5px;
+      border-radius: 10px;
+
+      .product-availability-status-title {
+        font-size: $font-size-xxs;
+        font-weight: $font-weight-semibold;
+        text-transform: uppercase;
+        line-height: 1;
+      }
+
+      &.green {
+        background-color: $green-color;
+        color: $white-color;
+      }
+
+      &.red {
+        background-color: lighten-color($red-color, 15%);
+        color: $white-color;
+      }
+    }
+
+    .product-detail-image {
+      height: 150px;
+      padding: 10px;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+    .product-detail-image-placeholder {
+      height: 230px;
+      padding: 10px;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+
+  &__detail {
+    @include flex-column-gap(0px);
+    justify-content: space-between;
+    max-width: calc(100% - 250px);
+    @include custom-media(550px) {
+      max-width: 100%;
+    }
+
+    .product-detail-list-card-detail-info {
+      @include flex-start;
+      flex-wrap: wrap;
+      gap: 5px;
+      .product_info_number {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-normal;
+        text-transform: uppercase;
+        line-height: normal;
+        color: $text-color;
+        &:before {
+          content: "|";
+          margin-right: 5px;
+        }
+        &:first-child {
+          &:before {
+            content: "";
+            margin-right: 0px;
+          }
+        }
+      }
+    }
+    .product-detail-list-card-detail-title {
+      .product_title {
+        font-size: $font-size-base;
+        font-weight: $font-weight-medium;
+        color: $text-color-dark;
+        @include text-truncate;
+      }
+    }
+    .product-detail-list-card-detail-price {
+      .product-price {
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $text-color-dark;
+      }
+    }
+    .product-detail-list-card-detail-description {
+      margin: 10px 0;
+      font-size: $font-size-sm;
+      font-size: $font-size-sm;
+      color: $text-color;
+
+      @include custom-media($lg) {
+        display: -webkit-box;
+        -webkit-line-clamp: 3; // show up to 2 lines
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: $font-size-sm;
+      }
+    }
+    .product-detail-list-card-detail-action-button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .wishlist-btn {
+   
+        button {
+          border: 2px solid black;
+          background-color: $white-color;
+          color: $secondary-color;
+   
+          &:hover {
+            background-color: $red-color;
+            color: $white-color;
+          }
+        }
+        &.add-to-wishlist{
+          button {
+            background-color: $red-color;
+            color: $white-color;
+          }
+        }
+      }
+    }
+  }
+}

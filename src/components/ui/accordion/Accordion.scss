@@ -1,0 +1,51 @@
+.accordion {
+  @include flex-column-gap(0px);
+  width: 100%;
+
+  .accordion-item {
+    overflow: hidden;
+    transition: margin 0.3s ease;
+
+    .accordion-header {
+      @include flex-between;
+      padding: 6px 10px;
+      background-color: $white-color;
+      cursor: pointer;
+
+      span {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        color: $black-color;
+      }
+
+      &.active {
+        color: $primary-color;
+        background-color: $button-primary-hover-color;
+      }
+
+      &:active {
+        box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+      }
+
+      .icon {
+        font-size: $font-size-lg;
+        transition: transform 0.3s ease;
+
+        &.rotate {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background-color: $white-color;
+      padding: 0 16px;
+      overflow: hidden;
+      overflow-y: auto;
+
+    }
+  }
+}

@@ -1,0 +1,149 @@
+.add-address-container {
+    &_form-container {
+        margin-top: 10px;
+
+        &_form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 25px;
+            row-gap: 15px;
+            padding: 15px;
+            border: 1px solid $border-color;
+
+            &_group-full {
+                grid-column: span 2;
+                display: flex;
+                gap: 10px;
+            }
+        }
+    }
+}
+.address-validation-wrapper {
+    .address-card-row {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+        width: 50%;
+      }
+.address-card-container {
+    flex: 1;
+    min-width: 300px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &.selected {
+      border-color: #1a73e8;
+      background-color: #f0f7ff;
+    }
+
+    &.validated.selected {
+      border-color: #2e7d32;
+      background-color: #e8f5e9;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      h5 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 16px;
+        color: black;
+      }
+
+      .verified-badge {
+        background-color: #d4edda;
+        color: #2e7d32;
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        margin-left: auto;
+        margin-right: 8px;
+      }
+
+      .check-icon {
+        width: 20px;
+        height: 20px;
+        color: #2e7d32;
+      }
+    }
+
+    .address-card {
+      .label-txt {
+        display: block;
+        font-size: 14px;
+        color: #333;
+        line-height: 1.5;
+      }
+
+      .highlight-diff {
+        background-color: #fff3cd;
+      }
+    }
+  }
+
+  .validate-address-error {
+    display: flex;
+    align-items: flex-start;
+    background-color: #f8d7da;
+    color: #842029;
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: 1px solid #f5c2c7;
+    margin-top: 16px;
+    width: 50%;
+
+    .error-icon {
+      margin-right: 12px;
+      margin-top: 2px;
+      color: #c82333;
+    }
+
+    strong {
+      display: block;
+    }
+
+    p {
+      margin: 4px 0 0;
+    }
+  }
+
+}
+@include custom-media(600px) {
+    .add-address-container {
+        &_title-sec {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        &_form-container {
+            &_form {
+                grid-template-columns: repeat(1, 1fr);
+                &_group {
+                    grid-column: span 2;
+                }
+                &_group-full {
+                    grid-column: span 2;
+                    width: 100%;
+                    .button{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+ 

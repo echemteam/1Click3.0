@@ -1,0 +1,180 @@
+.grid-container {
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: $font-size-sm;
+  color: $text-color;
+  @include flex-column-gap(0px);
+  height: 100%;
+
+  .grid-header {
+    display: grid;
+    background-color: $secondary-color;
+    color: $white-color;
+    font-weight: bold;
+    padding: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    div {
+      &:last-child {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+
+  .grid-body {
+    overflow-y: auto;
+    flex: 1;
+
+    .grid-row {
+      display: grid;
+      border-bottom: 1px solid $border-color;
+      padding: 12px;
+      align-items: center;
+
+      .grid-cell {
+        &.center {
+          @include flex-center;
+          @include custom-media($md) {
+            align-items: unset;
+          }
+        }
+        .cell-label {
+          display: none;
+        }
+
+        &:last-child {
+          .cell-value {
+            display: flex;
+            justify-content: center;
+          }
+        }
+      }
+
+      a {
+        color: $secondary-color;
+        text-decoration: none;
+        font-weight: $font-weight-semibold;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .pagination {
+    @include flex-between;
+    padding: 12px;
+    font-size: $font-size-sm;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .pagination-text {
+      color: $text-color-dark;
+      font-size: $font-size-sm;
+    }
+
+    .page-controls {
+      display: flex;
+      gap: 4px;
+
+      button {
+        padding: 4px 10px;
+        background-color: $white-color;
+        border: 1px solid $border-color;
+        cursor: pointer;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        @include flex-center;
+        font-weight: $font-weight-semibold;
+
+        &.active {
+          background-color: $secondary-color;
+          color: $white-color;
+          border-color: $secondary-color;
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+        }
+      }
+
+      .arrow-btn {
+        border-radius: 6px;
+        padding: 4px;
+
+        &:disabled {
+          cursor: not-allowed;
+          color: $button-disabled-text-color;
+          background-color: $button-disabled-color;
+        }
+      }
+    }
+  }
+}
+
+@include respond(md) {
+  .grid-container {
+    font-size: $font-size-sm;
+    border: none;
+
+    .grid-header {
+      display: none;
+    }
+
+        .grid-body {
+            @include flex-column-gap(10px);
+
+      .grid-row {
+        @include flex-column-gap(0px);
+        align-items: flex-start;
+        padding: 0;
+        border-bottom: none;
+        border: 1px solid $border-color;
+        border-radius: 5px;
+
+        .grid-cell {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          border-bottom: 1px solid $border-color;
+
+          .cell-label {
+            font-weight: $font-weight-semibold;
+            color: $text-color-dark;
+            text-transform: uppercase;
+            font-size: $font-size-sm;
+            background-color: lighten($primary-color, 32%);
+            padding: 4px 8px;
+            margin-right: 10px;
+            min-width: 135px;
+            max-width: 135px;
+
+            @include flex-align-center;
+          }
+
+          .cell-value {
+            flex: 1;
+            word-break: break-word;
+            padding: 4px ;
+
+            @include flex-align-center;
+            &:last-child {
+              justify-content: unset;
+            }
+          }
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+  }
+}

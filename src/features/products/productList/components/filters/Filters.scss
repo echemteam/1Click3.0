@@ -1,0 +1,121 @@
+.filters {
+  padding: 16px;
+
+  &_main-title {
+    font-size: $font-size-base;
+    font-weight: $font-weight-bold;
+    margin-bottom: 5px;
+    color: $text-color-dark;
+  }
+
+  &_filter-bar {
+    border-top: 1px solid $button-disabled-color;
+    padding: 20px 0;
+
+    .checkbox-label {
+      font-size: $font-size-sm;
+      color: $text-color;
+    }
+
+    &_recently-viewed-product {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    &_title {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      margin-bottom: 16px;
+    }
+
+    &_price-range {
+      @include flex-column-gap(10px);
+
+      &_lable {
+        @include flex-between;
+        font-size: $font-size-sm;
+      }
+
+      &_filter-button {
+        @include flex-between;
+
+        &_price {
+          span {
+            font-size: $font-size-sm;
+
+            &.value {
+              font-weight: $font-weight-semibold;
+              color: $black-color;
+            }
+          }
+        }
+
+        button {
+          margin-left: auto;
+        }
+      }
+
+      &_reset-button {
+        @include flex-between;
+        gap: 0.5rem;
+
+        button {
+          flex: 1;
+        }
+      }
+    }
+  }
+}
+.mobile-w{
+  .center-modal{
+    @include custom-media($lg) {
+      min-width: 95%;
+    }
+  }
+}
+.filter-grid-modal-container {
+  .filter-grid-modal {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // Two columns
+    column-gap: 16px;
+    row-gap: 10px;
+    padding: 15px 20px;
+    border: 1px solid $button-disabled-color;
+    border-radius: 5px;
+
+    @include custom-media($md) {
+      grid-template-columns: 1fr; // Two columns
+    }
+
+    .filter-group {
+      @include flex-column-gap(10px);
+
+      label {
+        font-weight: $font-weight-normal;
+        font-size: $font-size-sm;
+      }
+
+      .range-inputs {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+
+        input {
+          width: 100%;
+          padding: 0.5rem;
+        }
+      }
+
+      .single-input {
+        input {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .modal-button-container {
+    @include flex-end;
+    gap: 10px;
+    margin-top: 25px;
+  }
+}

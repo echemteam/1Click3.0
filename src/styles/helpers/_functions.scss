@@ -1,0 +1,25 @@
+@use "sass:color";
+
+@function lighten-color($color, $amount: 10%) {
+  @return color.adjust($color, $lightness: $amount);
+}
+
+@function darken-color($color, $amount: 10%) {
+  @return color.adjust($color, $lightness: -$amount);
+}
+
+@function opacity($color, $opacity: 100%) {
+  @return rgba(red($color), green($color), blue($color), $opacity);
+}
+
+// Spacing functions
+@function spacing($multiplier: 1) {
+    @return 8px * $multiplier;
+}
+
+// Font functions
+@function fluid-font($min-size, $max-size, $min-width: 320, $max-width: 1440) {
+    $slope: ($max-size - $min-size) / ($max-width - $min-width);
+    $y-axis-intercept: $min-size - ($slope * $min-width);
+    @return calc(#{$y-axis-intercept}px + #{$slope * 100}vw);
+}

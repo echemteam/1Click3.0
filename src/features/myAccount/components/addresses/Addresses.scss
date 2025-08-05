@@ -1,0 +1,127 @@
+.add-address-container {
+  .add-title-sec {
+    @include flex-between;
+    padding: 15px 0 0;
+    .button {
+      white-space: nowrap;
+    }
+
+    .title {
+      font-size: $font-size-lg;
+      line-height: 1;
+      color: $black-color;
+      font-weight: $font-weight-semibold;
+      margin-bottom: 6px;
+    }
+
+    .content {
+      font-size: $font-size-sm;
+    }
+  }
+  .list-sec {
+    .address-card {
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+        rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+      background-color: #f7f7f7;
+      position: relative;
+
+      .actions {
+        display: flex;
+        // gap: 10px;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+
+        button {
+          &:hover {
+            background-color: transparent;
+            opacity: 0.6;
+          }
+        }
+      }
+    }
+    .address-card-container {
+      border: 1px solid #e3e3e3;
+      margin: 25px 0;
+      border-radius: 10px;
+    }
+    .title {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+      color: $secondary-color;
+      padding: 10px 20px;
+      border-bottom: 1px solid #e3e3e3;
+    }
+
+    .item {
+      padding: 20px;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1fr 1fr 1fr;
+
+      @include custom-media(1300px) {
+        grid-template-columns: 1fr 1fr;
+      }
+      @include respond(lg) {
+        grid-template-columns: 1fr;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+
+        .adress-wrapper{
+          display: flex;
+        }
+
+        .icon {
+          margin-right: 10px;
+          color:  $text-color-dark;
+        }
+
+        .address-line-1,
+        .address-line-2,
+        .address-line-country {
+          font-size: $font-size-base;
+          font-weight: $font-weight-normal;
+          color: $text-color-dark;
+        }
+
+        .address-container {
+          display: flex;
+          flex-wrap: wrap;
+          .address-city,
+          .address-state,
+          .address-zip {
+            font-size: $font-size-base;
+            font-weight: $font-weight-normal;
+            color: $text-color-dark;
+          }
+        }
+
+        .address-phone-no {
+          display: flex;
+          margin: 10px 0;
+          width: 100%;
+
+          .address-phone-no-title {
+            font-size: $font-size-base;
+            font-weight: $font-weight-semibold;
+            color: $text-color-dark;
+            padding-right: 10px;
+          }
+
+          .address-phone-no-value {
+            font-size: $font-size-base;
+            font-weight: $font-weight-normal;
+            color: $text-color-dark;
+          }
+        }
+      }
+    }
+  }
+}

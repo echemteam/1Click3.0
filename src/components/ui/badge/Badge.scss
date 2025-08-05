@@ -1,0 +1,48 @@
+.custom-badge {
+  /* Container for the badge component, positioning it relative to its children */
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+
+  .badge {
+    /* Style for the badge itself */
+    position: absolute;
+    color: $white-color; /* Text color for the badge, should be white */
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium; /* Makes the badge content bold */
+    padding: 4px 6px; /* Padding inside the badge for a rounded appearance */
+    border-radius: 50px; /* Makes the badge a circular shape */
+    @include flex-center;
+    min-width: 5px; /* Minimum width to ensure visibility, adjust as needed */
+    height: 11px; /* Fixed height to maintain a circular shape */
+    line-height: 1;
+    height: 17px;
+    width: 17px;
+    background-color: $badge-color;
+
+    /* Positioning classes for different badge locations */
+    &.top-right {
+      top: 2px;
+      right: 2px;
+      transform: translate(50%, -50%); /* Offsets the badge to be fully visible at top-right */
+    }
+
+    &.top-left {
+      top: 2px;
+      left: 2px;
+      transform: translate(-50%, -50%); /* Offsets the badge to be fully visible at top-left */
+    }
+
+    &.bottom-right {
+      bottom: 2px;
+      right: 2px;
+      transform: translate(50%, 50%); /* Offsets the badge to be fully visible at bottom-right */
+    }
+
+    &.bottom-left {
+      bottom: 2px;
+      left: 2px;
+      transform: translate(-50%, 50%); /* Offsets the badge to be fully visible at bottom-left */
+    }
+  }
+}

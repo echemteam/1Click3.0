@@ -1,0 +1,12 @@
+.input-label {
+    font-size: $font-size-s;
+    font-weight: $font-weight-medium;
+    color: $text-color;
+}
+
+.is-required {
+    color: $red-color;
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-base;
+    margin-left: 2px;
+}

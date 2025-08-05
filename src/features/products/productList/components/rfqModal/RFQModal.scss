@@ -1,0 +1,219 @@
+.rfq-modal {
+  .rfq-detail-card-container {
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    gap: 25px;
+    display: flex;
+
+    @include custom-media($md) {
+      flex-direction: column;
+      gap: 0px;
+    }
+
+    &__image-container {
+      @include flex-center;
+      position: relative;
+      background-color: $background-light-grey;
+      min-width: 250px;
+
+      .rfq-detail-availability-tag {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        @include flex-center;
+        gap: 3px;
+        padding: 3px 5px;
+        border-radius: 10px;
+
+        .product-availability-status-title {
+          font-size: $font-size-xxs;
+          font-weight: $font-weight-semibold;
+          text-transform: uppercase;
+          line-height: 1;
+        }
+
+        &.green {
+          background-color: $green-color;
+          color: $white-color;
+        }
+
+        &.red {
+          background-color: lighten-color($red-color, 15%);
+          color: $white-color;
+        }
+      }
+
+      .rfq-detail-image {
+        height: 150px;
+        padding: 10px;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+      .rfq-detail-image-placeholder {
+        height: 230px;
+        padding: 10px;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+
+    &__detail {
+      padding: 10px;
+      .rfq-detail-card-detail-info {
+        flex-wrap: wrap;
+        gap: 5px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 16px;
+        row-gap: 8px;
+        align-items: center;
+        margin: 20px 0;
+
+        @include custom-media($md) {
+          margin: 10px 0;
+          @include flex-between;
+          flex-wrap: wrap;
+        }
+
+        .product_info_number {
+          font-size: $font-size-xs;
+          font-weight: $font-weight-normal;
+          text-transform: uppercase;
+          line-height: normal;
+          color: $text-color;
+          display: flex;
+          gap: 4px;
+
+          .key {
+            color: $primary-color;
+          }
+        }
+      }
+      .rfq-detail-card-detail-title {
+        .product_title {
+          font-size: $font-size-base;
+          font-weight: $font-weight-medium;
+          color: $text-color-dark;
+        }
+      }
+      .rfq-detail-card-detail-price {
+        .product-price {
+          font-size: $font-size-base;
+          font-weight: $font-weight-semibold;
+          color: $text-color-dark;
+        }
+      }
+    }
+  }
+  .request-form {
+    border-top: 1px solid $text-color;
+    margin-top: 15px;
+    padding-top: 15px;
+
+    @include custom-media($md) {
+      margin-top: 0px;
+      padding-top: 15px;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      @include custom-media($md) {
+        display: block;
+      }
+    }
+
+    &__group {
+      @include flex-column-gap(0px);
+
+      &--full {
+        grid-column: span 2;
+      }
+    }
+
+    &__label {
+      font-weight: 500;
+      margin-bottom: 6px;
+      font-size: 14px;
+
+      .required {
+        color: red;
+      }
+    }
+
+    &__input {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    &__packages {
+      @include flex-column-gap(12px);
+    }
+
+    &__package-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 12px;
+    }
+
+    &__btn {
+      background-color: #1ea7fd;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+
+      &--remove {
+        background-color: #dc3545;
+        margin-left: 4px;
+      }
+    }
+
+    &__btn-single {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      max-width: 50px;
+      width: 50px;
+      button {
+        width: 100%;
+        height: 35px;
+      }
+    }
+    &__btn-group {
+      max-width: 50px;
+      width: 50px;
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+
+      button {
+        height: 35px;
+        &:first-child {
+          width: 45%;
+        }
+        &:last-child {
+          width: 45%;
+        }
+      }
+    }
+    &__modal-button {
+      @include flex-end;
+      gap: 10px;
+      margin-top: 25px;
+    }
+  }
+}

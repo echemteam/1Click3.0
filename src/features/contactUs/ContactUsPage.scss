@@ -1,0 +1,228 @@
+.contact-us {
+    margin: 20px 0 30px;
+
+    &__container {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+
+        &__bg-image {
+            -webkit-mask-image: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.2));
+            mask-image: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.2));
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        &__content {
+            @include flex-column-gap(0px);
+            border-radius: 5px;
+            box-shadow: rgba(60, 64, 67, 0.137) 0px 1px 2px 0px, rgba(3, 136, 238, 0.15) 0px 1px 3px 1px;
+            padding: 20px;
+            border-radius: 5px;
+
+            &__title {
+                font-size: $font-size-lg;
+                font-weight: $font-weight-semibold;
+                color: $secondary-color;
+            }
+
+            &__text {
+                font-size: $font-size-s;
+                font-weight: $font-weight-medium;
+                color: $text-color-light;
+            }
+        }
+
+        &__info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+
+            &__card {
+                @include flex-align-center(10px);
+                border: 1px solid $border-color;
+                padding: 10px;
+                border-radius: 5px;
+
+                &__text {
+                    font-size: $font-size-xs;
+                    font-weight: $font-weight-semibold;
+                    color: $text-color-dark;
+                }
+            }
+        }
+
+        &__divider {
+            margin-top: 20px;
+            height: 1px;
+            background-color: $border-color;
+        }
+
+        &__form {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+
+            &__group-product {
+                grid-column: span 2;
+            }
+
+            &__group-message {
+                grid-column: span 2;
+            }
+
+            &__button {
+                grid-column: span 2;
+                justify-self: center;
+                width: 100%;
+
+                button {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    &__container__footer {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+        margin: 70px 0 50px;
+
+        &__group {
+            @include flex-column-gap(10px);
+            border: 1px solid $border-color;
+            padding: 20px 25px;
+
+            &:hover {
+                border-color: $primary-color;
+                box-shadow: rgba(60, 64, 67, 0.137) 0px 1px 2px 0px, rgba(3, 136, 238, 0.15) 0px 1px 3px 1px;
+                cursor: pointer;
+            }
+
+            &__title {
+                font-size: $font-size-xl;
+                font-weight: $font-weight-semibold;
+                color: $text-color-dark;
+            }
+
+            &__text {
+                font-size: $font-size-s;
+                font-weight: $font-weight-medium;
+                color: $text-color;
+            }
+
+            &__hours {
+                display: flex;
+                gap: 10px;
+                margin-top: 5px;
+
+                &__title {
+                    font-size: $font-size-s;
+                    font-weight: $font-weight-semibold;
+                    color: $text-color-dark;
+                }
+
+                &__text {
+                    font-size: $font-size-s;
+                    font-weight: $font-weight-medium;
+                    color: $text-color;
+                }
+            }
+
+            &__card {
+                @include flex-align-center(10px);
+                border: 1px solid $border-color;
+                padding: 10px;
+                border-radius: 5px;
+                margin: 5px 0;
+
+                &__text {
+                    font-size: $font-size-xs;
+                    font-weight: $font-weight-semibold;
+                    color: $text-color-dark;
+                }
+            }
+        }
+    }
+}
+
+
+// Responsive Media Queries
+@include respond(xl) {
+    .contact-us {
+        &__container {
+            grid-template-columns: 1fr;
+
+            &__bg-image {
+                display: none;
+            }
+        }
+    }
+}
+
+@include custom-media(600px) {
+    .contact-us {
+        &__container {
+            &__info {
+                grid-template-columns: 1fr;
+            }
+
+            &__form {
+                grid-template-columns: 1fr;
+
+                &__group-message {
+                    grid-column: span 1;
+                }
+
+                &__button {
+                    grid-column: span 1;
+                }
+            }
+        }
+    }
+}
+
+@include respond(xl) {
+    .contact-us {
+        &__container__footer {
+            grid-template-columns: 1fr 1fr;
+
+            &__group {
+                &:last-child {
+                    grid-column: span 2;
+                    justify-self: center;
+                    width: 60%;
+                }
+            }
+        }
+    }
+}
+
+@include respond(md) {
+    .contact-us {
+        &__container__footer {
+            grid-template-columns: 1fr;
+
+            &__group {
+                &:last-child {
+                    grid-column: span 1;
+                    justify-self: center;
+                    width: 100%;
+                }
+                &__title{
+                    line-height: 1.2;   
+                }
+                &__hours{
+                    flex-direction: column;
+                    gap: 0px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+.no-product-found {
+    @include flex-center;
+    flex-direction: column;
+    // background-color: $no-product-found-bg-color;
+    // border: 1px solid $no-product-found-border-color;
+    padding: 10px;
+    border-radius: 5px;    
+    height: calc(100vh - 470px);
+
+    .no-product-found__icon {
+        @include flex-center;
+        height: auto;
+
+        img {
+            width: 250px;
+        }
+    }
+    .no-product-found__text{
+        color: $no-product-found-text-color;
+        font-size: $font-size-xl;
+        font-weight: $font-weight-semibold;
+    }
+    .no-product-found__subtext{
+        color: $no-product-found-text-color;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-normal;
+        text-align: center;
+    }
+}

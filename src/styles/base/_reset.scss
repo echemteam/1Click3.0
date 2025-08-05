@@ -1,0 +1,126 @@
+/* Universal Reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* HTML and Body */
+html, body {
+  font-family: $font-family-primary, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: $white-color;
+  color: $text-color;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
+
+/* Lists */
+ul, ol {
+  list-style: none;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+/* Form Elements */
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+/* Button Reset */
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $secondary-color;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: $background-light-grey;
+}
+
+/* Focus styles for accessibility */
+// :focus {
+//   box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+//   outline: none;
+// }
+
+/* Form Inputs */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea {
+  background-color: $white-color;
+  border: 1px solid $input-border-color;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  border-color: $secondary-color;
+  box-shadow: $input-focus-box-color;
+}
+
+/* Remove default form element styles */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Remove default margin for paragraphs */
+p {
+  margin: 0;
+}
+
+/* Ensure buttons are clickable and have proper styles */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

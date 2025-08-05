@@ -1,0 +1,59 @@
+.breadcrumb-section {
+  background-color: #f8f8f8;
+
+  .breadcrumb-container {
+    @include flex-align-center;
+    flex-wrap: wrap;
+    text-transform: uppercase;
+    padding: 16px 10px;
+    width: 95%;
+    margin: 0 auto;
+
+    &__item {
+      @include flex-align-center;
+
+      &:not(:last-child) {
+        margin-right: 0px;
+      }
+    }
+
+    &__text {
+      color: $black-color;
+      font-size: $font-size-xs;
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &.active {
+        color: $primary-color;
+        pointer-events: none;
+      }
+    }
+
+    &__icon {
+      font-size: $font-size-sm;
+      margin: 0 6px;
+      color: $text-color-light;
+
+      &.active {
+        color: $primary-color;
+      }
+    }
+
+    @include respond(md) {
+      font-size: $font-size-xxs;
+
+      &__icon {
+        font-size: $font-size-xs;
+        margin: 0 4px;
+      }
+
+      &__item {
+        margin-bottom: 2px;
+      }
+    }
+  }
+}

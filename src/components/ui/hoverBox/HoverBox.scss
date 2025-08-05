@@ -1,0 +1,39 @@
+.hover-box-container {
+  position: relative;
+  @include flex-align-center;
+
+  .hover-box-trigger {
+    // Styles for the trigger element
+    display: inline-block;
+    cursor: pointer;
+
+    &:hover {
+      // Optional: Add styles when hovering over the trigger
+    }
+  }
+
+  .hover-box-content {
+    position: fixed;
+    padding: 15px;
+    background-color: var(--whiteColor);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    z-index: 1000;
+    min-width: 250px;
+    max-width: 250px;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    opacity: 1;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95);
+    }
+
+    // Animation for hover appearance
+    &.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

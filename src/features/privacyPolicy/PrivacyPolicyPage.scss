@@ -1,0 +1,105 @@
+.main-layout-section .body-section:has(.privacy-policy-page) {
+  width: 100%;
+  padding: 10px 0 0;
+}
+
+.privacy-policy-page {
+  .privacy-policy-content {
+    display: flex;
+    align-items: flex-start;
+
+    .left-point-sec {
+      position: sticky;
+      top: 0;
+      width: 30%;
+      height: 100vh;
+      background: #f8f8f8;
+      padding: 30px 10px 20px 45px;
+      transition: 0.5s all;
+      overflow: hidden;
+      overflow-y: auto;
+
+      ul {
+        li {
+          padding: 12px 0px;
+          margin-bottom: 0;
+          border-bottom: 1px solid #e2e2e2;
+
+          a {
+            color: $text-color;
+            text-decoration: none;
+
+            &:hover,
+            &.active {
+              color: $black-color;
+            }
+          }
+        }
+      }
+
+      @include custom-media($lg) {
+        display: none;
+      }
+    }
+
+    .right-desc-sec {
+      width: 70%;
+      padding: 20px 45px;
+
+      @include custom-media($lg) {
+        width: 100%;
+      }
+
+      .right-desc-content {
+        .title-text {
+          font-size: $font-size-base-2;
+          font-weight: 600;
+          color: $black-color;
+          display: inline-block;
+          margin-top: 10px;
+
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+
+        .desc-text {
+          margin-top: 10px;
+
+          p {
+            font-size: $font-size-base;
+            margin-bottom: 10px;
+          }
+
+          ul {
+            padding-left: 7px;
+            margin-bottom: 10px;
+
+            li {
+              list-style-type: none;
+              position: relative;
+              padding-left: 22px;
+
+              &::before {
+                content: "";
+                position: absolute;
+                background: url(/images/bullet.svg);
+                background-size: contain;
+                background-repeat: no-repeat;
+                height: 15px;
+                width: 15px;
+                left: 0px;
+                top: 6px;
+                display: block;
+              }
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

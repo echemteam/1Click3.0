@@ -1,0 +1,95 @@
+.confirmation-modal-container {
+  .center-modal {
+    border-radius: 15px;
+    padding: 25px;
+    .center-modal-header {
+      display: none;
+    }
+  }
+  .confirmation-modal {
+    &_main-title {
+      margin-bottom: 25px;
+      h2 {
+        font-size: var($font-size-base);
+        color: $black-color;
+        text-align: center;
+        font-weight: $font-weight-semibold;
+        max-width: 450px;
+        margin: 0 auto;
+      }
+    }
+    &_card-detail {
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #e8f0fb;
+
+      &_top-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+
+        &_icon {
+          color: #6d7c94;
+        }
+        &_title {
+          font-size: $font-size-base;
+          color: #6d7c94;
+        }
+      }
+      &_number {
+        margin-bottom: 15px;
+        &_sub-title {
+          display: block;
+          font-size: $font-size-s;
+          color: #4d4a4a;
+        }
+        &_count {
+          color: #4d4a4a;
+          font-size: $font-size-base-2;
+          text-transform: uppercase;
+          font-weight: $font-weight-medium;
+        }
+      }
+      &_person-detail {
+        @include flex-between;
+        &_name {
+          color: #4d4a4a;
+          font-size: $font-size-base-2;
+          text-transform: uppercase;
+          font-weight: $font-weight-medium;
+        }
+        &_date {
+          display: flex;
+          gap: 15px;
+          &_container {
+            padding: 0 15px;
+            .title {
+              font-size: $font-size-s;
+              color: #4d4a4a;
+              text-align: center;
+              display: block;
+            }
+            .valid-date {
+              font-size: $font-size-base;
+              color: #4d4a4a;
+              text-align: center;
+              text-transform: uppercase;
+              display: block;
+            }
+          }
+        }
+      }
+      &_btn-section{
+        @include flex-between;
+        margin-top: 25px;
+        gap: 20px;
+
+        button{
+            flex: 1;
+            border-radius: 5px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,89 @@
+.swal2-styled {
+  box-shadow: none;
+  background-size: 180% 100%  ;
+  transition: all 0.4s ease-in-out  ;
+  -o-transition: all 0.4s ease-in-out  ;
+  -webkit-transition: all 0.4s ease-in-out  ;
+  -moz-transition: all 0.4s ease-in-out  ;
+  -ms-transition: all 0.4s ease-in-out  ;
+  min-width: 100px  ;
+
+  &:hover {
+    background-image: unset  ;
+  }
+
+  &.swal2-confirm {
+    color: var(--whiteColor)  ;
+    background-image: var(--gradient-theme)  ;
+    box-shadow: none  ;
+
+    &:hover {
+      color: var(--whiteColor)  ;
+      background-image: var(--gradient-theme)  ;
+      box-shadow: 0 5px 15px -4px var(--themeColor)  ;
+    }
+  }
+
+  &.swal2-cancel {
+    color: var(--whiteColor)  ;
+    background: linear-gradient(to right, #2d3641db, #000000db)  ;
+    box-shadow: none  ;
+
+    &:hover {
+      background: linear-gradient(to right, #2d3641db, #000000db)  ;
+      box-shadow: 0 5px 15px -4px hsla(210, 22%, 4%, 0.75)  ;
+    }
+  }
+}
+div:where(.swal2-icon).swal2-question {
+  border-color: var(--warningColor)  ;
+  color: var(--warningColor)  ;
+}
+
+.swal-icon {
+  border: 0;
+  width: 100px;
+}
+
+.swal-textarea {
+  margin-top: 15px  ;
+  box-shadow: none  ;
+  border: 1px solid var(--inputBorder)  ;
+  border-radius: 4px  ;
+  box-shadow: none  ;
+  padding: 10px 8px;
+  outline: none;
+  width: 100%;
+  min-height: 120px;
+  font-size: var(--commonFont);
+  transition: 0.5s all  ;
+
+  &:focus-visible,
+  &:focus {
+    box-shadow: none  ;
+    border: 1px solid var(--themeColor)  ;
+    box-shadow: 0 0 0.25rem 0.05rem rgba(105, 108, 255, 0.1)  ;
+    padding-left: 12px  ;
+  }
+}
+
+.swal-validation-error {
+  color: #e30000;
+  font-size: var(--commonFont-small);
+  font-weight: 500;
+  margin: 0  ;
+  text-align: left;
+}
+
+@media only screen and (max-width: 1750px) {
+  .swal2-styled {
+    height: 37px;
+  }
+}
+
+.swal2-actions {
+  button {
+    font-size: var(--commonFont-large);
+    height: auto  ;
+  }
+}

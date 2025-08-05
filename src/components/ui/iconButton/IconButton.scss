@@ -1,0 +1,313 @@
+.icon-button {
+  @include flex-center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  padding: 8px;
+  border: 2px solid transparent;
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.2;
+    background-color: var(--borderColor);
+
+    &:hover {
+      background-color: var(--borderColor);
+    }
+  }
+
+  &--no-elevation {
+    box-shadow: none;
+  }
+
+  /*********************Icon Button shape (Start)******************************/
+
+  &--circle {
+    border-radius: 50%;
+  }
+
+  &--square {
+    border-radius: 0px;
+  }
+
+  /*********************Icon Button shape (End)******************************/
+
+  /*********************Icon Button Types with Color (Start)******************************/
+  &--text {
+    background: none;
+
+    &--primary {
+      color: $button-primary-color;
+      &:hover {
+        background: $button-primary-hover-color;
+      }
+    }
+
+    &--secondary {
+      color: $button-secondary-color;
+      &:hover {
+        background: $button-secondary-hover-color;
+      }
+    }
+
+    &--success {
+      color: $button-green-color;
+      &:hover {
+        background: lighten-color($button-green-color, 50%);
+      }
+    }
+
+    &--error {
+      color: $button-red-color;
+      &:hover {
+        background: lighten-color($button-red-color, 50%);
+      }
+    }
+
+    &--info {
+      color: $button-info-color;
+      &:hover {
+        background: lighten-color($button-info-color, 50%);
+      }
+    }
+
+    &--warning {
+      color: $button-warning-color;
+      &:hover {
+        background: lighten-color($button-warning-color, 50%);
+      }
+    }
+  }
+
+  &--contained {
+    color: $white-color;
+
+    &--primary {
+      background: $button-primary-color;
+      &:hover {
+        background: $white-color;
+        border-color: $button-primary-color;
+        color: $button-primary-color;
+      }
+    }
+
+    &--secondary {
+      background: $button-secondary-color;
+      &:hover {
+        background: $white-color;
+        border-color: $button-secondary-color;
+        color: $button-secondary-color;
+      }
+    }
+
+    &--success {
+      background: $button-green-color;
+      &:hover {
+        background: $white-color;
+        border-color: $button-green-color;
+        color: $button-green-color;
+      }
+    }
+
+    &--error {
+      background: $button-red-color;
+      &:hover {
+        background: $white-color;
+        border-color: $button-red-color;
+        color: $button-red-color;
+      }
+    }
+
+    &--info {
+      background: $button-info-color;
+      &:hover {
+        background: $white-color;
+        border-color: $button-info-color;
+        color: $button-info-color;
+      }
+    }
+
+    &--warning {
+      background: $button-warning-color;
+      &:hover {
+        background: $white-color;
+        border-color: $button-warning-color;
+        color: $button-warning-color;
+      }
+    }
+  }
+
+  &--outlined {
+    background: none;
+
+    &--primary {
+      border: 2px solid $button-primary-color;
+      color: $button-primary-color;
+      &:hover {
+        background: $button-primary-color;
+        color: $white-color;
+      }
+    }
+
+    &--secondary {
+      border: 2px solid $button-secondary-color;
+      color: $button-secondary-color;
+      &:hover {
+        background: $button-secondary-color;
+        color: $white-color;
+      }
+    }
+
+    &--success {
+      border: 2px solid $button-green-color;
+      color: $button-green-color;
+      &:hover {
+        background: $button-green-color;
+        color: $white-color;
+      }
+    }
+
+    &--error {
+      border: 2px solid $button-red-color;
+      color: $button-red-color;
+      &:hover {
+        background: $button-red-color;
+        color: $white-color;
+      }
+    }
+
+    &--info {
+      border: 2px solid $button-info-color;
+      color: $button-info-color;
+      &:hover {
+        background: $button-info-color;
+        color: $white-color;
+      }
+    }
+
+    &--warning {
+      border: 2px solid $button-warning-color;
+      color: $button-warning-color;
+      &:hover {
+        background: $button-warning-color;
+        color: $white-color;
+      }
+    }
+  }
+  /*********************Icon Button Types with Color (End)******************************/
+
+  /*********************Icon Button Size (Start)******************************/
+
+  &--small {
+    padding: 6px;
+    width: 35px;
+    height: 35px;
+    .icon-button__icon {
+      width: 20px  ;
+      height: 20px  ;
+      svg {
+        width: 20px  ;
+        height: 20px  ;
+      }
+    }
+  }
+
+  &--medium {
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    .icon-button__icon {
+      width: 24px  ;
+      height: 24px  ;
+      svg {
+        width: 24px  ;
+        height: 24px  ;
+      }
+    }
+  }
+
+  &--large {
+    padding: 10px;
+    width: 45px;
+    height: 45px;
+
+    .icon-button__icon {
+      width: 28px  ;
+      height: 28px  ;
+      svg {
+        width: 24px  ;
+        height: 24px  ;
+      }
+    }
+  }
+
+  /*********************Icon Button Size (End)******************************/
+
+  .icon-button__icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/*********************Icon Button Size for anchor tag button (Start)******************************/
+
+/* Target the anchor tag specifically */
+a.icon-button {
+  text-decoration: none; /* Optional: If you want to remove underline */
+}
+
+a.icon-button {
+  &--small {
+    padding: 6px;
+    width: 20px;
+    height: 20px;
+    .icon-button__icon {
+      width: 20px  ;
+      height: 20px  ;
+      svg {
+        width: 20px  ;
+        height: 20px  ;
+      }
+    }
+  }
+
+  &--medium {
+    padding: 8px;
+    width: 20px;
+    height: 20px;
+    .icon-button__icon {
+      width: 24px  ;
+      height: 24px  ;
+      svg {
+        width: 24px  ;
+        height: 24px  ;
+      }
+    }
+  }
+
+  &--large {
+    padding: 10px;
+    width: 30px;
+    height: 30px;
+    .icon-button__icon {
+      width: 28px  ;
+      height: 28px  ;
+      svg {
+        width: 24px  ;
+        height: 24px  ;
+      }
+    }
+  }
+
+  /* Additional styles if necessary */
+  &--no-elevation {
+    box-shadow: none;
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+/*********************Icon Button Size for anchor tag button (End)******************************/

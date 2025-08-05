@@ -1,0 +1,52 @@
+.sort-bar {
+  @include flex-between;
+  margin-bottom: 16px;
+
+  @include custom-media($md) {
+    padding: 10px;
+    background-color: $background-light-grey;
+  }
+
+  &_sort-by {
+    @include flex-align-center($gap: 10px);
+    label {
+      white-space: nowrap;
+      font-size: $font-size-sm;
+      color: $text-color;
+    }
+    .custom-select__option {
+      text-transform: uppercase;
+    }
+  }
+  &_view-toggle {
+    @include flex-align-center($gap: 10px);
+    &_show-input {
+      @include flex-align-center($gap: 10px);
+      label {
+        font-size: $font-size-sm;
+      }
+      .input-field {
+        max-width: 40px;
+        max-height: 30px;
+      }
+    }
+    &_toggle {
+      @include flex-align-center($gap: 20px);
+
+      &_buttons {
+        @include flex-align-center($gap: 5px);
+      }
+
+      &_total-product {
+        font-size: $font-size-sm;
+        @include custom-media($md) {
+          display: none;
+        }
+        span {
+          font-weight: $font-weight-semibold;
+          color: $black-color;
+        }
+      }
+    }
+  }
+}

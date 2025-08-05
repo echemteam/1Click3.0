@@ -1,0 +1,274 @@
+.view-product {
+  &_table-head {
+    @include flex-between;
+    border-bottom: 1px solid $border-color;
+    padding: 15px 0px;
+    &_title {
+      font-size: $font-size-base;
+      line-height: 1;
+      color: $black-color;
+      font-weight: $font-weight-semibold;
+      margin: 0;
+      &:nth-child(1) {
+        width: 60%;
+      }
+      &:nth-child(2) {
+        width: 20%;
+        text-align: center;
+      }
+      &:nth-child(3) {
+        width: 20%;
+        text-align: center;
+      }
+    }
+  }
+  &_table-body {
+    &_product-list {
+     width: 100%;
+      @include flex-between;
+      padding: 20px 0;
+      border-bottom: 1px solid $primary-color;
+
+      .view-product-detail {
+        width: 60%;
+        .view-product-detail-container {
+          display: flex;
+          gap: 25px;
+          border-radius: 5px;
+          overflow: hidden;
+
+          @include custom-media($xl) {
+            grid-template-columns: 1fr 2fr;
+            gap: 10px;
+          }
+
+          @include custom-media($lg) {
+            grid-template-columns: 1fr;
+            gap: 10px;
+          }
+
+          &__image-container {
+            @include flex-center;
+            position: relative;
+            background-color: $background-light-grey;
+            min-width: 200px;
+            max-width: 200px;
+
+            @include custom-media($lg) {
+              min-height: 350px;
+            }
+
+            .product-detail-availability-tag {
+              position: absolute;
+              top: 10px;
+              left: 10px;
+              @include flex-center;
+              gap: 3px;
+              padding: 3px 5px;
+              border-radius: 10px;
+
+              .product-availability-status-title {
+                font-size: $font-size-xxs;
+                font-weight: $font-weight-semibold;
+                text-transform: uppercase;
+                line-height: 1;
+              }
+
+              &.green {
+                background-color: $green-color;
+                color: $white-color;
+              }
+
+              &.red {
+                background-color: lighten-color($red-color, 15%);
+                color: $white-color;
+              }
+            }
+
+            .product-detail-image {
+              height: 100px;
+              padding: 10px;
+              img {
+                height: 100%;
+                width: auto;
+                object-fit: contain;
+              }
+            }
+            .product-detail-image-placeholder {
+              height: auto;
+              max-width: 85%;
+              padding: 15px;
+              img {
+                height: 100%;
+                width: 100%;
+                object-fit: contain;
+              }
+            }
+          }
+
+          &__detail {
+            padding: 10px;
+            max-width: 60%;
+            .product-detail-page-detail-info {
+              padding: 10px 0;
+
+              @include custom-media($md) {
+                margin: 10px 0;
+              }
+
+              .product_info_number {
+                font-size: $font-size-xs;
+                font-weight: $font-weight-normal;
+                text-transform: uppercase;
+                line-height: normal;
+                color: $text-color;
+                display: flex;
+                gap: 15px;
+
+                .key {
+                  color: $black-color;
+                  font-weight: $font-weight-semibold;
+                  min-width: 75px;
+                }
+              }
+            }
+            .product-detail-page-detail-title {
+              .product_title {
+                font-size: $font-size-base;
+                font-weight: $font-weight-semibold;
+                color: $text-color-dark;
+                @include custom-media($md) {
+                  font-size: $font-size-lg;
+                }
+              }
+            }
+            .product-detail-page-detail-price {
+              .product-price {
+                font-size: $font-size-base;
+                font-weight: $font-weight-semibold;
+                color: $text-color-dark;
+              }
+            }
+            .pricing-and-quote {
+              position: relative;
+              &_safety-data-sheet-btn {
+                position: absolute;
+                top: 0;
+                right: 0;
+                @include custom-media($md) {
+                  position: relative;
+                }
+              }
+            }
+          }
+        }
+      }
+      .view-product-date {
+        width: 20%;
+        @include flex-center;
+        flex-direction: column;
+        &_title {
+          display: none;
+        }
+      }
+      .view-product-action {
+        width: 20%;
+        @include flex-center;
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+@include custom-media($lg) {
+  .view-product {
+    &_table-head {
+      display: none;
+    }
+
+    &_table-body {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+
+      &_product-list {
+        padding: 0 0 5px;
+        flex-direction: column;
+        align-items: flex-start;
+        border-bottom: none;
+        border-radius: 5px;
+        border: 1px solid $border-color;
+        gap: 5px;
+
+        .view-product-detail {
+          width: 100%;
+
+          .view-product-detail-container {
+            flex-direction: column;
+
+            &__image-container {
+              min-height: unset;
+              max-width: 100%;
+
+              .product-detail-image-placeholder {
+                max-width: 100%;
+              }
+            }
+
+            &__detail {
+              width: 100%;
+              max-width: 100%;
+            }
+          }
+        }
+
+        .view-product-date,
+        .view-product-action {
+          margin-bottom: 10px;
+          width: 100%;
+          justify-content: flex-start;
+          padding: 0 10px;
+          flex-direction: row;
+          gap: 10px;
+
+          &_title {
+            display: block;
+            font-size: $font-size-base;
+            font-weight: $font-weight-semibold;
+            text-transform: uppercase;
+            line-height: normal;
+            color: $text-color;
+            display: flex;
+            gap: 5px;
+          }
+
+          &_value {
+            font-size: $font-size-base;
+            font-weight: $font-weight-normal;
+            color: $text-color-light;
+          }
+        }
+
+        .view-product-action {
+          margin-bottom: 10px;
+          width: 100%;
+          justify-content: flex-start;
+          padding: 0 10px;
+          flex-direction: row;
+
+          .button {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include custom-media($md) {
+  .view-product {
+    &_table-body {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}

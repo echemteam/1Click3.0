@@ -1,0 +1,333 @@
+.footer-container {
+  .footer-top-section {
+    background-color: $secondary-color;
+
+    .footer-email-section {
+      width: 95%;
+      margin: 0 auto;
+      @include flex-between;
+      padding: 10px 10px;
+
+      .footer-email-section-left {
+        @include flex-align-center(50px);
+
+        .footer-email-section-container {
+          @include flex-align-center(10px);
+          color: $white-color;
+
+          .footer-email-section-text {
+            font-size: $font-size-sm;
+            font-weight: $font-weight-medium;
+          }
+        }
+
+        .footer-email-section-input-container {
+          background-color: $white-color;
+          border-radius: 20px;
+          @include flex-align-center(10px);
+          padding: 0 10px;
+
+          input {
+            border: none;
+            outline: none;
+            background-color: transparent;
+            color: $text-color;
+            font-size: $font-size-xs;
+            font-weight: $font-weight-semibold;
+            padding: 8px 10px;
+            min-width: 250px;
+            @include custom-media(600px) {
+              width: 100%;
+            }
+
+            &::placeholder {
+              color: $text-color-light;
+            }
+
+            &:focus,
+            &:active,
+            &:hover {
+              border: none;
+              outline: none;
+              box-shadow: none;
+            }
+          }
+
+          .footer-email-section-input-container-button {
+            font-size: $font-size-s;
+            font-weight: $font-weight-semibold;
+            border-radius: 20px;
+            padding: 2px 10px;
+            font-size: $font-size-xs;
+
+            &:hover {
+              color: $white-color;
+              background-color: $primary-color;
+            }
+          }
+        }
+        @include custom-media(600px) {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+
+      .footer-email-section-right {
+        .footer-email-section-social-media-containers {
+          @include flex-align-center(10px);
+
+          .footer-email-section-social-media-containers-link {
+            color: $white-color;
+            height: 30px;
+            width: 30px;
+            @include flex-center;
+            border-radius: 50%;
+
+            &.facebook {
+              &:hover {
+                background-color: #3b5998;
+              }
+            }
+
+            &.twitter {
+              &:hover {
+                background-color: #1da1f2;
+              }
+            }
+
+            &.instagram {
+              &:hover {
+                background-color: #e4405f;
+              }
+            }
+
+            &.linkedin {
+              &:hover {
+                background-color: #0a66c2;
+              }
+            }
+          }
+        }
+      }
+      @include respond(lg) {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  }
+
+  .footer-main-section {
+    background-color: $text-color-dark;
+
+    .footer-main-container {
+      width: 95%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 4fr 1.5fr;
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+      justify-items: stretch;
+      align-items: stretch;
+      padding: 50px 10px 20px;
+
+      .footer-main-section-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 20px;
+
+        .footer-main-section-left-top {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+
+          .footer-main-section-left__logo__image {
+            width: 75px;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+            }
+          }
+
+          .footer-main-section-left__text {
+            color: $white-color;
+            font-size: $font-size-xs;
+            font-weight: $font-weight-semibold;
+            color: $text-color-light;
+          }
+        }
+
+        .footer-main-section-left-bottom {
+          color: $white-color;
+          font-size: $font-size-xs;
+          font-weight: $font-weight-semibold;
+          color: $text-color-light;
+
+          .footer-main-section-left-bottom__text {
+            font-size: $font-size-sm;
+            font-weight: $font-weight-semibold;
+            color: $white-color;
+          }
+
+          .footer-main-section-left-bottom__link {
+            a {
+              font-weight: $font-weight-bold;
+              font-size: $font-size-base;
+              color: $white-color;
+              color: $primary-color;
+            }
+          }
+        }
+      }
+
+      .footer-main-section-center {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-column-gap: 20px;
+        grid-row-gap: 20px;
+        justify-items: stretch;
+        align-items: stretch;
+
+        .footer-main-section-center-box {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          .footer-main-section-center__label {
+            font-size: $font-size-sm;
+            font-weight: $font-weight-semibold;
+            color: $white-color;
+          }
+
+          .footer-main-section-center__text {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            a {
+              font-size: $font-size-xs;
+              font-weight: $font-weight-semibold;
+              color: $text-color-light;
+              transition: all 0.3s ease-in-out;
+              &:hover {
+                color: $primary-color;
+                text-decoration: none;
+              }
+            }
+          }
+
+          .footer-main-section-center__image {
+            .partners_logo {
+              @include flex-start;
+              flex-wrap: wrap;
+              gap: 7px;
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                width: auto;
+                max-width: 80px;
+                max-height: 50px;
+                &:last-child {
+                  margin-right: 0;
+                }
+                @include custom-media($lg) {
+                  margin-bottom: 10px;
+                  max-width: 65px;
+                  max-height: 40px;
+                }
+              }
+              &.payment_partners {
+                img {
+                  max-width: 48px;
+                  max-height: 36px;
+                  @include custom-media($lg) {
+                    margin-bottom: 6px;
+                    max-width: 45px;
+                    max-height: 29px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .footer-main-section-right {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .footer-main-section-right__label {
+          font-size: $font-size-sm;
+          font-weight: $font-weight-semibold;
+          color: $white-color;
+        }
+
+        .footer-main-section-right__text {
+          display: flex;
+          align-items: start;
+          gap: 8px;
+
+          a {
+            font-size: $font-size-xs;
+            font-weight: $font-weight-semibold;
+            color: $text-color-light;
+            transition: all 0.3s ease-in-out;
+            &:hover {
+              color: $primary-color;
+              text-decoration: none;
+            }
+          }
+        }
+      }
+
+      @include respond(xl) {
+        .footer-main-section-center {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @include custom-media(900px) {
+        grid-template-columns: 1fr;
+
+        .footer-main-section-left,
+        .footer-main-section-right {
+          order: unset;
+        }
+
+        .footer-main-section-center {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .footer-main-section-left {
+          order: 1;
+        }
+
+        .footer-main-section-center {
+          order: 2;
+        }
+
+        .footer-main-section-right {
+          order: 3;
+        }
+      }
+    }
+  }
+
+  .footer-legal-section {
+    background-color: $text-color-dark;
+    padding: 10px 10px;
+    border-top: 1px solid $footer-border-color;
+
+    .footer-legal-section-container {
+      @include flex-center;
+      gap: 5px;
+      color: $footer-text-color;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+    }
+  }
+}

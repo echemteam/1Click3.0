@@ -1,0 +1,189 @@
+.custom-select {
+  width: 100%;
+  min-width: 120px;
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  &.active {
+    .custom-select {
+      &__control {
+        border-color: $secondary-color;
+        .custom-select__dropdownarrow {
+          .component-iconify {
+            transform: rotate(180deg);
+            transition: all 0.5s ease-in-out;
+          }
+        }
+      }
+    }
+  }
+
+  &.inactive {
+    .custom-select {
+      &__control {
+        .custom-select__dropdownarrow {
+          .component-iconify {
+            transform: rotate(0deg);
+            transition: all 0.5s ease-in-out;
+          }
+        }
+      }
+    }
+  }
+
+  &.disabled {
+    .custom-select {
+      &__control {
+        opacity: 0.6;
+        background-color: $button-disabled-color;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &__control {
+    padding: 8px;
+    outline: none;
+    border: 1px solid $border-color;
+    background-color: $white-color;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    @include flex-between;
+    width: 100%;
+    gap: 8px;
+    color: $text-color;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    height: 35px;
+
+    &:hover {
+      // background-color: var(--hoverColor, #f6f7f8);
+      .custom-select__actionbtns {
+        .custom-select__clear-icon {
+          display: block;
+        }
+      }
+    }
+  }
+  &__placeholder {
+    color: lighten($color: $text-color, $amount: 20%);
+  }
+
+  &__search-and-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    .custom-select__chips {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      .custom-select__chip {
+        @include flex-align-center;
+        gap: 5px;
+        background-color: $background-light-grey;
+        border-radius: 40px;
+        padding: 4px;
+        .custom-select__chip-label {
+          @include flex-center;
+          white-space: nowrap;
+          font-size: $font-size-xs;
+          line-height: 1;
+        }
+        .custom-select__chip-close {
+          .component-iconify {
+            color: $text-color-light;
+            &:hover {
+              color: $text-color;
+            }
+          }
+        }
+      }
+      .custom-select__limittag {
+        @include flex-align-center;
+        font-size: $font-size-sm;
+      }
+    }
+  }
+
+  &__search-input {
+    // width: 100%;
+    border: none;
+    outline: none;
+    font-size: $font-size-sm;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+
+    &::placeholder {
+      color: lighten($color: $text-color, $amount: 20%);
+    }
+  }
+
+  &__actionbtns {
+    @include flex-align-center(8px);
+    position: relative;
+    .custom-select__clear-icon {
+      border: none;
+      outline: none;
+      background: transparent;
+      opacity: 0.4;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      @include flex-center;
+      display: none;
+    }
+  }
+
+  &__no-options {
+    padding: 10px 15px;
+    @include flex-center;
+  }
+
+  &__dropdown {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    border: 1px solid $border-color;
+    background-color: $white-color;
+    box-shadow: $box-shadow;
+    z-index: 10;
+    max-height: 100%;
+    overflow-y: auto;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+
+  &__option {
+    padding: 8px;
+    height: 35px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    user-select: none;
+    font-size: $font-size-xs;
+
+    &.selectedoption {
+      background-color: $secondary-color;
+      color: $white-color;
+      &:hover {
+        background-color: $secondary-color;
+      }
+    }
+
+    &:hover {
+      background-color: $button-tertiary-color;
+    }
+  }
+}
+
+
+// Custom Select Wrapper
+.custom-select-wrapper {
+  display: inline-block;
+  width: 100%;
+  outline: none;
+}

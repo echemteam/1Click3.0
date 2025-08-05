@@ -1,0 +1,149 @@
+.alert {
+  // Main alert container
+  @include flex-between;
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  width: fit-content;
+  max-width: 100%;
+  position: relative;
+  border-radius: 5px;
+
+  // Icon inside the alert
+  &-icon {
+    margin-right: 8px;
+    font-size: $font-size-base;
+  }
+
+  // Content area including title and message
+  &-content {
+    @include flex-column-gap(5px);
+  }
+
+  // Title styling
+  &-title {
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-base;
+  }
+
+  // Message styling
+  &-message {
+    font-size: $font-size-sm;
+  }
+
+  // Close button styling
+  &-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    @include flex-center;
+
+    // Close icon size
+    .alert-close-icon {
+      font-size: $font-size-base;
+    }
+  }
+
+  // Full width styling
+  &-fullwidth {
+    width: 100%;
+  }
+
+  // Icon container styling
+  &-icon-container {
+    @include flex-center;
+  }
+
+  // Success alert styling
+  &.alert-success {
+    background-color: $alert-success-bg-color;
+    color: $alert-success-text-color;
+    .component-iconify {
+      color: $alert-success-icon-color;
+    }
+  }
+
+  // Warning alert styling
+  &.alert-warning {
+    background-color: $alert-warning-bg-color;
+    color: $alert-warning-text-color;
+    .component-iconify {
+      color: $alert-warning-icon-color;
+    }
+  }
+
+  // Error alert styling
+  &.alert-error {
+    background-color: $alert-error-bg-color;
+    color: $alert-error-text-color;
+    .component-iconify {
+      color: $alert-error-icon-color;
+    }
+  }
+
+  // Info alert styling
+  &.alert-info {
+    background-color: $alert-info-bg-color;
+    color: $alert-info-text-color;
+    .component-iconify {
+      color: $alert-info-icon-color;
+    }
+  }
+
+  // Filled variant styling
+  &.alert-filled {
+    color: $white-color;
+    .component-iconify {
+      color: $white-color;
+    }
+
+    // Specific colors for each severity in filled variant
+    &.alert-success {
+      background-color: $alert-variant-success-bg-color;
+    }
+
+    &.alert-warning {
+      background-color: $alert-variant-warning-bg-color;
+    }
+
+    &.alert-error {
+      background-color: $alert-variant-error-bg-color;
+    }
+
+    &.alert-info {
+      background-color: $alert-variant-info-bg-color;
+    }
+  }
+
+  // Outlined variant styling
+  &.alert-outlined {
+    background: transparent;
+
+    // Specific border colors for each severity in outlined variant
+    &.alert-success {
+      color: $alert-variant-success-bg-color;
+      border: 1px solid $alert-variant-success-bg-color;
+      background-color: $alert-success-bg-color;
+    }
+
+    &.alert-warning {
+      color: $alert-variant-warning-bg-color;
+      border: 1px solid $alert-variant-warning-bg-color;
+      background-color: $alert-warning-bg-color;
+    }
+
+    &.alert-error {
+      color: $alert-variant-error-bg-color;
+      border: 1px solid $alert-variant-error-bg-color;
+      background-color: $alert-error-bg-color;
+    }
+
+    &.alert-info {
+      color: $alert-variant-info-bg-color;
+      border: 1px solid $alert-variant-info-bg-color;
+      background-color: $alert-info-bg-color;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+.dropdown-wrapper {
+  @include flex-center;
+  .dropdownwrapper-toggle {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+  }
+
+  .dropdownwrapper-content {
+    position: fixed;
+    background-color: $white-color;
+    box-shadow: $box-shadow;
+    border-radius: 4px;
+    z-index: 1000;
+    max-width: 300px;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    opacity: 1;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95);
+    }
+
+    &.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

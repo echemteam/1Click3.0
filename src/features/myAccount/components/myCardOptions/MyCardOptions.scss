@@ -1,0 +1,27 @@
+.mycardoptions-container {
+    &_header {
+        @include flex-between;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid $border-color;
+    }
+
+    &_title {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+        color: $secondary-color;
+    }
+
+    &_btn {
+        .button {
+            white-space: nowrap;
+        }
+    }
+
+    &_content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax($sm, 1fr));
+        column-gap: 25px;
+        row-gap: 15px;
+    }
+}

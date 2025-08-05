@@ -1,0 +1,24 @@
+.addeditcarddetails-container {
+    .addeditcarddetails-container_form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax($sm, 1fr));
+        column-gap: 25px;
+        row-gap: 15px;
+    }
+    .addeditcarddetails-container_form_actions {
+        display: flex;
+        justify-content: flex-end;
+        grid-column: span 2;
+    }
+}
+.stripe-element-wrapper {
+    border: 1px solid #ccc; /* Add your desired border style */
+    padding: 10px; /* Add padding inside the border */
+    border-radius: 4px; /* Optional: Add border-radius for rounded corners */
+    background-color: #fff; /* Optional: Set a background color */
+  }
+  
+  .error-message {
+    color: #9e2146;
+    margin-top: 5px;
+  }

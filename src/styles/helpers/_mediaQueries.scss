@@ -1,0 +1,33 @@
+// Responsive Media Query
+@mixin respond($breakpoint) {
+    @if $breakpoint ==sm {
+        @media (max-width: $sm) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==md {
+        @media (max-width: $md) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==lg {
+        @media (max-width: $lg) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==xl {
+        @media (max-width: $xl) {
+            @content;
+        }
+    }
+}
+
+// Custom Media Queries
+@mixin custom-media($width) {
+    @media (max-width: $width) {
+        @content;
+    }
+}

@@ -1,0 +1,39 @@
+.textarea-group {
+    position: relative;
+  
+  }
+  .textarea-field {
+    width: 100%;
+    padding: 8px;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    border: 1px solid $border-color;
+    border-radius: 0px;
+    resize: vertical;
+    transition: 0.3s ease;
+    color: $text-color-dark;
+    background-color: $white-color;
+
+    &::placeholder {
+      color: lighten($text-color, 20%);
+      font-weight: $font-weight-normal;
+    }
+
+    &:focus {
+      border-color: $secondary-color;
+      outline: none;
+    }
+
+    &:disabled {
+      background-color: lighten($button-disabled-color, 5%);
+      color: darken($button-disabled-text-color, 5%);
+      cursor: not-allowed;
+    }
+
+    &:read-only:not(:disabled) {
+      background-color: $input-bg-color;
+      cursor: not-allowed;
+      border-color: $border-color;
+    }
+  }
+  

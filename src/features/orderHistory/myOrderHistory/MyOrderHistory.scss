@@ -1,0 +1,29 @@
+.my-order-history-header {
+    @include flex-between;
+    margin-bottom: 10px;
+
+    .my-order-history-title {
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $text-color-dark;
+    }
+
+    .my-order-history-history {
+        min-width: 300px;
+    }
+}
+
+@include custom-media($md) {
+    .my-order-history-header {
+        @include flex-between;
+        margin-bottom: 10px;
+
+        .my-order-history-title {
+            display: none;
+        }
+
+        .my-order-history-history {
+            width: 100%;
+        }
+    }
+}

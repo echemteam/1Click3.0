@@ -1,0 +1,43 @@
+.avatar {
+  display: inline-block;
+  object-fit: cover;
+  text-align: center;
+  font-size: 1.5rem;
+  color: $white-color;
+  background-color: $secondary-color;
+  @include flex-center;
+  line-height: 1;
+
+  &.small {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  &.medium {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  &.large {
+    width: 80px;
+    height: 80px;
+    font-size: 18px;
+  }
+
+  &.circle {
+    border-radius: 50%;
+  }
+
+  &.square {
+    border-radius: 5px;
+  }
+}
+
+.alt-avatar {
+  background-color: $secondary-color;
+  color: $white-color;
+  font-weight: bold;
+  @include flex-center;
+}

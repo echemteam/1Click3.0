@@ -1,0 +1,96 @@
+.page-not-found-container {
+    max-width: 1900px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    overflow: hidden;
+
+    .page-not-found-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        @include custom-media(1200px) {
+            display: none;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .page-not-found {
+        position: relative;
+        z-index: 1;
+        @include flex-center;
+        flex-direction: column;
+        padding: 20px;
+
+        .head-text {
+            h1 {
+                font-size: fluid-font(20, 34);
+                margin-bottom: 20px;
+                text-transform: uppercase;
+                font-weight: $font-weight-semibold;
+                margin-bottom: 0;
+            }
+        }
+
+        .error-num {
+            .error-code {
+                font-size: fluid-font(140, 250);
+                font-weight: 500;
+                color: $secondary-color;
+                line-height: fluid-font(180, 240);
+                letter-spacing: 10px;
+            }
+        }
+
+        .img-box {
+            position: relative;
+            top: -85px;
+            right: 0;
+            max-width: 100%;
+            height: auto;
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    .btn-box {
+        cursor: pointer;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9;
+        background-color: $secondary-color;
+        border-radius: 80px;
+        padding: 5px;
+        a {
+            @include flex-align-center(10px);
+            &:hover {
+                text-decoration: none;
+            }
+        }
+
+        .back-btn {
+            height: 50px;
+            width: 50px;
+            @include flex-center;
+            border-radius: 50%;
+            background-color: $white-color;
+            color: $secondary-color;
+        }
+
+        .back-text {
+                font-size: $font-size-base;
+                font-weight: $font-weight-semibold;
+                color: $white-color;
+                min-width: 150px;
+        }
+    }
+}

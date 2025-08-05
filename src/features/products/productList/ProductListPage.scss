@@ -1,0 +1,62 @@
+.main-container {
+  display: flex;
+  gap: 20px;
+  position: relative;
+
+  &.backdrop-filter {
+    &::after {
+      background-color: $backdrop-color;
+      content: "";
+      height: 100%;
+      width: 100%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  .sidebar {
+    width: 400px;
+    flex-shrink: 0;
+
+    @include custom-media($lg) {
+      position: fixed;
+      top: 0;
+      left: -400px;
+      z-index: 1;
+      background-color: #fff;
+      transition: all 0.5s;
+      height: 100%;
+    }
+
+    .sidebar-filter {
+      position: fixed;
+      top: 25%;
+      left: 0px;
+      transition: all 0.5s;
+      display: none;
+      @include custom-media($lg) {
+        display: unset;
+      }
+    }
+
+    &.open {
+      left: 0px;
+      z-index: 9;
+      .sidebar-filter {
+        position: fixed;
+        top: 25%;
+        left: 400px;
+      }
+    }
+  }
+
+  .content-area {
+    flex: 1;
+    width: calc(100% - 400px);
+    @include custom-media($lg) {
+      width: 100%;
+    }
+  }
+}

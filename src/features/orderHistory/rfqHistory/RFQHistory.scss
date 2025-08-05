@@ -1,0 +1,27 @@
+.rfq-history-header {
+    @include flex-between;
+    margin-bottom: 10px;
+
+    .rfq-history-title {
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $text-color-dark;
+    }
+
+    .rfq-history-history {
+        min-width: 300px;
+    }
+}
+
+@include custom-media($md) {
+    .rfq-history-header {
+        .rfq-history-title {
+            display: none;
+        }
+
+        .rfq-history-history {
+            width: 100%;
+        }
+    }
+
+}

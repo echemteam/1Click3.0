@@ -1,0 +1,201 @@
+.tabs-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  
+  &.vertical {
+    flex-direction: row; // Side-by-side layout
+  }
+
+  .tabs-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+
+    &::-webkit-scrollbar {
+      height: 0px;         // Make the scrollbar thinner
+    }
+
+    &.vertical {
+      flex-direction: column;
+      border-bottom: none;
+      border-right: 1px solid $border-color;
+      align-items: flex-start;
+      white-space: nowrap;
+    }
+
+    &.full-width {
+      .tab-button {
+        flex: 1;
+        text-align: center;
+        display: contents;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+
+    .tab-button {
+      button {
+        padding: 10px 20px;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .tab-label {
+          max-width: 300px;
+        }
+      }
+    }
+
+    .tab-indicator {
+      position: absolute;
+      bottom: 0;
+      height: 2px;
+      background-color: $primary-color;
+      transition: all 0.3s ease;
+
+      &.vertical {
+        width: 2px;
+        height: unset;
+        left: 0;
+      }
+    }
+  }
+
+  .tabs-content {
+    padding: 10px;
+    flex-grow: 1; // Allows the content area to expand in vertical mode
+  }
+
+  // Outlined Variants
+
+  &.outlined.primary {
+    .tab-button button {
+      color: $text-color;
+
+      &:hover:not(:disabled) {
+        color: $text-color-dark;
+      }
+
+      &.active {
+        color: $text-color-dark;
+      }
+    }
+
+    .tab-indicator {
+      background-color: $text-color-dark;
+    }
+  }
+
+  &.outlined.secondary {
+    .tab-button button {
+      color: $text-color;
+
+      &:hover:not(:disabled) {
+        color: $primary-color;
+      }
+
+      &.active {
+        color: $primary-color;
+        background-color: $button-primary-hover-color;
+      }
+    }
+
+    .tab-indicator {
+      background-color: $primary-color;
+      right: 0;
+    }
+  }
+
+  // Contained Variants
+
+  &.contained.primary {
+    .tabs-header {
+      position: relative;
+      border-bottom: none;
+      background: $background-light-grey;
+      width: fit-content;
+      padding: 4px;
+    }
+
+    .tab-button button {
+      background: transparent;
+      color: $text-color;
+      border-radius: 8px;
+      padding: 4px 12px;
+      position: relative;
+      z-index: 2;
+      transition: color 0.3s ease;
+
+      &.active {
+        color: $white-color;
+      }
+
+      &:disabled {
+        background: $button-disabled-color;
+        color: $button-disabled-text-color;
+        cursor: not-allowed;
+      }
+    }
+
+    .tab-indicator {
+      background-color: $primary-color;
+      border-radius: 8px;
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+  }
+
+  &.contained.secondary {
+    .tabs-header {
+      position: relative;
+      border-bottom: none;
+      background: $background-light-grey;
+      width: fit-content;
+      padding: 4px;
+    }
+
+    .tab-button button {
+      background: transparent;
+      color: $secondary-color;
+      border-radius: 8px;
+      padding: 4px 12px;
+      position: relative;
+      z-index: 2;
+      transition: color 0.3s ease;
+
+      &.active {
+        color: $white-color;
+      }
+
+      &:disabled {
+        background: $background-light-grey;
+        color: $white-color;
+        cursor: not-allowed;
+      }
+    }
+
+    .tab-indicator {
+      background-color: $button-secondary-color;
+      border-radius: 8px;
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+  }
+}

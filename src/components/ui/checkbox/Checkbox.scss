@@ -1,0 +1,206 @@
+.checkbox-container {
+  @include flex-align-center;
+  cursor: pointer;
+  position: relative;
+  gap: 8px;
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  /* Label positioning styles */
+  &.top {
+    flex-direction: column;
+    gap: 4px;
+
+    .checkbox-label {
+      order: -1;
+    }
+  }
+
+  &.bottom {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &.left {
+    flex-direction: row;
+    gap: 8px;
+
+    .checkbox-label {
+      order: -1;
+    }
+  }
+
+  &.right {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .checkbox-label {
+    font-weight: $font-weight-medium;
+    line-height: normal;
+    user-select: none;
+
+    span {
+      font-weight: $font-weight-semibold;
+      color: $red-color;
+    }
+  }
+
+  /***************Ripple Effect (start)*****************/
+
+  .ripple {
+    position: absolute;
+    width: 150%;/* Make the ripple larger than the checkbox */
+    height: 150%;/* Make the ripple larger than the checkbox */
+    background-color: $primary-color;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s ease-out;
+    opacity: 0.6;
+    pointer-events: none;
+    /* Allow click-through */
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+    transform: translate(-50%, -50%) scale(0);
+    /* Position ripple in the center */
+    z-index: 1;
+    /* Ensure ripple is below checkbox but above the label */
+  }
+
+  /***************Ripple Effect (end)*****************/
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid $text-color;
+  position: relative;
+  /* Keep the checkbox content in place */
+  @include flex-center;
+  transition: border 0.3s ease;
+  z-index: 2;
+  /* Ensure checkbox is above the ripple */
+
+  /***************Checkbox Size (start)*****************/
+  &.small {
+    width: 12px;
+    height: 12px;
+    border-width: 1px;
+
+    .component-iconify {
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  &.medium {
+    width: 16px;
+    height: 16px;
+    border-width: 1px;
+
+    .component-iconify {
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  &.large {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+
+    .component-iconify {
+      width: 27px  ;
+      height: 27px  ;
+
+      svg {
+        width: 27px;
+        height: 27px;
+      }
+    }
+  }
+
+  /***************Checkbox Size (end)*****************/
+
+  &.checked {
+    &.primary {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      --ripple-color: $primary-color;
+      /* Set ripple color for primary */
+    }
+
+    &.secondary {
+      background-color: $secondary-color;
+      border-color: $secondary-color;
+      --ripple-color: $secondary-color;
+      /* Set ripple color for secondary */
+    }
+
+    &.success {
+      background-color: $green-color;
+      border-color: $green-color;
+      --ripple-color: $green-color;
+      /* Set ripple color for success */
+    }
+
+    &.error {
+      background-color: $red-color;
+      border-color: $red-color;
+      --ripple-color: $red-color;
+      /* Set ripple color for error */
+    }
+
+    &.warning {
+      background-color: $badge-color;
+      border-color: $badge-color;
+      --ripple-color: $badge-color;
+      /* Set ripple color for warning */
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    border-color: $button-disabled-color;
+    background-color: transparent;
+    color: $button-disabled-text-color;
+  }
+
+  &.disabled.checked {
+    background-color: $button-disabled-color;
+    border-color: $button-disabled-color;
+    color: $button-disabled-text-color;
+  }
+
+  .checkbox-inner {
+    position: relative;
+    @include flex-center;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    /* Ensure the checkbox is above the ripple */
+  }
+
+  .checkmark {
+    color: $white-color;
+    font-size: $font-size-sm;
+    font-weight: bold;
+  }
+}
+
+/* Ripple animation */
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(3);
+    /* Expand further outside the checkbox */
+    opacity: 0;
+    /* Fades out ripple */
+  }
+}

@@ -1,0 +1,40 @@
+.counter {
+    @include flex-align-center;
+    border: 1px solid $border-color;
+    width: max-content;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .btn {
+        width: 30px;
+        height: 30px;
+        border: none;
+        background: $white-color;
+        font-size: $font-size-base;
+        cursor: pointer;
+        @include flex-center;
+        color: $black-color;
+
+        &:hover {
+            background: $button-primary-hover-color;
+        }
+
+        &:active {
+            box-shadow:
+                rgba(50, 50, 93, 0.15) 0px 20px 40px -12px inset,
+                rgba(0, 0, 0, 0.18) 0px 12px 24px -18px inset;
+        }
+    }
+
+    .count {
+        width: 35px;
+        height: 30px;
+        border-left: 1px solid $border-color;
+        border-right: 1px solid $border-color;
+        @include flex-center;
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $black-color;
+        user-select: none;
+    }
+}

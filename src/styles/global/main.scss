@@ -1,0 +1,122 @@
+@import   "../helpers/functions.scss";
+@import  "../helpers/mediaQueries.scss";
+
+@import  "../base/variables.scss";
+@import  "../base/mixins.scss";
+
+@import  "../base/reset.scss";
+@import  "../base/typography.scss";
+
+// Global Styles
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family-primary;
+  background-color: $white-color;
+  color: $text-color;
+  font-size: $font-size-base;
+  line-height: 1.5;
+}
+
+.d-inline-flex {
+  display: inline-flex;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// Layout styles Start
+.main-layout-section {
+  @include flex-column-gap(0px);
+  min-height: 100dvh;
+
+  // overflow-x: hidden;
+  .header-section {
+    flex: 0 0 auto;
+  }
+
+  .body-section {
+    flex: 1 1 auto;
+    width: 95%;
+    margin: 0 auto;
+    // padding: 10px 10px;
+    padding: 0px;
+
+    @include custom-media($md) {
+      width: 100%;
+    }
+  }
+
+  .footer-section {
+    flex: 0 0 auto;
+  }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Layout Styles End
+
+// Example usage of media queries for responsive design
+@include respond(sm) {
+  body {
+    font-size: $font-size-sm;
+  }
+}
+
+@include respond(md) {
+  body {
+    font-size: $font-size-base;
+  }
+}
+
+@include respond(lg) {
+  body {
+    font-size: $font-size-lg;
+  }
+}
+
+.title-desc-top {
+  display: flex;
+  justify-content: space-between;
+
+  .left-title-sec {
+    .page-title {
+      font-size: $font-size-xl;
+      color: $text-color-dark;
+      margin: 0;
+    }
+
+    .desc {
+      font-size: $font-size-s;
+      margin-top: 5px;
+    }
+  }
+
+  .right-title-sec {
+    text-align: right;
+
+    p {
+      margin: 0;
+      font-size: $font-size-s;
+
+      span {
+        cursor: pointer;
+        text-transform: uppercase;
+        color: $text-color-dark;
+        font-weight: $font-weight-semibold;
+        transition: 0.5s all;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+}

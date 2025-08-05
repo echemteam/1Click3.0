@@ -1,0 +1,47 @@
+.product-properties-container {
+  .info-table {
+    width: 100%;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &__row {
+      display: flex;
+      border-bottom: 1px solid $border-color;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    &__label {
+      width: 250px;
+      padding: 12px 16px;
+      background-color: $button-primary-hover-color;
+      font-weight: $font-weight-medium;
+      color: $footer-border-color;
+      font-size: $font-size-sm;
+
+      @include custom-media($md) {
+        width: 180px;
+      }
+    }
+
+    &__value {
+      width: calc(100% - 250px);
+      padding: 12px 16px;
+      font-size: $font-size-sm;
+      color: $footer-border-color;
+      @include custom-media($md) {
+        width: calc(100% - 180px);
+      }
+    }
+  }
+}
+.no-product-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1rem;
+  color: #666;
+  font-style: italic;
+}

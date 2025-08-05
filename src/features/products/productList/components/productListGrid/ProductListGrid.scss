@@ -1,0 +1,10 @@
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+
+  @include custom-media($md) {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  }
+}

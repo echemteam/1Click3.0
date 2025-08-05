@@ -1,0 +1,180 @@
+.product-detail {
+  .product-detail-page-container {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 25px;
+    border-radius: 5px;
+    overflow: hidden;
+
+    @include custom-media($xl) {
+      grid-template-columns: 1fr 2fr;
+      gap: 10px
+    }
+
+    @include custom-media($lg) {
+      grid-template-columns: 1fr;
+      gap: 10px
+    }
+
+    &__image-container {
+      @include flex-center;
+      position: relative;
+      background-color: $background-light-grey;
+      min-width: 250px;
+
+      @include custom-media($lg) {
+      min-height: 350px;
+        
+      }
+
+      .product-detail-availability-tag {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        @include flex-center;
+        gap: 3px;
+        padding: 3px 5px;
+        border-radius: 10px;
+
+        .product-availability-status-title {
+          font-size: $font-size-xs;
+          font-weight: $font-weight-semibold;
+          text-transform: uppercase;
+          line-height: 1;
+        }
+
+        &.green {
+          background-color: $green-color;
+          color: $white-color;
+        }
+
+        &.red {
+          background-color: lighten-color($red-color, 15%);
+          color: $white-color;
+        }
+      }
+
+      .product-detail-image {
+        height: 150px;
+        padding: 10px;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+      .product-detail-image-placeholder {
+        height: auto;
+        padding: 10px;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+
+    &__detail {
+      padding: 10px;
+      .product-detail-page-detail-info {
+        flex-wrap: wrap;
+        gap: 5px;
+        display: flex;
+        align-items: center;
+        column-gap: 16px;
+        row-gap: 8px;
+        margin: 20px 0;
+
+        @include custom-media($md) {
+          margin: 10px 0;
+        }
+
+        .product_info_number {
+          font-size: $font-size-sm;
+          font-weight: $font-weight-normal;
+          text-transform: uppercase;
+          line-height: normal;
+          color: $text-color;
+          display: flex;
+          gap: 10px;
+
+          // @include custom-media($md) {
+          //   font-size: $font-size-xs;
+          // }
+
+          &:before {
+            content: "|";
+            margin-right: 5px;
+            @include custom-media($md) {
+              content: "";
+            }
+          }
+          &:first-child {
+            &:before {
+              content: "";
+              margin-right: 0px;
+            }
+          }
+
+          .key {
+            color: $primary-color;
+            font-weight: $font-weight-semibold;
+          }
+        }
+      }
+      .product-detail-page-detail-title {
+        .product_title {
+          font-size: $font-size-xl;
+          font-weight: $font-weight-semibold;
+          color: $text-color-dark;
+          @include custom-media($md) {
+            font-size: $font-size-lg;
+          }
+
+        }
+      }
+      .product-detail-page-detail-price {
+        .product-price {
+          font-size: $font-size-base;
+          font-weight: $font-weight-semibold;
+          color: $text-color-dark;
+        }
+      }
+      .pricing-and-quote {
+        position: relative;
+        &_safety-data-sheet-btn {
+          position: absolute;
+          top: 0;
+          right: 0;
+          @include custom-media($md) {
+            position: relative;
+          }
+        }
+        &_tab {
+        }
+      }
+    }
+  }
+  .product-info-container {
+    padding: 30px 0;
+
+    .tabs-header  {
+      overflow-y: auto;
+      .tab-button{
+        white-space: nowrap;
+      }
+    }
+  }
+  .similar-product-container {
+    &_title {
+      text-transform: uppercase;
+      color: $text-color-dark;
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid $input-border-color;
+    }
+  }
+}

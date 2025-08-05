@@ -1,0 +1,267 @@
+// Main modal overlay style
+.center-modal-overlay {
+  position: fixed; // Fixes the overlay to the screen
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $backdrop-color; /* Dim the background with transparency */
+  @include flex-center;
+  z-index: 9; /* Ensure overlay is on top of other content */
+
+  // Modal container style
+  .center-modal {
+    background-color: $white-color; /* White background for modal */
+    box-shadow: $box-shadow; /* Subtle shadow for the modal */
+    position: relative; /* Positioning relative to allow absolute positioning of children */
+    display: flex; /* Use flexbox for modal content layout */
+    flex-direction: column; /* Stack content vertically */
+    opacity: 0; /* Start with opacity 0 for transitions */
+    transform: scale(0); /* Start with a scaled-down modal for the grow effect */
+
+    // Slide-in effect from the bottom
+    &.slideIn-fromBottom {
+      animation: slideInFromBottom 0.4s ease forwards;
+    }
+
+    // Slide-out effect to the bottom
+    &.slideIn-out-fromBottom {
+      animation: slideOutToBottom 0.4s ease forwards;
+    }
+
+    // Slide-in effect from the top
+    &.slideIn-fromTop {
+      animation: slideInFromTop 0.4s ease forwards;
+    }
+
+    // Slide-out effect to the top
+    &.slideIn-out-fromTop {
+      animation: slideOutToTop 0.4s ease forwards;
+    }
+
+    // Slide-in effect from the left
+    &.slideIn-fromLeft {
+      animation: slideInFromLeft 0.4s ease forwards;
+    }
+
+    // Slide-out effect to the left
+    &.slideIn-out-fromLeft {
+      animation: slideOutToLeft 0.4s ease forwards;
+    }
+
+    // Slide-in effect from the right
+    &.slideIn-fromRight {
+      animation: slideInFromRight 0.4s ease forwards;
+    }
+
+    // Slide-out effect to the right
+    &.slideIn-out-fromRight {
+      animation: slideOutToRight 0.4s ease forwards;
+    }
+
+    // Grow-in effect when modal appears
+    &.grow-in {
+      animation: growIn 0.4s ease forwards;
+    }
+
+    // Grow-out effect when modal closes
+    &.grow-out {
+      animation: growOut 0.4s ease forwards;
+    }
+
+    &.bounce-in {
+      animation: bounceIn 0.5s ease forwards; /* Use bounceIn animation */
+    }
+  
+    &.bounce-out {
+      animation: bounceOut 0.5s ease forwards; /* Use bounceOut animation */
+    }
+
+    // Modal header style
+    .center-modal-header {
+      @include flex-between;
+      border-bottom: 1px solid $primary-color; /* Border at the bottom of the header */
+      padding: 10px 10px 10px 15px; /* Padding for header elements */
+      
+      h2 {
+        margin: 0; /* Remove default margin for h2 */
+        font-size: $font-size-base-2; /* Font size for the title */
+        font-weight: $font-weight-bold; /* Bold title */
+        color: $secondary-color;
+      }
+
+      .close-button {
+        background: none; /* Remove background */
+        border: none; /* Remove border */
+        cursor: pointer; /* Show a pointer cursor on hover */
+        color: $secondary-color; /* Color for the close button */
+        @include flex-center;
+      }
+    }
+
+    // Modal body style
+    .center-modal-body {
+      flex-grow: 1; /* Allow body to grow and take available space */
+      padding: 15px; /* Padding for body content */
+      max-height: calc(100vh - 200px);
+      margin: 0;
+      overflow: hidden;
+      overflow-y: auto;
+    }
+  }
+}
+
+// Keyframes for Grow Transitions
+@keyframes growIn {
+  0% {
+    transform: scale(0); /* Start with no size */
+    opacity: 0; /* Start invisible */
+  }
+  100% {
+    transform: scale(1); /* End at full size */
+    opacity: 1; /* Fully visible */
+  }
+}
+
+@keyframes growOut {
+  0% {
+    transform: scale(1); /* Start at full size */
+    opacity: 1; /* Fully visible */
+  }
+  100% {
+    transform: scale(0); /* End with no size */
+    opacity: 0; /* Fully invisible */
+  }
+}
+
+// Keyframes for Bounce-In Transition
+@keyframes bounceIn {
+  0% {
+    transform: scale(0); /* Start with no size */
+    opacity: 0; /* Start invisible */
+  }
+  50% {
+    transform: scale(1.1); /* Overshoot to create a bounce effect */
+    opacity: 1; /* Fully visible */
+  }
+  75% {
+    transform: scale(0.9); /* Slightly shrink back */
+  }
+  100% {
+    transform: scale(1); /* End at full size */
+    opacity: 1; /* Fully visible */
+  }
+}
+
+// Keyframes for Bounce-Out Transition
+@keyframes bounceOut {
+  0% {
+    transform: scale(1); /* Start at full size */
+    opacity: 1; /* Fully visible */
+  }
+  100% {
+    transform: scale(0); /* End with no size */
+    opacity: 0; /* Fully invisible */
+  }
+}
+
+// Keyframes for Slide-In Transitions
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(100vh); /* Start off-screen from the bottom */
+    opacity: 0; /* Start invisible */
+  }
+  100% {
+    transform: translateY(0); /* End at the normal position */
+    opacity: 1; /* Fully visible */
+  }
+}
+
+@keyframes slideOutToBottom {
+  0% {
+    transform: translateY(0); /* Start at the normal position */
+    opacity: 1; /* Fully visible */
+  }
+  100% {
+    transform: translateY(100vh); /* Move off-screen to the bottom */
+    opacity: 0; /* Fully invisible */
+  }
+}
+
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100vh); /* Start off-screen from the top */
+    opacity: 0; /* Start invisible */
+  }
+  100% {
+    transform: translateY(0); /* End at the normal position */
+    opacity: 1; /* Fully visible */
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0); /* Start at the normal position */
+    opacity: 1; /* Fully visible */
+  }
+  100% {
+    transform: translateY(-100vh); /* Move off-screen to the top */
+    opacity: 0; /* Fully invisible */
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100vh); /* Start off-screen from the left */
+    opacity: 0; /* Start invisible */
+  }
+  100% {
+    transform: translateX(0); /* End at the normal position */
+    opacity: 1; /* Fully visible */
+  }
+}
+
+@keyframes slideOutToLeft {
+  0% {
+    transform: translateX(0); /* Start at the normal position */
+    opacity: 1; /* Fully visible */
+  }
+  100% {
+    transform: translateX(-100vh); /* Move off-screen to the left */
+    opacity: 0; /* Fully invisible */
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100vh); /* Start off-screen from the right */
+    opacity: 0; /* Start invisible */
+  }
+  100% {
+    transform: translateX(0); /* End at the normal position */
+    opacity: 1; /* Fully visible */
+  }
+}
+
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0); /* Start at the normal position */
+    opacity: 1; /* Fully visible */
+  }
+  100% {
+    transform: translateX(100vh); /* Move off-screen to the right */
+    opacity: 0; /* Fully invisible */
+  }
+}
+
+
+body.modal-open {
+  overflow: hidden;
+}
+
+body.modal-open {
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}

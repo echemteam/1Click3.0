@@ -1,0 +1,104 @@
+.header-account-dropdown {
+    .header-account-dropdown-header {
+        @include flex-between;
+        padding: 8px 10px;
+        gap: 10px;
+        border-bottom: 1px solid $border-color;
+
+        .header-account-dropdown-header-name {
+            @include flex-column-gap(4px);
+
+            .header-account-dropdown-header-name-text {
+                font-size: $font-size-s;
+                font-weight: $font-weight-semibold;
+                color: $text-color-dark;
+                line-height: 1;
+                text-transform: capitalize;
+            }
+
+            .header-account-dropdown-header-name-subtext {
+                font-size: $font-size-xs;
+                font-weight: $font-weight-normal;
+                color: $text-color-light;
+                line-height: 1;
+            }
+        }
+    }
+
+    .header-account-dropdown-content {
+        padding: 0;
+        border-bottom: 1px solid $border-color;
+
+        .header-account-dropdown-content-profile-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            padding: 8px 10px;
+            width: 100%;
+            .header-account-dropdown-content-profile-bar-label {
+                font-size: $font-size-s;
+                font-weight: $font-weight-semibold;
+                color: $text-color-dark;
+                line-height: 1;
+                text-transform: capitalize;
+            }
+        }
+
+        .header-account-dropdown-content-dashboard {
+            @include flex-align-center(5px);
+            padding: 8px 10px;
+            width: 100%;
+
+            .header-account-dropdown-content-dashboard-label {
+                font-size: $font-size-s;
+                font-weight: $font-weight-medium;
+                color: $text-color-dark;
+                line-height: 1;
+                text-transform: capitalize;
+            }
+
+            &:hover {
+                background-color: $background-light-grey;
+            }
+        }
+
+        .header-account-dropdown-content-history {
+            @include flex-align-center(5px);
+            padding: 8px 10px;
+            width: 100%;
+
+            .header-account-dropdown-content-history-label {
+                font-size: $font-size-s;
+                font-weight: $font-weight-medium;
+                color: $text-color-dark;
+                line-height: 1;
+                text-transform: capitalize;
+            }
+
+            &:hover {
+                background-color: $background-light-grey;
+            }
+        }
+    }
+
+    .header-account-dropdown-footer {
+        
+        .header-account-dropdown-footer-signout {
+            padding: 8px 10px;
+            @include flex-align-center(5px);
+            width: 100%;
+
+            .header-account-dropdown-footer-signout-label {
+                font-size: $font-size-s;
+                font-weight: $font-weight-medium;
+                color: $text-color-dark;
+                line-height: 1;
+                text-transform: capitalize;
+            }
+
+            &:hover {
+                background-color: $background-light-grey;
+            }
+        }
+    }
+}

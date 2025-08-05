@@ -1,0 +1,86 @@
+// Flex Center
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// Flex Space Between
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+// Flex End
+@mixin flex-end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+// Flex Start
+@mixin flex-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+// Flex Align
+@mixin flex-align-center($gap: 0px) {
+    display: flex;
+    align-items: center;
+    gap: $gap;
+}
+
+//Flex Column
+@mixin flex-column-gap($gap: 0px) {
+    display: flex;
+    flex-direction: column;
+    gap: $gap;
+}
+
+// Responsive Container
+@mixin container($max-width: 1200px, $padding: 16px) {
+    width: 100%;
+    max-width: $max-width;
+    margin: 0 auto;
+    padding: 0 $padding;
+}
+
+// Text Truncate (for 1 line ellipsis)
+@mixin text-truncate {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+// Hide Scrollbar (useful for sliders, carousels)
+@mixin hide-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+
+    /* Firefox */
+    &::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari */
+    }
+}
+
+// Background Cover
+@mixin background-cover {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+// Button Reset (optional, useful for ecommerce buttons)
+@mixin button-reset {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}

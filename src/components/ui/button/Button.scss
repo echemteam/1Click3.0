@@ -1,0 +1,462 @@
+.button {
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  outline: none;
+  min-width: 150px;
+  min-height: 35px;
+  border: 2px solid transparent;
+  align-items: center;
+
+  &__icon {
+    display: inline-flex;
+    z-index: 1;
+    // margin: 0 8px;
+  }
+
+  &__content {
+    display: inline-block;
+    line-height: $line-height-base;
+    z-index: 1;
+    letter-spacing: 1px;
+  }
+
+  &__loading-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &--middle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  /*************** Button Styles (Start)*****************/
+  // Primary button styles
+  &--primary {
+    &.button--text {
+      color: $button-primary-color;
+
+      &:hover {
+        background: $button-primary-hover-color;
+      }
+    }
+
+    &.button--contained {
+      background: $button-primary-color;
+      color: $white-color;
+
+      &:hover {
+        border-color: $button-primary-color;
+        color: $button-primary-color;
+        background: $white-color;
+      }
+    }
+
+    &.button--outlined {
+      color: $button-primary-color;
+      border: 2px solid $button-primary-color;
+
+      &:hover {
+        background: $button-primary-color;
+        color: $white-color;
+      }
+    }
+
+    // Ripple colors for primary button
+    &.button--contained .button__ripple {
+      background: lighten-color($button-primary-color, 20%);
+    }
+
+    &.button--outlined .button__ripple {
+      background: darken-color($button-primary-hover-color, 5%);
+    }
+
+    &.button--text .button__ripple {
+      background: lighten-color($button-primary-color, 20%);
+    }
+  }
+
+  // Secondary button styles
+  &--secondary {
+    &.button--text {
+      color: $button-secondary-color;
+
+      &:hover {
+        background: lighten-color($button-secondary-hover-color, 50%);
+      }
+    }
+
+    &.button--contained {
+      background: $button-secondary-color;
+      color: $white-color;
+
+      &:hover {
+        border-color: $button-secondary-color;
+        color: $button-secondary-color;
+        background: $white-color;
+      }
+    }
+
+    &.button--outlined {
+      color: $button-secondary-color;
+      border: 2px solid $button-secondary-color;
+
+      &:hover {
+        background: $button-secondary-color;
+        color: $white-color;
+      }
+    }
+
+    // Ripple colors for secondary button
+    & .button__ripple {
+      background: lighten-color($button-secondary-hover-color, 50%);
+    }
+
+    &.button--outlined .button__ripple {
+      background: lighten-color($button-secondary-hover-color, 50%);
+    }
+
+    &.button--text .button__ripple {
+      background: lighten-color($button-secondary-color, 50%);
+    }
+  }
+
+  // Tertiary button styles
+  &--tertiary {
+    &.button--text {
+      color: $button-tertiary-color;
+
+      &:hover {
+        background: lighten-color($button-tertiary-color, 50%);
+      }
+    }
+    &.button--contained {
+      background: darken-color($button-tertiary-color, 8%);
+      color: $button-secondary-color;
+
+      &:hover {
+        color: $white-color;
+        background: $button-secondary-color;
+      }
+    }
+
+    &.button--outlined {
+      color: $button-tertiary-color;
+      border: 2px solid $button-tertiary-color;
+
+      &:hover {
+        background: $button-tertiary-color;
+        color: $white-color;
+      }
+    }
+
+    // Ripple colors for tertiary button
+    & .button__ripple {
+      background: darken-color($button-tertiary-color, 30%);
+    }
+
+    &.button--outlined .button__ripple {
+      background: lighten-color($button-tertiary-color, 80%);
+    }
+
+    &.button--text .button__ripple {
+      background: lighten-color($button-tertiary-color, 50%);
+    }
+  }
+
+  // Error button styles
+  &--error {
+    &.button--text {
+      color: $button-red-color;
+
+      &:hover {
+        background: lighten-color($button-red-color, 50%);
+      }
+    }
+
+    &.button--contained {
+      background: $button-red-color;
+      color: $white-color;
+
+      &:hover {
+        border: 2px solid $button-red-color;
+        color: $button-red-color;
+        background: $white-color;
+      }
+    }
+
+    &.button--outlined {
+      color: $button-red-color;
+      border: 1px solid $button-red-color;
+
+      &:hover {
+        background: $button-red-color;
+        color: $white-color;
+      }
+    }
+
+    // Ripple colors for error button
+    & .button__ripple {
+      background: lighten-color($button-red-color, 40%);
+    }
+
+    &.button--outlined .button__ripple {
+      background: lighten-color($button-red-color, 40%);
+    }
+
+    &.button--text .button__ripple {
+      background: lighten-color($button-red-color, 40%);
+    }
+  }
+
+  // Success button styles
+  &--success {
+    &.button--text {
+      color: $button-green-color;
+
+      &:hover {
+        background: lighten-color($button-green-color, 50%);
+      }
+    }
+
+    &.button--contained {
+      background: $button-green-color;
+      color: $white-color;
+
+      &:hover {
+        border: 2px solid $button-green-color;
+        color: $button-green-color;
+        background: $white-color;
+      }
+    }
+
+    &.button--outlined {
+      color: $button-green-color;
+      border: 2px solid $button-green-color;
+
+      &:hover {
+        background: $button-green-color;
+        color: $white-color;
+      }
+    }
+
+    // Ripple colors for success button
+    & .button__ripple {
+      background: lighten-color($button-green-color, 25%);
+    }
+
+    &.button--outlined .button__ripple {
+      background: lighten-color($button-green-color, 25%);
+    }
+
+    &.button--text .button__ripple {
+      background: lighten-color($button-green-color, 25%);
+    }
+  }
+
+  // Info button styles
+  &--info {
+    &.button--text {
+      color: var(--infoColor);
+
+      &:hover {
+        background: var(--infoColor-Hover);
+      }
+    }
+
+    &.button--contained {
+      background: var(--infoColor);
+      color: var(--whiteColor);
+
+      &:hover {
+        background: var(--infoColor-Dark);
+      }
+    }
+
+    &.button--outlined {
+      color: var(--infoColor);
+      border: 1px solid var(--infoColor);
+
+      &:hover {
+        background: var(--infoColor-Hover);
+      }
+    }
+
+    // Ripple colors for info button
+    & .button__ripple {
+      background: var(--infoColor);
+    }
+
+    &.button--outlined .button__ripple {
+      background: var(--infoColor-Lighter);
+    }
+
+    &.button--text .button__ripple {
+      background: var(--infoColor);
+    }
+  }
+
+  // Warning button styles
+  &--warning {
+    &.button--text {
+      color: var(--warningColor);
+
+      &:hover {
+        background: var(--warningColor-Hover);
+      }
+    }
+
+    &.button--contained {
+      background: var(--warningColor);
+      color: var(--whiteColor);
+
+      &:hover {
+        background: var(--warningColor-Dark);
+      }
+    }
+
+    &.button--outlined {
+      color: var(--warningColor);
+      border: 1px solid var(--warningColor);
+
+      &:hover {
+        background: var(--warningColor-Hover);
+      }
+    }
+
+    & .button__ripple {
+      background: var(--warningColor);
+    }
+
+    &.button--outlined .button__ripple {
+      background: var(--warningColor-Lighter);
+    }
+
+    &.button--text .button__ripple {
+      background: var(--warningColor);
+    }
+  }
+
+  /*************** Button Styles (End)*****************/
+
+  /*************** Button Types (Start)*****************/
+  // Text button styles
+  &--text {
+    background: none;
+    border: none;
+
+    &:hover {
+      background: rgba(25, 118, 210, 0.08);
+    }
+
+    & .button__ripple {
+      background: $button-primary-hover-color;
+    }
+
+    &.button--disabled {
+      color: $button-disabled-text-color;
+      cursor: not-allowed;
+      pointer-events: none;
+      user-select: none;
+
+      .button__ripple-container {
+        display: none;
+      }
+    }
+  }
+
+  // Contained button styles
+  &--contained {
+    &.button--disabled {
+      background: $button-disabled-color;
+      color: $button-disabled-text-color;
+      cursor: not-allowed;
+      box-shadow: none;
+      user-select: none;
+      pointer-events: none;
+
+      .button__ripple-container {
+        display: none;
+      }
+    }
+
+    &.button--disable-elevation {
+      color: $button-disabled-text-color;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  // Outlined button styles
+  &--outlined {
+    background: none;
+    color: var(--themeColor);
+    border: 1px solid var(--themeColor);
+
+    &:hover {
+      background: rgba(25, 118, 210, 0.08);
+    }
+
+    & .button__ripple {
+      background: var(--lighterThemeColor);
+    }
+
+    &.button--disabled {
+      border: 1px solid $button-disabled-color;
+      color: $button-disabled-text-color;
+      cursor: not-allowed;
+      pointer-events: none;
+      user-select: none;
+
+      .button__ripple-container {
+        display: none;
+      }
+    }
+  }
+
+  /*************** Button Types (End)*****************/
+
+  /*************** Button Ripple Effect (Start)*****************/
+  // Ripple styles
+  &__ripple-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  &__ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple-animation 1s ease-out;
+  }
+
+  @keyframes ripple-animation {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  /*************** Button Ripple Effect (End)*****************/
+}

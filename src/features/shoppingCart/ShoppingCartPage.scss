@@ -1,0 +1,75 @@
+.main-layout-section {
+  .body-section:has(.shopping-tabs) {
+    width: 100%;
+    padding: 0;
+  }
+}
+.shopping-tabs {
+  .tabs {
+    background-color: $background-light-grey;
+
+    .tab-header {
+      width: 95%;
+      margin: 0 auto;
+      display: flex;
+      overflow: auto;
+      &::-webkit-scrollbar {
+        height: 3px; // <-- Increase height here
+      }
+      .tab {
+        position: relative;
+        text-align: center;
+        padding: 12px 30px 12px 40px;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+        text-transform: uppercase;
+        color: $black-color;
+        background-color: $background-light-grey;
+        margin-right: -15px;
+        clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%, 20px 50%);
+        z-index: 1;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        &:hover {
+          color: $text-color-dark;
+        }
+
+        &.active {
+          background-color: $primary-color;
+          color: $white-color;
+          z-index: 2;
+        }
+
+        &.completed::after {
+          content: "✔";
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 14px;
+          color: $white-color;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .tabContent {
+    width: 95%;
+    margin: 0px auto 0;
+    background-color: $white-color;
+    font-size: $font-size-base;
+    color: $text-color-dark;
+    padding: 20px;
+    border-radius: 5px;
+  }
+}
+

@@ -1,0 +1,110 @@
+.radio-button {
+  @include flex-align-center;
+  cursor: pointer  ;
+  position: relative;
+  justify-content: start;
+  gap: 10px;
+
+  &--disabled {
+    cursor: not-allowed  ;
+  }
+
+  &__input {
+    display: none;
+  }
+
+  &__container {
+    position: relative;
+    @include flex-center;
+  }
+  
+  &__custom {
+    @include flex-center;
+    border: 2px solid $primary-color;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__custom-inner {
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+  }
+
+  &__input:checked + .radio-button__container .radio-button__custom .radio-button__custom-inner {
+    transform: scale(1);
+  }
+
+  /****************Disabled Styles (Start)****************/
+  
+  &--disabled .radio-button__custom {
+    border-color: $button-disabled-color;
+    background-color: $button-primary-hover-color;
+  }
+
+  &--disabled .radio-button__custom-inner {
+    background-color: $button-disabled-color;
+  }
+  
+  &--disabled .radio-button__label {
+    color: $button-disabled-text-color;
+  }
+  /****************Disabled Styles (End)****************/
+  
+  /****************Label Styles (Start)****************/
+  &--label-top {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  &--label-bottom {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  &--label-start {
+    flex-direction: row-reverse;
+  }
+
+  &--label-end {
+    flex-direction: row;
+  }
+  
+  &__label {
+    font-size: 16px;
+    color: #777777;
+    line-height: normal;
+    margin-top: 3px;
+  }
+  /****************Label Styles (End)****************/
+  
+  /****************Ripple Styles (Start)****************/
+  &__ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: $backdrop-color; // Adjust opacity for better visibility
+    pointer-events: none;
+    transform: scale(0); // Start small
+    width: 200%; // Ripple size
+    height: 200%; // Ripple size
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 600ms ease-out;
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: translate(-50%, -50%) scale(0.4); // Slight delay before expanding
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1); // Fully expand
+      opacity: 0;
+    }
+  }
+  /****************Ripple Styles (End)****************/
+}
