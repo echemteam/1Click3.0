@@ -15,6 +15,7 @@ import Iconify from "@components/ui/iconify/Iconify";
 import Button from "@components/ui/button/Button";
 import IconButton from "@components/ui/iconButton/IconButton";
 import CenterModal from "@components/ui/centerModal/CenterModal";
+import DataLoader from "@components/Common/Loader/DataLoader";
 
 const ProductDetailWishCard = ({
   // imageSrc = "",
@@ -33,7 +34,7 @@ const ProductDetailWishCard = ({
   const [rfqModalOpen, setModalOpen] = React.useState(false);
   const [
     addEditWishList,
-    { isSuccess: isaddEditWishListSuccess, data: isaddEditWishListData },
+    { isLoading: isaddEditWishListLoading, isSuccess: isaddEditWishListSuccess, data: isaddEditWishListData },
   ] = useAddEditWishListMutation();
   const { toast } = SwalAlert();
   const isAuthenticate = isAuthorized();
@@ -164,7 +165,11 @@ const ProductDetailWishCard = ({
                 View
               </Button>
             </div>
-            {isAuthenticate && isClient && (
+            {isAuthenticate && isClient && isaddEditWishListLoading ? (
+              <div className="wishlist-btn">
+                <DataLoader />
+              </div>
+            ) : (
               <div
                 className={`wishlist-btn ${
                   isFavourite ? "add-to-wishlist" : ""

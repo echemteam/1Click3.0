@@ -1,5 +1,5 @@
 import React from "react";
-// import "../wishListGrid.scss";
+import "./wishListGrid.scss";
 import ProductDetailWishCard from "./productDetailCard/ProductDetailWishCard";
 
 const WishListGrid = ({ products = [], onProductClick, onWishlistToggle }) => {

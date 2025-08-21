@@ -17,11 +17,7 @@ import { useSelector } from "react-redux";
 import SwalAlert from "src/services/swal/SwalService";
 import { TabContext } from "@features/context/TabContext";
 import OrderContext from "@features/contextAPIs/OrderContext";
-import {
-  useLazyGetPaymentOptionbyOrderIdQuery,
-  usePlaceOrderMutation,
-  useLazyGetItemByOrderIdQuery,
-} from "src/redux/serviceApi/OrderAPI";
+import { useLazyGetPaymentOptionbyOrderIdQuery, usePlaceOrderMutation, useLazyGetItemByOrderIdQuery } from "src/redux/serviceApi/OrderAPI";
 import Loading from "src/app/loading";
 
 const Paymentdetails = () => {

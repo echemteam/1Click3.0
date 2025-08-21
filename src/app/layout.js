@@ -1,12 +1,12 @@
 // app/layout.js
 import React from 'react';
-import './globals.scss';
 import ReduxProvider from '../features/layout/ReduxProvider';
-import Header from '@components/header/Header';
-import Footer from '@components/footer/Footer';
+import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 import FloatingButton from '@components/ui/floatingButton/FloatingButton'
 import Breadcrumb from '@components/ui/breadcrumb/BreadCrumb';
 import { TabProvider } from '@features/context/TabContext';
+import "../styles/global/main.scss";
 
 export const metadata = {
   title: '1Click Chemistry',

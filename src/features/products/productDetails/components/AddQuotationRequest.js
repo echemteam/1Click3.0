@@ -136,38 +136,44 @@ const AddQuotationRequest = ({ onClose, catalogNumber, selectedProducts }) => {
       },
     ],
 
-    // Define rules for rfqProducts fields
-    package: [
-      {
-        type: "require",
-        message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "package"),
-      },
-    ],
-    quantity: [
-      {
-        type: "require",
-        message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "quantity"),
-      },
-      {
-        type: "minValue",
-        value: 1,
-        message: "Quantity must be greater than 0",
-      },
-    ],
-    sizeId: [
-      {
-        type: "require",
-        message: Messages.CommonValidationMessages.SelectRequired.replace("{0}", "sizeId"),
-      },
-    ],
-    country: [
-      {
-        type: "require",
-        message: Messages.CommonValidationMessages.SelectRequired.replace("{0}", "country"),
-      },
-    ],
+        // Define rules for rfqProducts fields
+        package: [
+            {
+                type: "require",
+                message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "package"),
+            },
+        ],
+        quantity: [
+            {
+                type: "require",
+                message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "quantity"),
+            },
+            {
+                type: "minValue",
+                value: 1,
+                message: "Quantity must be greater than 0",
+            },
+        ],
+        sizeId: [
+            {
+                type: "require",
+                message: Messages.CommonValidationMessages.SelectRequired.replace("{0}", "unit"),
+            },
+        ],
+        country: [
+            {
+                type: "require",
+                message: Messages.CommonValidationMessages.SelectRequired.replace("{0}", "country"),
+            },
+        ],
+        captcha: [
+          {
+            type: "require",
+            message: "Please verify you are not a robot.",
+          },
+        ],
 
-  };
+    };
 
   const validateField = (key, value, index = null) => {
     const rules = validationRules[key] || [];
@@ -224,9 +230,15 @@ const AddQuotationRequest = ({ onClose, catalogNumber, selectedProducts }) => {
         product.quantity,
         index
       );
-      if (!isPackageValid || !isQuantityValid) {
+      const isSizeIdValid = validateField("sizeId", product.sizeId, index);
+      if (!isPackageValid || !isQuantityValid || !isSizeIdValid) {
         isFormValid = false;
       }
+
+       const isCaptchaValid = validateField("captcha", isValidateCaptcha);
+       if (!isCaptchaValid) {
+         isFormValid = false;
+       }
     });
 
     setValidState((prev) => ({
@@ -248,6 +260,14 @@ const AddQuotationRequest = ({ onClose, catalogNumber, selectedProducts }) => {
   const handleSelectChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value);
+  };
+
+  const handleCountryChange = (selected) => {
+    setFormData((prev) => ({
+      ...prev,
+      country: selected,
+    }));
+    validateField("country", selected);
   };
 
   // Handle RFQ product row changes
@@ -275,7 +295,12 @@ const AddQuotationRequest = ({ onClose, catalogNumber, selectedProducts }) => {
       currentProduct.quantity,
       currentIndex
     );
-    if (!isPackageValid || !isQuantityValid) return;
+    const isSizeIdValid = validateField(
+      "sizeId",
+      currentProduct.sizeId,
+      currentIndex
+    );
+    if (!isPackageValid || !isQuantityValid || !isSizeIdValid) return;
     setRfqProducts((prev) => [
       ...prev,
       { package: "", quantity: "", sizeId: null },
@@ -290,44 +315,43 @@ const AddQuotationRequest = ({ onClose, catalogNumber, selectedProducts }) => {
       const newError = { ...prev.error };
       delete newError[`package_${index}`];
       delete newError[`quantity_${index}`];
+      delete newError[`sizeId_${index}`];
       return { ...prev, error: newError };
     });
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!isValidateCaptcha) {
-      toast("warning", "Please verify you are not a robot.");
-    }
-    if (isValid() && isValidateCaptcha) {
-      const RFQProducts = rfqProducts.map((product) => ({
-        quantity: product.quantity,
-        sizeId: product.sizeId.value || 0,
-        package: product.package,
-      }));
-      const catalogId = selectedProducts?.length > 0 ? selectedProducts?.map((product) => product.catalogId)?.toString() : catalogNumber;
-      const rfqData = {
-        catalogId: catalogId,
-        emailAddress: formData.emailAddress,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        companyName: formData.companyName,
-        requestNote: formData.requestNote,
-        expectedDeliveryDate: new Date().toISOString(),
-        timeFrame: formData.timeFrame?.value,
-        countryId: formData.country?.value,
-        RFQProducts,
-      };
-      // Call the addRfq mutation
-      try {
-        await addRfq(rfqData).unwrap();
-      } catch (error) {
-        toast("error", "Failed to submit RFQ request. Please try again.");
+    // Handle form submission
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      if (isValid() && isValidateCaptcha) {
+          const RFQProducts = rfqProducts.map((product) => ({
+              quantity: product.quantity,
+              sizeId: product.sizeId.value || 0,
+              package: product.package,
+          }));
+          const catalogId = selectedProducts?.length > 0 ? selectedProducts?.map((product) => product.catalogNumber)?.toString() : catalogNumber;
+          const rfqData = {
+              catalogId: catalogId,
+              emailAddress: formData.emailAddress,
+              firstName: formData.firstName,
+              lastName: formData.lastName,
+              companyName: formData.companyName,
+              requestNote: formData.requestNote,
+              expectedDeliveryDate: new Date().toISOString(),
+              timeFrame: formData.timeFrame?.value,
+              countryId: formData.country?.value,
+              RFQProducts,
+          };
+          // Call the addRfq mutation
+          try {
+              await addRfq(rfqData).unwrap();
+          } catch (error) {
+              toast("error", "Failed to submit RFQ request. Please try again.");
+          }
       }
-    }
-  };
-  const resetForm = () => {
+    };
+    const resetForm = () => {
 
     setFormData(prev => ({
       ...prev,
@@ -339,6 +363,7 @@ const AddQuotationRequest = ({ onClose, catalogNumber, selectedProducts }) => {
 
     setRfqProducts([{ package: "", quantity: "", sizeId: null }]);
     setValidState({ isValid: true, error: {} });
+    setIsValidateCaptcha(null);
   };
 
   useEffect(() => {
@@ -348,216 +373,209 @@ const AddQuotationRequest = ({ onClose, catalogNumber, selectedProducts }) => {
       toast("success", "RFQ added successfully");
       if (onClose) onClose();
       resetForm();
-      setIsValidateCaptcha();
-      // setSelectedProducts([])
     }
   }, [isAddRfqSuccess, isAddRfqData]);
 
-  const handleCountryChange = (selected) => {
-    setFormData((prev) => ({
-      ...prev,
-      country: selected,
-    }));
-    validateField("country", selected);
-  };
-
   const handleCaptchaChange = (data) => {
     setIsValidateCaptcha(data);
+    validateField("captcha", data);
   };
   return (
     <div className="bulk-quotation-request">
       <form className="bulk-quotation-request-form" onSubmit={handleSubmit}>
-        <div className="bulk-quotation-request-form__group">
-          <label className="bulk-quotation-request-form__label">
-            First Name <span className="required">*</span>
-          </label>
-          <Input
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            onBlur={() => validateField("firstName", formData.firstName)}
-          />
-          <ValidationText errorText={validState.error.firstName} />
-        </div>
-        <div className="bulk-quotation-request-form__group">
-          <label className="bulk-quotation-request-form__label">
-            Last Name <span className="required">*</span>
-          </label>
-          <Input
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
-            onBlur={() => validateField("lastName", formData.lastName)}
-          />
-          <ValidationText errorText={validState.error.lastName} />
-        </div>
-        <div className="bulk-quotation-request-form__group">
-          <label className="bulk-quotation-request-form__label">
-            Company Name <span className="required">*</span>
-          </label>
-          <Input
-            type="text"
-            placeholder="Company Name"
-            name="companyName"
-            value={formData.companyName}
-            onChange={handleInputChange}
-            onBlur={() => validateField("companyName", formData.companyName)}
-          />
-          <ValidationText errorText={validState.error.companyName} />
-        </div>
-        <div className="bulk-quotation-request-form__group">
-          <label className="bulk-quotation-request-form__label">
-            Email Address <span className="required">*</span>
-          </label>
-          <Input
-            type="email"
-            placeholder="Email Address"
-            name="emailAddress"
-            value={formData.emailAddress}
-            onChange={handleInputChange}
-            onBlur={() =>
-              validateField("emailAddress", formData.emailAddress)
-            }
-          />
-          <ValidationText errorText={validState.error.emailAddress} />
-        </div>
-        <div className="bulk-quotation-request-form__group">
-          <label className="bulk-quotation-request-form__label">
-            Country <span className="required">*</span>
-          </label>
-          <Select
-            options={country}
-            placeholder="Select Country"
-            value={country.value}
-            onChange={handleCountryChange}
-            isSearchable={false}
-          />
-          <ValidationText errorText={validState.error.country} />
-        </div>
-        <div className="bulk-quotation-request-form__group bulk-quotation-request-form__group--full">
-          <label className="bulk-quotation-request-form__label">
-            Special Request
-          </label>
-          <Input
-            type="text"
-            placeholder="Special Request"
-            name="requestNote"
-            value={formData.requestNote}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="bulk-quotation-request-form__group">
-          <label className="bulk-quotation-request-form__label">
-            Time Frame
-          </label>
-          <Select
-            options={timeFrameOptions}
-            placeholder="Select Time Frame"
-            value={timeFrameOptions.value}
-            onChange={(value) => handleSelectChange("timeFrame", value)}
-          />
-        </div>
-        <div className="bulk-quotation-request-form__packages bulk-quotation-request-form__group">
-          {rfqProducts.map((product, index) => (
-            <div
-              key={index}
-              className="bulk-quotation-request-form__package-row"
-            >
-              <div className="bulk-quotation-request-form__group">
-                <label className="bulk-quotation-request-form__label">
-                  Package <span className="required">*</span>
-                </label>
-                <Input
-                  type="text"
-                  placeholder="Package"
-                  value={product.package}
-                  onChange={(e) =>
-                    handleProductChange(index, "package", e.target.value)
-                  }
-                  onBlur={() =>
-                    validateField("package", product.package, index)
-                  }
-                />
-                <ValidationText
-                  errorText={validState.error[`package_${index}`]}
-                />
-              </div>
-              <div className="bulk-quotation-request-form__group">
-                <label className="bulk-quotation-request-form__label">
-                  Quantity <span className="required">*</span>
-                </label>
-                <Input
-                  type="number"
-                  placeholder="Quantity"
-                  value={product.quantity}
-                  onChange={(e) =>
-                    handleProductChange(index, "quantity", e.target.value)
-                  }
-                  onBlur={() =>
-                    validateField("quantity", product.quantity, index)
-                  }
-                />
-                <ValidationText
-                  errorText={validState.error[`quantity_${index}`]}
-                />
-              </div>
-              <div className="bulk-quotation-request-form__group">
-                <label className="bulk-quotation-request-form__label">
-                  Unit
-                </label>
-                <Select
-                  options={unitOptions}
-                  placeholder="Select"
-                  value={unitOptions?.value}
-                  onChange={(value) =>
-                    handleProductChange(index, "sizeId", value)
-                  }
-                />
-              </div>
+          <div className="bulk-quotation-request-form__group">
+            <label className="bulk-quotation-request-form__label">
+              First Name <span className="required">*</span>
+            </label>
+            <Input
+              type="text"
+              placeholder="First Name"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              onBlur={() => validateField("firstName", formData.firstName)}
+            />
+            <ValidationText errorText={validState.error.firstName} />
+          </div>
+          <div className="bulk-quotation-request-form__group">
+            <label className="bulk-quotation-request-form__label">
+              Last Name <span className="required">*</span>
+            </label>
+            <Input
+              type="text"
+              placeholder="Last Name"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleInputChange}
+              onBlur={() => validateField("lastName", formData.lastName)}
+            />
+            <ValidationText errorText={validState.error.lastName} />
+          </div>
+          <div className="bulk-quotation-request-form__group">
+            <label className="bulk-quotation-request-form__label">
+              Company Name <span className="required">*</span>
+            </label>
+            <Input
+              type="text"
+              placeholder="Company Name"
+              name="companyName"
+              value={formData.companyName}
+              onChange={handleInputChange}
+              onBlur={() => validateField("companyName", formData.companyName)}
+            />
+            <ValidationText errorText={validState.error.companyName} />
+          </div>
+          <div className="bulk-quotation-request-form__group">
+            <label className="bulk-quotation-request-form__label">
+              Email Address <span className="required">*</span>
+            </label>
+            <Input
+              type="email"
+              placeholder="Email Address"
+              name="emailAddress"
+              value={formData.emailAddress}
+              onChange={handleInputChange}
+              onBlur={() =>
+                validateField("emailAddress", formData.emailAddress)
+              }
+            />
+            <ValidationText errorText={validState.error.emailAddress} />
+          </div>
+          <div className="bulk-quotation-request-form__group">
+            <label className="bulk-quotation-request-form__label">
+              Country <span className="required">*</span>
+            </label>
+            <Select
+              options={country}
+              placeholder="Select Country"
+              value={formData.country?.value}
+              onChange={handleCountryChange}
+            />
+            <ValidationText errorText={validState.error.country} />
+          </div>
+          <div className="bulk-quotation-request-form__group bulk-quotation-request-form__group--full">
+            <label className="bulk-quotation-request-form__label">
+              Special Request
+            </label>
+            <Input
+              type="text"
+              placeholder="Special Request"
+              name="requestNote"
+              value={formData.requestNote}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="bulk-quotation-request-form__group">
+            <label className="bulk-quotation-request-form__label">
+              Time Frame
+            </label>
+            <Select
+              options={timeFrameOptions}
+              placeholder="Select Time Frame"
+              value={formData.timeFrame?.value}
+              onChange={(value) => handleSelectChange("timeFrame", value)}
+            />
+          </div>
+          <div className="bulk-quotation-request-form__packages bulk-quotation-request-form__group">
+            {rfqProducts.map((product, index) => (
               <div
-                className={
-                  index === 0
-                    ? "bulk-quotation-request-form__btn-single"
-                    : "bulk-quotation-request-form__btn-group"
-                }
+                key={index}
+                className="bulk-quotation-request-form__package-row"
               >
-                <IconButton
-                  variant="contained"
-                  icon="ic:round-plus"
-                  shape="square"
-                  onClick={addProductRow}
-                />
-                {index > 0 && (
+                <div className="bulk-quotation-request-form__group">
+                  <label className="bulk-quotation-request-form__label">
+                    Package <span className="required">*</span>
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="Package"
+                    value={product.package}
+                    onChange={(e) =>
+                      handleProductChange(index, "package", e.target.value)
+                    }
+                    onBlur={() =>
+                      validateField("package", product.package, index)
+                    }
+                  />
+                  <ValidationText
+                    errorText={validState.error[`package_${index}`]}
+                  />
+                </div>
+                <div className="bulk-quotation-request-form__group">
+                  <label className="bulk-quotation-request-form__label">
+                    Quantity <span className="required">*</span>
+                  </label>
+                  <Input
+                    type="number"
+                    placeholder="Quantity"
+                    value={product.quantity}
+                    onChange={(e) =>
+                      handleProductChange(index, "quantity", e.target.value)
+                    }
+                    onBlur={() =>
+                      validateField("quantity", product.quantity, index)
+                    }
+                  />
+                  <ValidationText
+                    errorText={validState.error[`quantity_${index}`]}
+                  />
+                </div>
+                <div className="bulk-quotation-request-form__group">
+                  <label className="bulk-quotation-request-form__label">
+                    Unit <span className="required">*</span>
+                  </label>
+                  <Select
+                    options={unitOptions}
+                    placeholder="Select"
+                    value={product.sizeId?.value}
+                    onChange={(value) =>
+                      handleProductChange(index, "sizeId", value)
+                    }
+                    onBlur={() => validateField("sizeId", product.sizeId, index)}
+                  />
+                  <ValidationText errorText={validState.error[`sizeId_${index}`]} />
+                </div>
+                <div
+                  className={
+                    index === 0
+                      ? "bulk-quotation-request-form__btn-single"
+                      : "bulk-quotation-request-form__btn-group"
+                  }
+                >
                   <IconButton
                     variant="contained"
-                    icon="ic:round-minus"
+                    icon="ic:round-plus"
                     shape="square"
-                    color="error"
-                    onClick={() => removeProductRow(index)}
+                    onClick={addProductRow}
                   />
-                )}
+                  {index > 0 && (
+                    <IconButton
+                      variant="contained"
+                      icon="ic:round-minus"
+                      shape="square"
+                      color="error"
+                      onClick={() => removeProductRow(index)}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          <div>
-            <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+            <div>
+              <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+              <ValidationText errorText={validState.error.captcha} />
+            </div>
+            <div className="bulk-quotation-request-form__modal-button">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={isAddRfqLoading}
+              >
+                {isAddRfqLoading ? <Loading /> : "Submit Request"}
+              </Button>
+            </div>
           </div>
-          <div className="bulk-quotation-request-form__modal-button">
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              disabled={isAddRfqLoading}
-            >
-              {isAddRfqLoading ? <Loading /> : "Submit Request"}
-            </Button>
-          </div>
-        </div>
       </form>
     </div>
   );

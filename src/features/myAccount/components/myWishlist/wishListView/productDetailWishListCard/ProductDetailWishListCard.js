@@ -13,9 +13,9 @@ import Iconify from "@components/ui/iconify/Iconify";
 import Button from "@components/ui/button/Button";
 import IconButton from "@components/ui/iconButton/IconButton";
 import CenterModal from "@components/ui/centerModal/CenterModal";
+import DataLoader from "@components/Common/Loader/DataLoader";
 
 const ProductDetailWishListCard = ({
-  // imageSrc = "",
   casNumber = "{casno}",
   catalogNumber = "{catalogno}",
   mdlNumber = "{mdlnum}",
@@ -30,12 +30,19 @@ const ProductDetailWishListCard = ({
   const { toast } = SwalAlert();
   const [imgError, setImgError] = useState(false);
   const [rfqModalOpen, setModalOpen] = React.useState(false);
+
   const [
     addEditWishList,
-    { isSuccess: isaddEditWishListSuccess, data: isaddEditWishListData },
+    {
+      isLoading: isaddEditWishListLoading,
+      isSuccess: isaddEditWishListSuccess,
+      data: isaddEditWishListData,
+    },
   ] = useAddEditWishListMutation();
+
   const isAuthenticate = isAuthorized();
   const [imageSrc, setImageSrc] = useState(null);
+
   const [
     getRenderImagebychemProductIdAndInchikey,
     {
@@ -73,6 +80,7 @@ const ProductDetailWishListCard = ({
     e.preventDefault();
     setModalOpen(true);
   };
+
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -86,6 +94,7 @@ const ProductDetailWishListCard = ({
     };
     addEditWishList(request);
   };
+
   useEffect(() => {
     if (isaddEditWishListSuccess && isaddEditWishListData) {
       if (isaddEditWishListData.errorMessage.includes("added")) {
@@ -170,14 +179,14 @@ const ProductDetailWishListCard = ({
         </div>
         {actionButtons && (
           <div className="product-detail-list-card-detail-action-button">
-            <Button
-              variant="outlined"
-              color="secondary"
-              // startIcon="famicons:cart-outline"
-            >
+            <Button variant="outlined" color="secondary">
               View
             </Button>
-            {isAuthenticate && (
+            {isAuthenticate && isaddEditWishListLoading ? (
+              <div className="wishlist-btn">
+                <DataLoader />
+              </div>
+            ) : (
               <div
                 className={`wishlist-btn ${
                   isFavourite ? "add-to-wishlist" : ""
@@ -202,6 +211,7 @@ const ProductDetailWishListCard = ({
           </div>
         )}
       </div>
+
       <CenterModal
         isOpen={rfqModalOpen}
         onClose={closeModal}

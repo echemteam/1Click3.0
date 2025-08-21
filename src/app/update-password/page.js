@@ -1,4 +1,4 @@
-import UpdatePassword from '@features/UpdatePassword/UpdatePassword'
+import UpdatePassword from '../../features/updatePassword/UpdatePassword'
 import React from 'react'
 //import UpdatePasswordPage from '@features/updatePassword/UpdatePasswordPage'
 

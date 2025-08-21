@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { AppIcons } from '@utils/AppIcons/AppIcons';
 import "swiper/css";
 import "swiper/css/autoplay";
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { DropdownWrapper } from '@components/ui/dropdownWrapper/DropdownWrapper';
 import CenterModal from '@components/ui/centerModal/CenterModal';
 
@@ -18,9 +18,9 @@ import HeaderAccountDropdown from './components/headerAccountDropdown/HeaderAcco
 import { HeaderInfoSlider } from './components/headerInfoSlider/HeaderInfoSlider';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLazyGetTotalCountByUseIdQuery } from 'src/redux/serviceApi/commonAPI';
+import { setSearchText } from 'src/redux/slice/productSearchSlice';
 import { getAuthProps, isAuthorized } from 'src/lib/authenticationLibrary';
 import { useLazyGetAllProductStructureSearchQuery } from 'src/redux/serviceApi/structureSearchAPI';
-import { setSearchText } from 'src/redux/slice/productSearchSlice';
 import SwalAlert from 'src/services/swal/SwalService';
 
 
@@ -28,6 +28,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const { toast } = SwalAlert();
   const router = useRouter();
+  const pathname = usePathname();
   const isAuthenticated = useSelector(state => state.auth.isLogedin);
   const [getTotalCountByUseId, { isFetching: isgetTotalCountByUseIdFetching, isSuccess: isgetTotalCountByUseIdSuccess, data: getTotalCountByUseIdData }] = useLazyGetTotalCountByUseIdQuery();
   const [isMounted, setIsMounted] = useState(false);
@@ -40,7 +41,8 @@ const Header = () => {
     }
   }, [isAuthenticated])
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
     if (!searchText.trim()) {
       toast("error", "Please enter a search term.");
       return;
@@ -59,6 +61,12 @@ const Header = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  
+  useEffect(() => {
+    if (pathname === '/products') {
+      setLocalSearchText('');
+    }
+  }, [pathname]);
 
   // Shopping cart modal handler to toggle shopping cart modal
   const [shoppingCartModal, setShoppingCartModal] = useState(false);
@@ -247,12 +255,14 @@ const Header = () => {
               <button className="burger-menu" onClick={() => setMenuOpen(true)}>
                 <Iconify icon="mdi:menu" width={30} height={30} />
               </button>
-              <Image
-                src={AppIcons.LogoDark}
-                alt="header-logo"
-                width={0}
-                height={0}
-              />
+              <Link href="/">
+                <Image
+                  src={AppIcons.LogoDark}
+                  alt="header-logo"
+                  width={0}
+                  height={0}
+                />
+              </Link>
             </div>
             <nav className="header-nav">
               <ul>
@@ -294,7 +304,7 @@ const Header = () => {
                   onChange={(e) => setLocalSearchText(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      handleSearch();
+                      handleSearch(e);
                     }
                   }}
                 />
@@ -411,8 +421,9 @@ const Header = () => {
           {navLinks.map((link, index) => (
             <li key={index}>
               <button
-                className={`sliding-menu-item ${expanded === index ? "active" : ""
-                  }`}
+                className={`sliding-menu-item ${
+                  expanded === index ? "active" : ""
+                }`}
                 onClick={() => link.children && toggleExpand(index)}
               >
                 <span>{link.label}</span>
@@ -428,8 +439,9 @@ const Header = () => {
               </button>
               {link.children && (
                 <ul
-                  className={`sliding-submenu ${expanded === index ? "show" : ""
-                    }`}
+                  className={`sliding-submenu ${
+                    expanded === index ? "show" : ""
+                  }`}
                 >
                   {link.children.map((child, i) => (
                     <li key={i}>
@@ -480,7 +492,7 @@ const Header = () => {
             }}
             allowFullScreen
             title="Ketcher"
-          // onChange={(e) => onValueChange('SerchText', e)}
+            // onChange={(e) => onValueChange('SerchText', e)}
           ></iframe>
           <div style={{ marginTop: "20px", width: "100%" }}>
             <div>

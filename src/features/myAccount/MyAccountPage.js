@@ -15,10 +15,10 @@ const tabs = [
     label: <><Iconify icon="iconamoon:profile" />My Profile</>,
     content: <MyProfile />,
   },
-  {
-    label: <><Iconify icon="mdi:cart-check" />Recent Orders</>,
-    content: <RecentOrders />,
-  },
+  // {
+  //   label: <><Iconify icon="mdi:cart-check" />Recent Orders</>,
+  //   content: <RecentOrders />,
+  // },
   {
     label: <><Iconify icon="mdi:heart-outline" />My Wishlist</>,
     content: <MyWishlist />,

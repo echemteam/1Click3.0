@@ -16,11 +16,12 @@ import Loading from "src/app/loading";
 import { useLazyGetAllCountriesQuery } from "src/redux/serviceApi/commonAPI";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
+import DataLoader from "@components/Common/Loader/DataLoader";
 
 const MyProfile = () => {
   const { toast, error } = SwalAlert();
   const userId = isAuthorized() ? getAuthProps().userId : 0;
-  const [getUserById, { isSuccess: isGetUserByIdSuccess, data: isGetUserByIdData },] = useLazyGetUserByIdQuery();
+  const [getUserById, { isLoading: isGetUserByIdLoading, isSuccess: isGetUserByIdSuccess, data: isGetUserByIdData },] = useLazyGetUserByIdQuery();
   const [updateUser, { isLoading: isUpdateUserLoading, isSuccess: isUpdateUserSuccess, data: isUpdateUserData },] = useUpdateUserMutation();
   const [getAllCountries, { isFetching: getAllCountriesFetching, isSuccess: getAllCountriesSuccess, data: getAllCountriesData }] = useLazyGetAllCountriesQuery();
   const [updateUserPassword, { isLoading: isUpdateUserPasswordLoding, isSuccess: isUpdateUserPasswordSuccess, data: isUpdateUserPasswordData }] = useUpdateUserPasswordMutation();
@@ -325,176 +326,213 @@ const MyProfile = () => {
 
   return (
     <div className="myprofile-container">
-      <div className="myprofile-container_main-container">
-        <h2 className="myprofile-container_main-container_title">My Profile</h2>
-        <form className="myprofile-container_main-container_edit-profile-form" onSubmit={handleupdate}>
-          <div className="myprofile-container_main-container_edit-profile-form_group">
-            <Label label="First Name" isRequired={true} />
-            <Input
-              type="text"
-              placeholder="First Name"
-              name="firstName"
-              maxLength={50}
-              value={formData.firstName}
-              onChange={handleInputChange}
-              onBlur={() => validation("firstName", formData)}
-            />
-            <ValidationText errorText={validState.error.firstName} />
-          </div>
-          <div className="myprofile-container_main-container_edit-profile-form_group">
-            <Label label="Last Name" isRequired={true} />
-            <Input
-              type="text"
-              placeholder="Last Name"
-              name="lastName"
-              maxLength={50}
-              value={formData.lastName}
-              onChange={handleInputChange}
-              onBlur={() => validation("lastName", formData)}
-            />
-            <ValidationText errorText={validState.error.lastName} />
-          </div>
-          <div className="myprofile-container_main-container_edit-profile-form_group">
-            <Label label="Email Address" isRequired={true} />
-            <Input
-              type="text"
-              placeholder="Email Address"
-              name="emailAddress"
-              isdisable="true"
-              maxLength={200}
-              value={formData.emailAddress}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="myprofile-container_main-container_edit-profile-form_group">
-            <Label label="User Display Name" isRequired={true} />
-            <Input
-              type="text"
-              placeholder="User Display Name"
-              isdisable="true"
-              name="User Display Name"
-              maxLength={101}
-              value={fullname}
-            />
-          </div>
-          <div className="myprofile-container_main-container_edit-profile-form_full-group">
-            <div className="myprofile-container_main-container_edit-profile-form_group">
-              <Label label="Country" isRequired={true} />
-              <Select
-                options={country}
-                placeholder="Country"
-                value={formData.countryId}
-                onChange={handleDropdownChange}
-                isSearchable={false}
-              />
-              {/* <ValidationText errorText={validState.error.countryId} /> */}
-            </div>
-            <div className="myprofile-container_main-container_edit-profile-form_group">
-              <Label label="Company Name" isRequired={true} />
-              <Input
-                type="text"
-                placeholder="Company Name"
-                name="companyName"
-                maxLength={200}
-                value={formData.companyName}
-                onChange={handleInputChange}
-                onBlur={() => validation("companyName", formData)}
-              />
-              <ValidationText errorText={validState.error.companyName} />
-            </div>
-            <div className="myprofile-container_main-container_edit-profile-form_group">
-              <Label label="Phone Number " isRequired={true} />
-              <PhoneInput
-                defaultCountry="us"
-                value={formData.phoneNo}
-                onChange={handlePhoneChange}
-                onBlur={() => validation("phoneNo", formData)}
-                placeholder="Phone Number"
-                maxLength={20}
-              />
-              <ValidationText errorText={validState.error.phoneNo} />
-            </div>
-            <div className="myprofile-container_main-container_edit-profile-form_group">
-              <Label label="Designation " isRequired={true} />
-              <Input
-                type="text"
-                placeholder="Designation"
-                name="designation"
-                value={formData.designation}
-                onChange={handleInputChange}
-                onBlur={() => validation("designation", formData)}
-              />
-              <ValidationText errorText={validState.error.designation} />
-            </div>
-          </div>
+      {isGetUserByIdLoading ? (
+        <DataLoader />
+      ) : (
+        <>
+          <div className="myprofile-container_main-container">
+            <h2 className="myprofile-container_main-container_title">
+              My Profile
+            </h2>
+            <form
+              className="myprofile-container_main-container_edit-profile-form"
+              onSubmit={handleupdate}
+            >
+              <div className="myprofile-container_main-container_edit-profile-form_group">
+                <Label label="First Name" isRequired={true} />
+                <Input
+                  type="text"
+                  placeholder="First Name"
+                  name="firstName"
+                  maxLength={50}
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  onBlur={() => validation("firstName", formData)}
+                />
+                <ValidationText errorText={validState.error.firstName} />
+              </div>
+              <div className="myprofile-container_main-container_edit-profile-form_group">
+                <Label label="Last Name" isRequired={true} />
+                <Input
+                  type="text"
+                  placeholder="Last Name"
+                  name="lastName"
+                  maxLength={50}
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  onBlur={() => validation("lastName", formData)}
+                />
+                <ValidationText errorText={validState.error.lastName} />
+              </div>
+              <div className="myprofile-container_main-container_edit-profile-form_group">
+                <Label label="Email Address" isRequired={true} />
+                <Input
+                  type="text"
+                  placeholder="Email Address"
+                  name="emailAddress"
+                  isdisable="true"
+                  maxLength={200}
+                  value={formData.emailAddress}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="myprofile-container_main-container_edit-profile-form_group">
+                <Label label="User Display Name" isRequired={true} />
+                <Input
+                  type="text"
+                  placeholder="User Display Name"
+                  isdisable="true"
+                  name="User Display Name"
+                  maxLength={101}
+                  value={fullname}
+                />
+              </div>
+              <div className="myprofile-container_main-container_edit-profile-form_full-group">
+                <div className="myprofile-container_main-container_edit-profile-form_group">
+                  <Label label="Country" isRequired={true} />
+                  <Select
+                    options={country}
+                    placeholder="Country"
+                    value={formData.countryId}
+                    onChange={handleDropdownChange}
+                    isSearchable={false}
+                  />
+                  {/* <ValidationText errorText={validState.error.countryId} /> */}
+                </div>
+                <div className="myprofile-container_main-container_edit-profile-form_group">
+                  <Label label="Company Name" isRequired={true} />
+                  <Input
+                    type="text"
+                    placeholder="Company Name"
+                    name="companyName"
+                    maxLength={200}
+                    value={formData.companyName}
+                    onChange={handleInputChange}
+                    onBlur={() => validation("companyName", formData)}
+                  />
+                  <ValidationText errorText={validState.error.companyName} />
+                </div>
+                <div className="myprofile-container_main-container_edit-profile-form_group">
+                  <Label label="Phone Number " isRequired={true} />
+                  <PhoneInput
+                    defaultCountry="us"
+                    value={formData.phoneNo}
+                    onChange={handlePhoneChange}
+                    onBlur={() => validation("phoneNo", formData)}
+                    placeholder="Phone Number"
+                    maxLength={20}
+                  />
+                  <ValidationText errorText={validState.error.phoneNo} />
+                </div>
+                <div className="myprofile-container_main-container_edit-profile-form_group">
+                  <Label label="Designation " isRequired={true} />
+                  <Input
+                    type="text"
+                    placeholder="Designation"
+                    name="designation"
+                    value={formData.designation}
+                    onChange={handleInputChange}
+                    onBlur={() => validation("designation", formData)}
+                  />
+                  <ValidationText errorText={validState.error.designation} />
+                </div>
+              </div>
 
-          <div className="myprofile-container_main-container_edit-profile-form_full-group">
-            <div className="save-btn">
-              <Button variant="contained" color="primary" disabled={isUpdateUserLoading}>
-                {isUpdateUserLoading ? <Loading /> : "SAVE"}
-              </Button>
-            </div>
+              <div className="myprofile-container_main-container_edit-profile-form_full-group">
+                <div className="save-btn">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={isUpdateUserLoading}
+                  >
+                    {isUpdateUserLoading ? <Loading /> : "SAVE"}
+                  </Button>
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-      <div className="myprofile-container_main-container">
-        <h2 className="myprofile-container_main-container_title">
-          Password & Security
-        </h2>
-        <form className="myprofile-container_main-container_edit-profile-form" onSubmit={handleUpdatePassword} >
-          <div className="myprofile-container_main-container_edit-profile-form_full-group">
-            <div className="myprofile-container_main-container_edit-profile-form_group">
-              <Label label="Old Password" isRequired={true} />
-              <Input
-                type="password"
-                placeholder="Old Password"
-                name="oldPassword"
-                minLength={8}
-                maxLength={20}
-                value={UpdatePassword.oldPassword}
-                onChange={handleinputUpdatePassword}
-                onBlur={() => validationUpdatePassword("oldPassword", UpdatePassword)}
-              />
-              <ValidationText errorText={validUpdatepasswordState.error.oldPassword} />
-            </div>
-            <div className="myprofile-container_main-container_edit-profile-form_group">
-              <Label label="New Password" isRequired={true} />
-              <Input
-                type="password"
-                placeholder="New Password"
-                name="newPassword"
-                minLength={8}
-                maxLength={20}
-                value={UpdatePassword.newPassword}
-                onChange={handleinputUpdatePassword}
-                onBlur={() => validationUpdatePassword("newPassword", UpdatePassword)}
-              />
-              <ValidationText errorText={validUpdatepasswordState.error.newPassword} />
-            </div>
-            <div className="myprofile-container_main-container_edit-profile-form_group">
-              <Label label="Repeat New Password" isRequired={true} />
-              <Input
-                type="password"
-                placeholder="Repeat New Password"
-                name="confirmPassword"
-                minLength={8}
-                maxLength={20}
-                value={UpdatePassword.confirmPassword}
-                onChange={handleinputUpdatePassword}
-                onBlur={() => validationUpdatePassword("confirmPassword", UpdatePassword)}
-              />
-              <ValidationText errorText={validUpdatepasswordState.error.confirmPassword} />
-            </div>
+          <div className="myprofile-container_main-container">
+            <h2 className="myprofile-container_main-container_title">
+              Password & Security
+            </h2>
+            <form
+              className="myprofile-container_main-container_edit-profile-form"
+              onSubmit={handleUpdatePassword}
+            >
+              <div className="myprofile-container_main-container_edit-profile-form_full-group">
+                <div className="myprofile-container_main-container_edit-profile-form_group">
+                  <Label label="Old Password" isRequired={true} />
+                  <Input
+                    type="password"
+                    placeholder="Old Password"
+                    name="oldPassword"
+                    minLength={8}
+                    maxLength={20}
+                    value={UpdatePassword.oldPassword}
+                    onChange={handleinputUpdatePassword}
+                    onBlur={() =>
+                      validationUpdatePassword("oldPassword", UpdatePassword)
+                    }
+                  />
+                  <ValidationText
+                    errorText={validUpdatepasswordState.error.oldPassword}
+                  />
+                </div>
+                <div className="myprofile-container_main-container_edit-profile-form_group">
+                  <Label label="New Password" isRequired={true} />
+                  <Input
+                    type="password"
+                    placeholder="New Password"
+                    name="newPassword"
+                    minLength={8}
+                    maxLength={20}
+                    value={UpdatePassword.newPassword}
+                    onChange={handleinputUpdatePassword}
+                    onBlur={() =>
+                      validationUpdatePassword("newPassword", UpdatePassword)
+                    }
+                  />
+                  <ValidationText
+                    errorText={validUpdatepasswordState.error.newPassword}
+                  />
+                </div>
+                <div className="myprofile-container_main-container_edit-profile-form_group">
+                  <Label label="Repeat New Password" isRequired={true} />
+                  <Input
+                    type="password"
+                    placeholder="Repeat New Password"
+                    name="confirmPassword"
+                    minLength={8}
+                    maxLength={20}
+                    value={UpdatePassword.confirmPassword}
+                    onChange={handleinputUpdatePassword}
+                    onBlur={() =>
+                      validationUpdatePassword(
+                        "confirmPassword",
+                        UpdatePassword
+                      )
+                    }
+                  />
+                  <ValidationText
+                    errorText={validUpdatepasswordState.error.confirmPassword}
+                  />
+                </div>
+              </div>
+              <div className="myprofile-container_main-container_edit-profile-form_full-group">
+                <div className="save-btn">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={isUpdateUserPasswordLoding}
+                  >
+                    {isUpdateUserLoading ? <Loading /> : " UPDATE PASSWORD"}
+                  </Button>
+                </div>
+              </div>
+            </form>
           </div>
-          <div className="myprofile-container_main-container_edit-profile-form_full-group">
-            <div className="save-btn">
-              <Button variant="contained" color="primary" disabled={isUpdateUserPasswordLoding}>
-                {isUpdateUserLoading ? <Loading /> : " UPDATE PASSWORD"}
-              </Button>
-            </div>
-          </div>
-        </form>
-      </div>
+        </>
+      )}
     </div>
   );
 };

@@ -3,7 +3,7 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import "./Breadcrumb.scss";
+import "./BreadCrumb.scss";
 import Iconify from "../iconify/Iconify";
 import { useSelector } from "react-redux";
 

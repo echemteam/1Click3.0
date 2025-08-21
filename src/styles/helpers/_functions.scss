@@ -9,10 +9,9 @@
   @return color.adjust($color, $lightness: -$amount);
 }
 
-@function opacity($color, $opacity: 100%) {
-  @return rgba(red($color), green($color), blue($color), $opacity);
+@function opacity($color, $opacity: 1) {
+  @return rgba($color, $opacity);
 }
-
 
 // Spacing functions
 @function spacing($multiplier: 1) {

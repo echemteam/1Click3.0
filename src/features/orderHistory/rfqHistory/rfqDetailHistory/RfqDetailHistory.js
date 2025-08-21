@@ -43,7 +43,6 @@ export default function RfqDetailHistory() {
              Expected Delivery By :{" "}
              <span>{rfqData?.expectedDeliveryDate || "N/A"}</span>
            </h2>
-           <button className={styles.backButton}>Back to History</button>
          </div>
          <hr />
 

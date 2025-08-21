@@ -10,6 +10,7 @@ import {
 import SwalAlert from "src/services/swal/SwalService";
 import Iconify from "@components/ui/iconify/Iconify";
 import { useSelector } from "react-redux";
+import DataLoader from "@components/Common/Loader/DataLoader";
 
 const Addresses = () => {
   const { toast, confirm } = SwalAlert();
@@ -23,6 +24,7 @@ const Addresses = () => {
   const [
     getAddressListByUserId,
     {
+      isLoading: isGetAddressListByUserIdLoading,
       isFetching: isGetAddressListByUserIdFetching,
       isSuccess: isGetAddressListByUserIdSuccess,
       data: isGetAddressListByUserIdData,
@@ -140,139 +142,90 @@ const Addresses = () => {
           editingAddress={editingAddress}
         />
       ) : (
-        // <div className="address-container_list-sec">
-        // {addresses.length > 0 ?
-        //   addresses.map((address) => (
-        //     <div key={address.addressId}>
-        //       <div className="address-container_list-sec_item_title">
-        //       {address.addressTypeId === 1 ? 'Billing Address' : 'Shipping Address'}
-        //       </div>
-        //       <div className="address-container_list-sec_item">
-        //         <div className="address-container_list-sec_item_content">
-        //           <div className="address-line-1">{address.addressLine1}</div>
-        //           {address.addressLine2 && (
-        //             <div className="address-line-2">{address.addressLine2}</div>
-        //           )}
-        //           <div className="address-container">
-        //             <div className="address-city">{address.cityName},&nbsp;</div>
-        //             <div className="address-state">{address.stateName},&nbsp;</div>
-        //             <div className="address-zip">{address.zipCode}</div>
-        //           </div>
-        //           <div className="address-line-country">{address.countryName}</div>
-        //           <div className="address-phone-no">
-        //             <div className="address-phone-no-title">Phone No:</div>
-        //             <div className="address-phone-no-value">
-        //             +{address.phoneCode} {address.attendantPhoneNo}
-        //             </div>
-        //           </div>
-        //           <div className="address-container_list-sec_item_content_actions">
-        //             <Button
-        //               variant="contained"
-        //               startIcon="mdi:edit"
-        //               color="secondary"
-        //               onClick={() => handleEditAddress(address)}
-        //             >
-        //               Edit {address.adressId}
-        //             </Button>
-        //             <IconButton
-        //               icon="mdi:delete"
-        //               color="error"
-        //               onClick={() => handleDelete(address.addressId)}
-        //             />
-        //           </div>
-        //         </div>
-        //       </div>
-        //     </div>
-        //   ))
+          <div className="list-sec">
+            {isGetAddressListByUserIdLoading ? <DataLoader /> :
+                [1, 2].map((type) => {
+                  const filtered = addresses.filter((a) => a.addressTypeId === type);
+                  if (!filtered.length) return null;
 
-        // :
-        // <div className="no-records-found">No records found</div>
-        // }
-        // </div>
-
-        <div className="list-sec">
-          {[1, 2].map((type) => {
-            const filtered = addresses.filter((a) => a.addressTypeId === type);
-            if (!filtered.length) return null;
-
-            return (
-              <div key={type} className="address-card-container">
-                <div className="title">
-                  {type === 1 ? "Shipping Address" : "Billing Address"}
-                </div>
-                <div className="item">
-                  {filtered.map((address) => (
-                    <div key={address.addressId} className="address-card">
-                      <h3>{address?.addressName}</h3>
-                      <div className="content">
-                        <div className="adress-wrapper">
-                          <div className="icon">
-                            <Iconify icon="weui:location-outlined" width={20} />
-                          </div>
-                          <div className="address">
-                            <div className="address-line-1">
-                              {address.addressLine1}
-                            </div>
-                            {address.addressLine2 && (
-                              <div className="address-line-2">
-                                {address.addressLine2}
-                              </div>
-                            )}
-                            <div className="address-container">
-                              <div className="address-city">
-                                {address.cityName},&nbsp;
-                              </div>
-                              <div className="address-state">
-                                {address.stateName},&nbsp;
-                              </div>
-                              <div className="address-zip">
-                                {address.zipCode}
-                              </div>
-                            </div>
-                            <div className="address-line-country">
-                              {address.countryName}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="address-phone-no">
-                          <div className="icon">
-                            <Iconify icon="proicons:call" width={20} />
-                          </div>
-                          <div className="address-phone-no-title">
-                            Phone No:
-                          </div>
-                          <div className="address-phone-no-value">
-                            +{address.phoneCode} {address.attendantPhoneNo}
-                          </div>
-                        </div>
+                  return (
+                    <div key={type} className="address-card-container">
+                      <div className="title">
+                        {type === 1 ? "Shipping Address" : "Billing Address"}
                       </div>
-                      <div className="actions">
-                        <IconButton
-                          icon="mdi:edit"
-                          variant="text"
-                          color="secondary"
-                          shape="round"
-                          onClick={() => handleEditAddress(address)}
-                        />
-                        <IconButton
-                          icon="mdi:delete"
-                          variant="text"
-                          color="error"
-                          shape="round"
-                          onClick={() => handleDelete(address.addressId)}
-                        />
-                      </div>
+                      <div className="item">
+                        {filtered.map((address) => (
+                          <div key={address.addressId} className="address-card">
+                            <h3>{address?.addressName}</h3>
+                            <div className="content">
+                              <div className="adress-wrapper">
+                                <div className="icon">
+                                  <Iconify icon="weui:location-outlined" width={20} />
+                                </div>
+                                <div className="address">
+                                  <div className="address-line-1">
+                                    {address.addressLine1}
+                                  </div>
+                                  {address.addressLine2 && (
+                                    <div className="address-line-2">
+                                      {address.addressLine2}
+                                    </div>
+                                  )}
+                                  <div className="address-container">
+                                    <div className="address-city">
+                                      {address.cityName},&nbsp;
+                                    </div>
+                                    <div className="address-state">
+                                      {address.stateName},&nbsp;
+                                    </div>
+                                    <div className="address-zip">
+                                      {address.zipCode}
+                                    </div>
+                                  </div>
+                                  <div className="address-line-country">
+                                    {address.countryName}
+                                  </div>
+                                </div>
+                              </div>
 
+                              <div className="address-phone-no">
+                                <div className="icon">
+                                  <Iconify icon="proicons:call" width={20} />
+                                </div>
+                                <div className="address-phone-no-title">
+                                  Phone No:
+                                </div>
+                                <div className="address-phone-no-value">
+                                  +{address.phoneCode} {address.attendantPhoneNo}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="actions">
+                              <IconButton
+                                icon="mdi:edit"
+                                variant="text"
+                                color="secondary"
+                                shape="round"
+                                onClick={() => handleEditAddress(address)}
+                              />
+                              <IconButton
+                                icon="mdi:delete"
+                                variant="text"
+                                color="error"
+                                shape="round"
+                                onClick={() => handleDelete(address.addressId)}
+                              />
+                            </div>
+
+                          </div>
+                        ))
+                        }
+                      </div>
                     </div>
-                  ))
-                  }
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
+                  );
+                })
+              }
+          </div>
       )}
 
     </div>

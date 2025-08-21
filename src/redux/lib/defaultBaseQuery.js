@@ -6,11 +6,9 @@ import { getAuthProps } from 'src/lib/authenticationLibrary'
 
 const mutex = new Mutex()
 
-export const IsProdMode = false
 export const IsTestMode = true
 
 export const getAPIUrl = () => {
-  if (IsProdMode) return process.env.NEXT_PUBLIC_PROD_SITE_URL;
   if (IsTestMode) return process.env.NEXT_PUBLIC_TEST_URL;
   return process.env.NEXT_PUBLIC_LOCAL_SITE_URL;
 };
@@ -86,9 +84,9 @@ export const fileUploadQuery = fetchBaseQuery({
 })
 
 export const getChemIndexAPIUrl = () => {
-  if (IsProdMode) return process.env.NEXT_PUBLIC_PROD_SITE_URL;
+  // if (IsProdMode) return process.env.NEXT_PUBLIC_PROD_SITE_URL;
   if (IsTestMode) return process.env.NEXT_PUBLIC_TEST_URL;
-  return process.env.NEXT_PUBLIC_LOCAL_CHEMINDEX_SITE_URL;
+  return process.env.NEXT_PUBLIC_LOCAL_SITE_URL;
 };
 
 export const CHEMINDEX_API_URL = getChemIndexAPIUrl();

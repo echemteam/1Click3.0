@@ -1,5 +1,5 @@
-import { IsProdMode } from "src/redux/lib/defaultBaseQuery"
-const liveStripeKey = process.env.NEXT_PUBLIC_LIVESTRIPKEY
+// import { IsTestMode } from "src/redux/lib/defaultBaseQuery"
+// const liveStripeKey = process.env.NEXT_PUBLIC_LIVESTRIPKEY
 const testStripeKey = process.env.NEXT_PUBLIC_TESTSTRIPKEY
 
 export const AddressType= { 
@@ -8,7 +8,7 @@ export const AddressType= {
   }
 
   export const Constants = {
-    StripeKey: (IsProdMode) ? liveStripeKey : testStripeKey,
+    StripeKey: testStripeKey,
 }
 
   export const carrierOptions = [

@@ -41,7 +41,7 @@ export function Validate(state, rules, key) {
 
 export function ValidateField(value, fieldRules, state) {
   let result = { isvalid: true, message: '' };
-  fieldRules.forEach(rule => {
+  fieldRules?.forEach(rule => {
     if (result.isvalid) {
       switch (rule.type) {
         case 'require':

@@ -6,7 +6,6 @@ import "./ProductListGrid.scss";
 const ProductListGrid = ({ products = [], onProductClick, onWishlistToggle, handleSelectedProduct }) => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const handleSelectProduct = (product) => {
-
     setSelectedProducts((prevSelected) => {
       const isAlreadySelected = prevSelected.some(
         (p) => p.catalogId === product.catalogId

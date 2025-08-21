@@ -1,6 +1,12 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import "./PrivacyPolicyPage.scss";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import DataLoader from "@components/Common/Loader/DataLoader";
+import PageNotFoundPage from "@features/pageNotFound/PageNotFoundPage";
+import { useLazyGetStaticPageBySlugQuery } from "src/redux/serviceApi/slugAPI";
+import Head from "next/head";
 const navItems = [
   {
     label: "Privacy Policy",
@@ -100,7 +106,7 @@ const navItems = [
       "We view protection of your privacy as a very important principle. We store and process your information on servers located in the United States. We have implemented physical, electronic and procedural safeguards that are designed to protect the security of your information. These include advanced firewall and password protection for our databases, physical access controls to our buildings and files, and restricted access to your personal information to employees that need to know that information to operate, develop or improve our services.",
     ],
   },
-{
+  {
     label: "Information Protection",
     href: "#informationProtection",
     itemId: "informationProtection",
@@ -134,51 +140,103 @@ const navItems = [
   },
 ];
 const PrivacyPolicyPage = () => {
+  const pathname = usePathname();
+  const slug = pathname.split("/").pop();
+
+  const [getStaticPage, { data: page, isFetching, isError }] = useLazyGetStaticPageBySlugQuery();
+
+  useEffect(() => {
+    if (slug) {
+      getStaticPage(encodeURIComponent(slug));
+    }
+  }, [slug]);
+
+
+  if (isFetching) {
+    return <div><DataLoader /></div>;
+  }
+
+  if (isError) {
+    return <div><PageNotFoundPage /></div>;
+  }
+
+  if (!page) {
+    // nothing fetched yet or still resolving
+    return <div><DataLoader /></div>; // or a loader
+  }
+
+  if (!page.isActive && page.slug !== slug) {
+    return <div><PageNotFoundPage /></div>;
+  }
+
   return (
-    <div className="privacy-policy-page">
-      <div className="privacy-policy-content">
-        <div className="left-point-sec">
-          <ul>
-            {navItems.map((item, index) => (
-              <li key={index} className="side-navigation-link">
-                <Link href={item.href}>{item.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <div className="randd-page">
+      <Head>
+        <title>{page?.metaTitle || page?.title}</title>
+        <meta name="description" content={page?.metaDescription || ""} />
+        <meta name="keywords" content={page?.metaKeywords || ""} />
+        <meta name="robots" content={page?.metaRobots || ""} />
+        <link rel="canonical" href={page?.canonicalUrl || ""} />
 
-        <div className="right-desc-sec">
-          <div className="right-desc-content">
-            {navItems.map((item, index) => (
-              <div key={index}>
-                <span className="title-text" id={item.itemId}>
-                  {item.label}
-                </span>
-                <div className="desc-text">
-                  {typeof item.descItem === "string" ? (
-                    <p>{item.descItem}</p>
-                  ) : (
-                    item.descItem.map((desc, pIndex) => (
-                      <p key={pIndex}>{desc}</p>
-                    ))
-                  )}
+        <meta property="og:title" content={page?.ogTitle || page?.title} />
+        <meta property="og:description" content={page?.ogDescription || ""} />
+        <meta property="og:image" content={page?.ogImage || ""} />
 
-                  {item.isList &&
-                    Array.isArray(item.listItem) &&
-                    item.listItem.length > 0 && (
-                      <ul>
-                        {item.listItem.map((li, liIndex) => (
-                          <li key={liIndex}>{li}</li>
-                        ))}
-                      </ul>
-                    )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+        <meta name="twitter:title" content={page?.twitterTitle || page?.title} />
+        <meta name="twitter:description" content={page?.twitterDescription || ""} />
+        <meta name="twitter:image" content={page?.twitterImage || ""} />
+
+        {page?.structuredDataJsonLd && (
+          <script type="application/ld+json">{page.structuredDataJsonLd}</script>
+        )}
+      </Head>
+
+      <div dangerouslySetInnerHTML={{ __html: page?.content || "" }} />
     </div>
+    // <div className="privacy-policy-page">
+    //   <div className="privacy-policy-content">
+    //     <div className="left-point-sec">
+    //       <ul>
+    //         {navItems.map((item, index) => (
+    //           <li key={index} className="side-navigation-link">
+    //             <Link href={item.href}>{item.label}</Link>
+    //           </li>
+    //         ))}
+    //       </ul>
+    //     </div>
+
+    //     <div className="right-desc-sec">
+    //       <div className="right-desc-content">
+    //         {navItems.map((item, index) => (
+    //           <div key={index}>
+    //             <span className="title-text" id={item.itemId}>
+    //               {item.label}
+    //             </span>
+    //             <div className="desc-text">
+    //               {typeof item.descItem === "string" ? (
+    //                 <p>{item.descItem}</p>
+    //               ) : (
+    //                 item.descItem.map((desc, pIndex) => (
+    //                   <p key={pIndex}>{desc}</p>
+    //                 ))
+    //               )}
+
+    //               {item.isList &&
+    //                 Array.isArray(item.listItem) &&
+    //                 item.listItem.length > 0 && (
+    //                   <ul>
+    //                     {item.listItem.map((li, liIndex) => (
+    //                       <li key={liIndex}>{li}</li>
+    //                     ))}
+    //                   </ul>
+    //                 )}
+    //             </div>
+    //           </div>
+    //         ))}
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 

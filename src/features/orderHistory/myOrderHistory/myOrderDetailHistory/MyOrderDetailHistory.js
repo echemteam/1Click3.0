@@ -9,6 +9,7 @@ import { useLazyGetOrderDetailsbyOrderIdQuery } from "src/redux/serviceApi/Order
 import { useLazyGetAddressDetailsByAddressIdQuery } from "src/redux/serviceApi/addressAPI";
 import formatDate from "src/lib/formatDate";
 import { useParams, useRouter } from "next/navigation";
+import DataLoader from "@components/Common/Loader/DataLoader";
 const MyOrderDetailHistory = () => {
   const router = useRouter();
     const params = useParams();
@@ -19,6 +20,7 @@ const MyOrderDetailHistory = () => {
   const [
     getOrderDetailsbyOrderId,
     {
+      isLoading: isGetOrderDetailsbyOrderIdLoading,
       isFetching: isGetOrderDetailsbyOrderIdFetching,
       isSuccess: isGetOrderDetailsbyOrderIdSuccess,
       data: isGetOrderDetailsbyOrderIdData,
@@ -122,7 +124,8 @@ const MyOrderDetailHistory = () => {
   };
   return (
     <>
-      <div className="payment-complete-sec">
+      {isGetOrderDetailsbyOrderIdLoading ? <DataLoader /> :
+        <div className="payment-complete-sec">
         <div className="title-desc-top">
           <div className="title-desc-top_alert-part">
             <span className="title-desc-top_alert-part_icon">
@@ -364,7 +367,7 @@ const MyOrderDetailHistory = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </>
   );
 };

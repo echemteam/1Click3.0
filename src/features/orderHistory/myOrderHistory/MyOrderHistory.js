@@ -60,7 +60,7 @@ const MyOrderHistory = () => {
         const transformData = isGetOrderHistoryData.data.map((item) => ({
           orderNumber: item.orderNumber,
           date: formatDate(item.createdAt, "MM-DD-YYYY"),
-          totalPrice: item.totalPrice?.toFixed(2),
+          totalPrice: `$${item.totalPrice?.toFixed(2)}`,
           action: (
             <Iconify
               icon="mdi-light:eye"
@@ -82,7 +82,7 @@ const MyOrderHistory = () => {
   const columns = [
     { label: "Order NUMBER", key: "orderNumber", align: "left", width: "2fr" },
     { label: "DATE", key: "date", align: "left", width: "2fr" },
-    { label: "TotalPrice", key: "totalPrice", align: "left", width: "5fr" },
+    { label: "Total Price", key: "totalPrice", align: "left", width: "5fr" },
     { label: "ACTION", key: "action", align: "center", width: "1fr" },
   ];
 

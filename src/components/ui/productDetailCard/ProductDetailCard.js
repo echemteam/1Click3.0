@@ -16,6 +16,7 @@ import SwalAlert from "src/services/swal/SwalService";
 import { useLazyGetRenderImagebychemProductIdAndInchikeyQuery } from "src/redux/serviceApi/ImageAPI";
 import Loading from "src/app/loading";
 import Checkbox from "../checkbox/Checkbox";
+import DataLoader from "@components/Common/Loader/DataLoader";
 
 const ProductDetailCard = ({
   // imageSrc = "",
@@ -34,7 +35,14 @@ const ProductDetailCard = ({
 
   const [imgError, setImgError] = useState(false);
   const [rfqModalOpen, setModalOpen] = React.useState(false);
-  const [addEditWishList, { isSuccess: isaddEditWishListSuccess, data: isaddEditWishListData },] = useAddEditWishListMutation();
+  const [
+    addEditWishList,
+    {
+      isLoading: isaddEditWishListLoading,
+      isSuccess: isaddEditWishListSuccess,
+      data: isaddEditWishListData,
+    },
+  ] = useAddEditWishListMutation();
   const { toast } = SwalAlert();
   const isAuthenticate = isAuthorized();
   const [imageSrc, setImageSrc] = useState(null);
@@ -155,13 +163,24 @@ const ProductDetailCard = ({
         {actionButtons && (
           <div className="product-detail-card-detail-action-button">
             <div className="add-to-cart-btn">
-
-              <Button variant="outlined" color="secondary" startIcon="famicons:cart-outline">
+              <Button
+                variant="outlined"
+                color="secondary"
+                startIcon="famicons:cart-outline"
+              >
                 View
               </Button>
             </div>
-            {isAuthenticate && isClient &&
-              <div className={`wishlist-btn ${isFavourite ? 'add-to-wishlist' : ''}`}>
+            {isAuthenticate && isClient && isaddEditWishListLoading ? (
+              <div className="wishlist-btn">
+                <DataLoader />
+              </div>
+            ) : (
+              <div
+                className={`wishlist-btn ${
+                  isFavourite ? "add-to-wishlist" : ""
+                }`}
+              >
                 <IconButton
                   variant="outlined"
                   color="secondary"
@@ -169,9 +188,9 @@ const ProductDetailCard = ({
                   shape="square"
                   onClick={handlewishlist}
                 />
-              </div>}
+              </div>
+            )}
             <div className="view-product-btn">
-
               <IconButton
                 variant="outlined"
                 color="secondary"
@@ -191,7 +210,13 @@ const ProductDetailCard = ({
         modalSize="w-60"
         className="mobile-w"
       >
-        <RFQModal onClose={closeModal} catalogNumber={catalogNumber} title={title} casNumber={casNumber} mdlNumber={mdlNumber} />
+        <RFQModal
+          onClose={closeModal}
+          catalogNumber={catalogNumber}
+          title={title}
+          casNumber={casNumber}
+          mdlNumber={mdlNumber}
+        />
       </CenterModal>
       <div className="product-detail-card-container__detail">
         <div className="product-detail-card-detail-info">

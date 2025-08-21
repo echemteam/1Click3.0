@@ -4,26 +4,38 @@ import { useLazyGetStaticPageBySlugQuery } from 'src/redux/serviceApi/slugAPI';
 import { usePathname } from 'next/navigation';
 import "./RandDService.scss";
 import Head from 'next/head';
+import DataLoader from '@components/Common/Loader/DataLoader';
+import PageNotFoundPage from '@features/pageNotFound/PageNotFoundPage';
 
 
 const RandDService = () => {
     const pathname = usePathname();
     const slug = pathname.split("/").pop();
-    console.log('slug', slug);
 
     const [getStaticPage, { data: page, isFetching, isError }] = useLazyGetStaticPageBySlugQuery();
-    console.log('page', page);
-
 
     useEffect(() => {
         if (slug) {
             getStaticPage(encodeURIComponent(slug));
-
         }
     }, [slug]);
 
-    if (isFetching) return <div>Loading...</div>;
-    if (isError || !page?.isActive) return <div>Under Maintenance</div>;
+    if (isFetching) {
+        return <div><DataLoader /></div>;
+    }
+
+    if (isError) {
+        return <div><PageNotFoundPage /></div>;
+    }
+
+    if (!page) {
+        // nothing fetched yet or still resolving
+        return <div><DataLoader /></div>; // or a loader
+    }
+
+    if (!page.isActive && page.slug !== slug) {
+        return <div><PageNotFoundPage /></div>;
+    }
 
     return (
         <div className="randd-page">

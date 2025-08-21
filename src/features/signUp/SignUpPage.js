@@ -48,7 +48,6 @@ const SignUpPage = () => {
     phoneNo: "",
     emailAddress: "",
     designation: "",
-    isCompany: '',
     PhoneCode: "",
   });
 
@@ -199,11 +198,6 @@ const SignUpPage = () => {
     router.push("/login");
   };
 
-  const list = [
-    { value: 1, label: "USA" },
-    { value: 2, label: "India" },
-    { value: 3, label: "UK" },
-  ];
   const handlePhoneChange = (phone, meta) => {
     setFormData((prev) => ({
       ...prev,
@@ -213,17 +207,17 @@ const SignUpPage = () => {
   };
 
   const handleDropdownChange = (selectedValue) => {
-    const selectedCountry = country.find(c => c.value === selectedValue);
-    if (selectedCountry) {
-      setFormData((prev) => ({
-        ...prev,
-        countryId: selectedCountry.value,
-        PhoneCode: selectedCountry.dialCode,
-        phoneNo: selectedCountry.dialCode,
-      }));
-      setPhoneInputKey(prev => prev + 1);
-    }
-  };
+  const selectedCountry = country.find(c => c.value === selectedValue?.value);
+  if (selectedCountry) {
+    setFormData((prev) => ({
+      ...prev,
+      countryId: selectedCountry.value,
+      PhoneCode: selectedCountry.dialCode,
+      phoneNo: selectedCountry.dialCode, 
+    }));
+    setPhoneInputKey(prev => prev + 1); 
+  }
+};
 
   const isValid = () => {
     const returnValidState = isValidForm(formData, validationrules, validState);

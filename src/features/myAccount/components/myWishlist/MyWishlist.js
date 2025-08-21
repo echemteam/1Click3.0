@@ -17,16 +17,18 @@ const MyWishlist = () => {
   const router = useRouter();
   const [getWishlist, { isLoading: isGetWishListLoading, isSuccess: isGetWishlistSuccess, data: isGetWishlistData }] = useLazyGetWishlistQuery();
   const [getTotalCountByUseId] = useLazyGetTotalCountByUseIdQuery();
-  const [orderBy, setOrderBy] = useState("Asending");
+  const [orderBy, setOrderBy] = useState("Ascending");
   const [GetWishlistData, setsGetWishlistData] = useState([]);
   const [pageIndex, setPageIndex] = useState(1);
   const [allData, setAllData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [showLessLoading, setShowLessLoading] = useState(false);
+  const [showMoreLoading, setShowMoreLoading] = useState(false);
   const [totalCount, setTotalCount] = useState();
   const [viewType, setViewType] = useState("grid");
   // Track image errors for each product by index
   const [imgErrors, setImgErrors] = useState({});
+  const [isSorting, setIsSorting] = useState(false);
 
   useEffect(() => {
     fetchWishlist(1, false);
@@ -38,8 +40,10 @@ const MyWishlist = () => {
         pageIndex === 1 ? isGetWishlistData.data : [...allData, ...isGetWishlistData.data];
       setAllData(updatedAllData);
       setsGetWishlistData(updatedAllData.slice(0, pageIndex * 10));
+      setTotalCount(isGetWishlistData.count);
       setHasMore(pageIndex * 10 < isGetWishlistData.count);
       getTotalCountByUseId();
+      setIsSorting(false);
     }
   }, [isGetWishListLoading, isGetWishlistSuccess, isGetWishlistData]);
 
@@ -49,7 +53,6 @@ const MyWishlist = () => {
       [index]: true,
     }));
   };
-
 
   const fetchWishlist = (page, shouldAppend = false) => {
     const request = {
@@ -61,6 +64,7 @@ const MyWishlist = () => {
   };
 
   const handleSortChange = (newOrderBy) => {
+    setIsSorting(true);
     setOrderBy(newOrderBy?.value);
   };
 
@@ -77,12 +81,15 @@ const MyWishlist = () => {
   };
 
   const handlePageChange = () => {
+    setShowMoreLoading(true);
     const nextPage = pageIndex + 1;
     setPageIndex(nextPage);
     fetchWishlist(nextPage, true);
-    console.log('GetWishlistData', GetWishlistData);
-  };
 
+    setTimeout(() => {
+      setShowMoreLoading(false);
+    }, 300);
+  };
 
   const handleShowLess = () => {
     setShowLessLoading(true);
@@ -91,6 +98,7 @@ const MyWishlist = () => {
         const newPage = pageIndex - 1;
         setPageIndex(newPage);
         const newData = allData.slice(0, newPage * 10);
+        setAllData(newData);
         setTotalCount(newData.length);
         setsGetWishlistData(newData);
         setHasMore(true);
@@ -101,22 +109,18 @@ const MyWishlist = () => {
   };
 
   return (
-
-    < div className="mywishlist-page-section" >
+    <div className="mywishlist-page-section">
       <div className="mywishlist-page-section__content">
         <div className="wishlist-product">
-          {/* <div className="wishlist-product_table-head">
-            <h2 className="wishlist-product_table-head_title">Product</h2>
-            <h2 className="wishlist-product_table-head_title">Stock Status</h2>
-            <h2 className="wishlist-product_table-head_title">Action</h2>
-          </div> */}
           <div className="wishlist-product_table-body">
             <SortBar
               onViewChange={manageProductView}
               onSortChange={handleSortChange}
               totalCount={GetWishlistData?.length}
             />
-            {!isGetWishListLoading && isGetWishlistData?.data.length > 0 ? (
+            {isGetWishListLoading || isSorting ? (
+              <DataLoader />
+            ) : isGetWishlistSuccess && isGetWishlistData?.data.length > 0 ? (
               <>
                 {viewType === "list" && (
                   <WishListView
@@ -134,9 +138,6 @@ const MyWishlist = () => {
                 )}
               </>
             ) : (
-              isGetWishListLoading && <DataLoader />
-            )}
-            {!isGetWishListLoading && isGetWishlistData?.data.length === 0 && (
               <h3 style={{ textAlign: "center" }}>
                 <NoProductFound />
               </h3>
@@ -158,10 +159,10 @@ const MyWishlist = () => {
                   <Button
                     color="secondary"
                     onClick={handlePageChange}
-                    disabled={isGetWishListLoading}
+                    disabled={showMoreLoading}
                     style={{ marginRight: "1rem", display: "inline-block" }}
                   >
-                    {isGetWishListLoading ? "Loading..." : "Show More"}
+                    {showMoreLoading ? "Loading..." : "Show More"}
                   </Button>
                 )}
               </div>
@@ -169,7 +170,7 @@ const MyWishlist = () => {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

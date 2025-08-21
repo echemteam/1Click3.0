@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Counter.scss";
 import Iconify from "../iconify/Iconify";
 
-const Counter = ({ counts, onChange, disabled = false }) => {
+const Counter = ({ counts, onChange, onRemove, disabled = false }) => {
   const [count, setCount] = useState(counts || 1);
 
   useEffect(() => {
@@ -18,7 +18,15 @@ const Counter = ({ counts, onChange, disabled = false }) => {
 
   const decrement = () => {
     if (disabled) return;
-    const newCount = Math.max(count - 1, 1);
+
+    if (count === 1) {
+      if (onRemove) {
+        onRemove();
+      }
+      return;
+    }
+
+    const newCount = count - 1;
     setCount(newCount);
     if (onChange) onChange(newCount);
   };

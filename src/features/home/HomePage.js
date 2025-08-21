@@ -119,13 +119,17 @@ const HomePage = () => {
             breakthroughs in medicine and healthcare.
           </div>
           <div className="home-page-section__hero__content__input-search-container">
-            <form onSubmit={handleSearch} className="home-page-section__hero__content__input-search-container__input-container">
+            <div className="home-page-section__hero__content__input-search-container__input-container">
               <input
                 type="text"
                 placeholder="Chemical name / CAS Number / MDL Number / Catalog..."
                 value={searchText}
                 onChange={(e) => setLocalSearchText(e.target.value)}
-                onKeyDown={(e) => {if (e.key === "Enter") {handleSearch()}}}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch(e);
+                  }
+                }}
               />
               <DropdownWrapper
                 gap={10}
@@ -159,10 +163,11 @@ const HomePage = () => {
               <button
                 type="submit"
                 className="home-page-section__hero__content__input-search-container__search-button"
+                onClick={handleSearch}
               >
                 Search
               </button>
-            </form>
+            </div>
           </div>
         </div>
       </div>

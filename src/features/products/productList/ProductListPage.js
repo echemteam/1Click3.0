@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect,  useState } from "react";
 import "./ProductListPage.scss";
 import ProductListView from "./components/productListView/ProductListView";
 import ProductGridView from "./components/productListGrid/ProductListGrid";
@@ -10,8 +10,7 @@ import SortBar from "./components/sortBar/SortBar";
 import IconButton from "@components/ui/iconButton/IconButton";
 import Button from "@components/ui/button/Button";
 import { useGetAllProductTextSearchMutation } from "src/redux/serviceApi/productAPI";
-import { useDispatch, useSelector } from "react-redux";
-import { setSearchText } from "src/redux/slice/productSearchSlice";
+import { useSelector } from "react-redux";
 import { encryptUrlData } from "src/services/crypto/CryptoService";
 import DataLoader from "@components/Common/Loader/DataLoader";
 import NoProductFound from "@components/ui/noProductFound/NoProductFound";
@@ -22,37 +21,29 @@ import RFQModal from "./components/rfqModal/RFQModal";
 const ProductListPage = () => {
   const [viewType, setViewType] = useState("grid");
   const [isOpen, setIsOpen] = useState(false);
-
   const router = useRouter();
-  // const { structureRequest, isStructure } = router.query;
-  // const requestStructure=JSON.parse(structureRequest);
   const searchParams = useSearchParams();
-  const [orderBy, setOrderBy] = useState(searchParams.get("orderBy") || "ProductName");
+  const [orderBy, setOrderBy] = useState("ProductName");
   const [dataSource, setDataSource] = useState();
   const [totalCount, setTotalCount] = useState();
 
-  const [getAllProductTextSearch, { isLoading, isSuccess, data }] =
-    useGetAllProductTextSearchMutation();
+  const [getAllProductTextSearch, { isLoading, isSuccess, data }] = useGetAllProductTextSearchMutation();
   const [getTotalCountByUseId] = useLazyGetTotalCountByUseIdQuery();
-  const dispatch = useDispatch();
-  const [structureSearchList, setStructureSearchList] = useState([])
-  // const [getAllProductStructureSearch, {isFetching: isGetAllProductStructureSearchFetching, isSuccess: isGetAllProductStructureSearchSuccess, data: GetAllProductStructureSearchData}] = useLazyGetAllProductStructureSearchQuery();
 
   const searchText = useSelector((state) => state.productSearch.searchText);
-  // const [structureSearchList, setStructureSearchList] = useState([])
-
-
 
   const [pageIndex, setPageIndex] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [allData, setAllData] = useState([]);
   const [showLessLoading, setShowLessLoading] = useState(false);
+  const [showMoreLoading, setShowMoreLoading] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [openMRFQForm, setOpenMRFQForm] = useState(false);
   const defaultFilterState = {
     availability: [],
     priceFrom: 0,
     priceTo: 10000,
+    molFormula: "",
     molFormula: "",
     molWeightFrom: null,
     molWeightTo: null,
@@ -71,6 +62,7 @@ const ProductListPage = () => {
     availability: [],
     priceFrom: 0,
     priceTo: 10000,
+    molFormula: "",
     molFormula: "",
     molWeightFrom: null,
     molWeightTo: null,
@@ -91,33 +83,14 @@ const ProductListPage = () => {
   });
 
   useEffect(() => {
-    fetchProductList(1, false);
+    if (!searchText) {
+      fetchProductList(1, false);
+    }
   }, []);
-
-  // useEffect(() => {
-  //   if (isStructure === true && requestStructure) {
-  //     getAllProductStructureSearch(requestStructure)
-  //   }
-  // }, [isStructure,requestStructure])
-
-
-  // useEffect(() => {
-  //   if (!isGetAllProductStructureSearchFetching && isGetAllProductStructureSearchSuccess && GetAllProductStructureSearchData) {
-  //     if (GetAllProductStructureSearchData) {
-  //       setDataSource(GetAllProductStructureSearchData)
-  //     }
-  //   }
-  // }, [isGetAllProductStructureSearchFetching, isGetAllProductStructureSearchSuccess, GetAllProductStructureSearchData])
 
   useEffect(() => {
     if (searchText) {
       setPageIndex(1);
-      // getAllProductTextSearch({
-      //   searchText,
-      //   pageIndex: 1,
-      //   pageSize: 10,
-      //   orderby: orderBy,
-      // });
       fetchProductList(1, false);
     }
   }, [searchText, orderBy, appliedFilters]);
@@ -139,14 +112,9 @@ const ProductListPage = () => {
 
       setTotalCount(updatedAllData.length);
       setHasMore(pageIndex * 10 < data.count);
+      setHasMore(pageIndex * 10 < data.count);
     }
   }, [isLoading, isSuccess, data]);
-
-  useEffect(() => {
-    if (searchText) {
-      dispatch(setSearchText(searchText));
-    }
-  }, [searchText]);
 
   const fetchProductList = (page, shouldAppend = false) => {
     const requestData = {
@@ -172,13 +140,18 @@ const ProductListPage = () => {
   };
 
   const handlePageChange = () => {
+    setShowMoreLoading(true);
     const nextPage = pageIndex + 1;
     setPageIndex(nextPage);
     fetchProductList(nextPage, true);
+
+    setTimeout(() => {
+      setShowMoreLoading(false);
+    }, 300);
   };
 
   const handleSortChange = (newOrderBy) => {
-    setOrderBy(newOrderBy);
+    setOrderBy(newOrderBy?.value);
   };
 
   const manageProductView = (viewType) => {
@@ -198,6 +171,7 @@ const ProductListPage = () => {
         const newData = allData.slice(0, newPage * 10);
         setPageIndex(newPage);
         setAllData(newData);
+        setAllData(newData);
         setDataSource(newData);
         setTotalCount(newData.length);
         setHasMore(true);
@@ -215,8 +189,7 @@ const ProductListPage = () => {
   const onApplyAdvancedFilters = () => {
     setPageIndex(1);
     setAppliedFilters({ ...filters });
-    fetchProductList(1, true)
-
+    fetchProductList(1, true);
   };
   const resetAllFilters = () => {
     const resetState = { ...defaultFilterState };
@@ -239,22 +212,27 @@ const ProductListPage = () => {
   };
 
   return (
-    <>
       <div className={`main-container ${isOpen ? "backdrop-filter" : ""}`}>
-
         <div className={`sidebar ${isOpen ? "open" : ""}`}>
           <aside className="filter-sidebar">
             {/* <Filters /> */}
-            <Filters filters={filters} setFilters={setFilters} onApplyBaseFilters={onApplyBaseFilters}
-              onApplyAdvancedFilters={onApplyAdvancedFilters} defaultFilterState={defaultFilterState} setAppliedFilters={setAppliedFilters} resetAllFilters={resetAllFilters}
-            // isFetching={isFetching}
+            <Filters
+              filters={filters}
+              setFilters={setFilters}
+              onApplyBaseFilters={onApplyBaseFilters}
+              onApplyAdvancedFilters={onApplyAdvancedFilters}
+              defaultFilterState={defaultFilterState}
+              setAppliedFilters={setAppliedFilters}
+              resetAllFilters={resetAllFilters}
+              // isFetching={isFetching}
             />
           </aside>
           <div className="sidebar-filter">
             <IconButton
               variant="contained"
-              icon={`${isOpen ? "material-symbols:close-rounded" : "mage:filter"
-                }`}
+              icon={`${
+                isOpen ? "material-symbols:close-rounded" : "mage:filter"
+              }`}
               shape="square"
               onClick={() => setIsOpen(!isOpen)}
             />
@@ -311,10 +289,10 @@ const ProductListPage = () => {
                 <Button
                   color="secondary"
                   onClick={handlePageChange}
-                  disabled={isLoading}
+                  disabled={showMoreLoading}
                   style={{ marginRight: "1rem", display: "inline-block" }}
                 >
-                  {isLoading ? "Loading..." : "Show More"}
+                  {showMoreLoading ? "Loading..." : "Show More"}
                 </Button>
               )}
             </div>
@@ -337,7 +315,6 @@ const ProductListPage = () => {
           </CenterModal>
         )}
       </div>
-    </>
   );
 };
 

@@ -70,7 +70,7 @@
     .product-detail-card-detail-action-button {
       transition: all 0.5s;
       opacity: 1;
-      background-color: opacity($backdrop-color, 5%);
+      background-color: opacity($backdrop-color, 0.05);
     }
   }
 

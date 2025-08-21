@@ -40,8 +40,7 @@ const ContactUsPage = () => {
     error: {},
   });
   const [isValidateCaptcha,setIsValidateCaptcha]=useState()
-  const validationrules =
-  {
+  const validationrules = {
     name: [
       {
         type: "require",
@@ -103,14 +102,17 @@ const ContactUsPage = () => {
         ),
       },
     ],
-  }
+    captcha: [
+      {
+        type: "require",
+        message: "Please verify you are not a robot.",
+      },
+    ],
+  };
   const [addContactUs, { isLoading: isAddContactUsLoading, isSuccess: isAddContactUsSuccess, data: isAddContactUsData },] = useAddContactUsMutation();
 
   const handleContactUsSave = (e) => {
     e.preventDefault();
-    if(!isValidateCaptcha){
-      toast("warning", "Please verify you are not a robot.");
-  }
     if (isValid() && isValidateCaptcha) {
       const phoneNumberObj = parsePhoneNumberFromString(formData.phoneNumber);
       const request = {
@@ -133,6 +135,7 @@ const ContactUsPage = () => {
       ...prevData,
       [name]: value,
     }));
+    validation(name, { ...formData, [name]: value });
   };
   const handlePhoneChange = (phone, meta) => {
     setFormData(prev => ({
@@ -152,7 +155,7 @@ const ContactUsPage = () => {
         if (captchaRef.current) {
           captchaRef.current.reset(); 
         }
-        setIsValidateCaptcha();
+        setIsValidateCaptcha(null);
         setFormData({
           name: "",
           email: "",
@@ -160,7 +163,8 @@ const ContactUsPage = () => {
           phoneNumber: "",
           productName: "",
           message: ""
-        })
+        });
+        setValidState({ isValid: true, error: {} });
         setPhoneInputKey(prev => prev + 1);
       } else {
         toast("error", "Failed.");
@@ -170,9 +174,15 @@ const ContactUsPage = () => {
 
   const isValid = () => {
     const returnValidState = isValidForm(formData, validationrules, validState);
-    setValidState(returnValidState);
-    return returnValidState.isValid;
+    const captchaValid = validate("captcha", { captcha: isValidateCaptcha }, validationrules, validState);
+    setValidState(prev => ({
+      ...prev,
+      isValid: returnValidState.isValid && !captchaValid.error.captcha,
+      error: { ...returnValidState.error, captcha: captchaValid.error.captcha }
+    }));
+    return returnValidState.isValid && !captchaValid.error.captcha;
   };
+
   const validation = (key, object) => {
     const validRules = { ...validationrules };
     const vaildStates = { ...validState };
@@ -181,7 +191,8 @@ const ContactUsPage = () => {
   };
 
   const handleCaptchaChange=(data)=>{
-    setIsValidateCaptcha(data)
+    setIsValidateCaptcha(data);
+    validation("captcha", { captcha: data });
 }
 
   
@@ -304,12 +315,13 @@ const ContactUsPage = () => {
               <ValidationText errorText={validState.error.message} />
             </div>
             <div>
-                        <ReCAPTCHA
-                         sitekey={siteKey}
-                        onChange={handleCaptchaChange}
-                        ref={captchaRef}
-                 />
-                        </div>
+              <ReCAPTCHA
+                sitekey={siteKey}
+              onChange={handleCaptchaChange}
+              ref={captchaRef}
+              />
+              <ValidationText errorText={validState.error.captcha} />
+            </div>
             <div className='contact-us__container__form__button'>
               <Button type="submit" variant="contained" color="primary" disabled={isAddContactUsLoading}>
                 {isAddContactUsLoading ? <Loading /> : "Submit"}

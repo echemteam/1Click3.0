@@ -13,6 +13,7 @@ import { useAddEditWishListMutation } from "src/redux/serviceApi/wishListAPI";
 import SwalAlert from "src/services/swal/SwalService";
 import { useLazyGetRenderImagebychemProductIdAndInchikeyQuery } from "src/redux/serviceApi/ImageAPI";
 import Loading from "src/app/loading";
+import DataLoader from "@components/Common/Loader/DataLoader";
 
 const ProductDetailListCard = ({
   // imageSrc = "",
@@ -30,7 +31,14 @@ const ProductDetailListCard = ({
   const { toast } = SwalAlert();
   const [imgError, setImgError] = useState(false);
   const [rfqModalOpen, setModalOpen] = React.useState(false);
-  const [addEditWishList, { isSuccess: isaddEditWishListSuccess, data: isaddEditWishListData },] = useAddEditWishListMutation();
+  const [
+    addEditWishList,
+    {
+      isLoading: isaddEditWishListLoading,
+      isSuccess: isaddEditWishListSuccess,
+      data: isaddEditWishListData,
+    },
+  ] = useAddEditWishListMutation();
   const isAuthenticate = isAuthorized();
   const [imageSrc, setImageSrc] = useState(null);
   const [
@@ -152,7 +160,7 @@ const ProductDetailListCard = ({
             {catalogNumber && (
               <div className="product_info_number">{catalogNumber}</div>
             )}
-             {casNumber && (
+            {casNumber && (
               <div className="product_info_number">{casNumber}</div>
             )}
             {mdlNumber && (
@@ -175,12 +183,20 @@ const ProductDetailListCard = ({
             <Button
               variant="outlined"
               color="secondary"
-            // startIcon="famicons:cart-outline"
+              // startIcon="famicons:cart-outline"
             >
               View
             </Button>
-            {isAuthenticate &&
-              <div className={`wishlist-btn ${isFavourite ? 'add-to-wishlist' : ''}`}>
+            {isAuthenticate && isaddEditWishListLoading ? (
+              <div className="wishlist-btn">
+                <DataLoader />
+              </div>
+            ) : (
+              <div
+                className={`wishlist-btn ${
+                  isFavourite ? "add-to-wishlist" : ""
+                }`}
+              >
                 <IconButton
                   variant="outlined"
                   color="secondary"
@@ -188,7 +204,8 @@ const ProductDetailListCard = ({
                   shape="square"
                   onClick={handlewishlist}
                 />
-              </div>}
+              </div>
+            )}
             <IconButton
               variant="outlined"
               color="secondary"
@@ -206,7 +223,13 @@ const ProductDetailListCard = ({
         transition="grow"
         modalSize="w-60"
       >
-        <RFQModal onClose={closeModal} catalogNumber={catalogNumber} title={title} casNumber={casNumber} mdlNumber={mdlNumber} />
+        <RFQModal
+          onClose={closeModal}
+          catalogNumber={catalogNumber}
+          title={title}
+          casNumber={casNumber}
+          mdlNumber={mdlNumber}
+        />
       </CenterModal>
     </div>
   );
