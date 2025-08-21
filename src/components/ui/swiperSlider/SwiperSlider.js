@@ -72,7 +72,7 @@ const SwiperSlider = ({ slides, slidesResponsive = true }) => {
                 }}
                 onSlideChange={(swiper) => {
                     limitPaginationBullets(swiper);
-                }}
+                  }}
                 breakpoints={slidesResponsive ? {
                     320: { slidesPerView: 1 },
                     768: { slidesPerView: 2 },

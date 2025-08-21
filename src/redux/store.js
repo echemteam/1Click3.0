@@ -18,56 +18,62 @@ import ShippingAPI from './serviceApi/ShippingAPI';
 import OrderAPI from './serviceApi/OrderAPI';
 import paymentAPI from './serviceApi/paymentAPI';
 import imageAPI from './serviceApi/ImageAPI';
+import structureSearchAPI from './serviceApi/structureSearchAPI';
+import slugAPI from './serviceApi/slugAPI';
 
 export const store = configureStore({
-    reducer: {
-        // add more slices here
-        auth: authReducer,
-        productSearch: productSearchReducer,
-        [productAPI.reducerPath]: productAPI.reducer,
-        [contactUsAPI.reducerPath]:contactUsAPI.reducer,
-        [userAPI.reducerPath] : userAPI.reducer,
-        [authapi.reducerPath] : authapi.reducer,
-        [shoppingCartAPI.reducerPath] : shoppingCartAPI.reducer,
-        [rfqAPI.reducerPath] : rfqAPI.reducer,
-        [recentViewManagementAPI.reducerPath] : recentViewManagementAPI.reducer,
-        [wishLisAPI.reducerPath] : wishLisAPI.reducer,
-        
-        [addressAPI.reducerPath]:addressAPI.reducer,
-        [commonAPI.reducerPath]:commonAPI.reducer,
-        [recentViewAPI.reducerPath]:recentViewAPI.reducer,
-        [ShippingAPI.reducerPath]: ShippingAPI.reducer,
-        [OrderAPI.reducerPath]: OrderAPI.reducer,
-        [paymentAPI.reducerPath] : paymentAPI.reducer,
-        [imageAPI.reducerPath]:imageAPI.reducer,
+  reducer: {
+    // add more slices here
+    auth: authReducer,
+    productSearch: productSearchReducer,
+    [productAPI.reducerPath]: productAPI.reducer,
+    [contactUsAPI.reducerPath]: contactUsAPI.reducer,
+    [userAPI.reducerPath]: userAPI.reducer,
+    [authapi.reducerPath]: authapi.reducer,
+    [shoppingCartAPI.reducerPath]: shoppingCartAPI.reducer,
+    [rfqAPI.reducerPath]: rfqAPI.reducer,
+    [recentViewManagementAPI.reducerPath]: recentViewManagementAPI.reducer,
+    [wishLisAPI.reducerPath]: wishLisAPI.reducer,
+
+    [addressAPI.reducerPath]: addressAPI.reducer,
+    [commonAPI.reducerPath]: commonAPI.reducer,
+    [recentViewAPI.reducerPath]: recentViewAPI.reducer,
+    [ShippingAPI.reducerPath]: ShippingAPI.reducer,
+    [OrderAPI.reducerPath]: OrderAPI.reducer,
+    [paymentAPI.reducerPath]: paymentAPI.reducer,
+    [imageAPI.reducerPath]: imageAPI.reducer,
+    [structureSearchAPI.reducerPath]: structureSearchAPI.reducer,
+    [slugAPI.reducerPath]: slugAPI.reducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [
+        'imageAPI/executeQuery/fulfilled',
+        'imageAPI/executeMutation/fulfilled',
+      ],
+      ignoredPaths: ['imageAPI.queries'],
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [
-          'imageAPI/executeQuery/fulfilled',
-          'imageAPI/executeMutation/fulfilled',
-        ],
-        ignoredPaths: ['imageAPI.queries'],
-      },
-    }).concat(
-        authapi.middleware,
-        productAPI.middleware,
-        contactUsAPI.middleware,
-        userAPI.middleware,
-        shoppingCartAPI.middleware,
-        rfqAPI.middleware,
-        recentViewManagementAPI.middleware,
-        wishLisAPI.middleware,
+  }).concat(
+    authapi.middleware,
+    productAPI.middleware,
+    contactUsAPI.middleware,
+    userAPI.middleware,
+    shoppingCartAPI.middleware,
+    rfqAPI.middleware,
+    recentViewManagementAPI.middleware,
+    wishLisAPI.middleware,
 
 
-        addressAPI.middleware,
-        commonAPI.middleware,
-        recentViewAPI.middleware,
-        ShippingAPI.middleware,
-        OrderAPI.middleware,
+    addressAPI.middleware,
+    commonAPI.middleware,
+    recentViewAPI.middleware,
+    ShippingAPI.middleware,
+    OrderAPI.middleware,
 
-        imageAPI.middleware,
-        paymentAPI.middleware
-    ),
+    imageAPI.middleware,
+    paymentAPI.middleware,
+    structureSearchAPI.middleware,
+    slugAPI.middleware,
+  ),
 });
 setupListeners(store.dispatch);

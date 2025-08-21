@@ -22,14 +22,14 @@
         }
 
         &::placeholder {
-            color: lighten($color: $text-color, $amount: 20%);
+            color: lighten-color($color: $text-color, $amount: 20%);
             font-weight: $font-weight-normal;
         }
 
         /* Optional fallback if you forget to add .disabled class */
         &:disabled {
-            background-color: lighten($button-disabled-color, 5%);
-            color: darken($button-disabled-text-color, 5%);
+            background-color: lighten-color($button-disabled-color, 5%);
+            color: darken-color($button-disabled-text-color, 5%);
             cursor: not-allowed;
 
             &:focus-visible,

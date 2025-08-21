@@ -14,9 +14,8 @@ import SwalAlert from "src/services/swal/SwalService";
 import { useDispatch } from "react-redux";
 import { setSearchText } from "src/redux/slice/productSearchSlice";
 
-
 const HomePage = () => {
-  const [searchSelected, setSearchSelected] = useState('Basic');
+  const [searchSelected, setSearchSelected] = useState("Basic");
   const { toast } = SwalAlert();
   const router = useRouter();
   const [searchText, setLocalSearchText] = useState("");
@@ -37,11 +36,10 @@ const HomePage = () => {
     router.push("/products");
   };
 
-
   // Search options
   const searchOptions = [
-    { label: 'Basic', handler: () => openSearchModal('Basic') },
-    { label: 'Structure', handler: () => openSearchModal('Structure') }
+    { label: "Basic", handler: () => openSearchModal("Basic") },
+    { label: "Structure", handler: () => openSearchModal("Structure") },
   ];
 
   const tabs = [
@@ -49,13 +47,22 @@ const HomePage = () => {
       label: "Best Sellers",
       value: "Best Sellers",
       content: (
-        <div>
-          <SwiperSlider
-            slides={Array.from({ length: 10 }, (_, index) => (
-              <ProductDetailCard key={index} />
-            ))}
-            slidesResponsive={true}
-          />
+        <div
+          className="d-flex align-items-center justify-center py-8 text-gray-500"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: "5px",
+            marginTop: "10px",
+          }}
+        >
+          <Iconify icon="mdi:alert-circle-outline" className="w-6 h-6 mr-2" />
+          <span>
+            No best-selling products are available at the moment. Please check
+            back later!
+          </span>
         </div>
       ),
     },
@@ -63,13 +70,21 @@ const HomePage = () => {
       label: "Newly Added",
       value: "Newly Added",
       content: (
-        <div>
-          <SwiperSlider
-            slides={Array.from({ length: 10 }, (_, index) => (
-              <ProductDetailCard key={index} />
-            ))}
-            slidesResponsive={true}
-          />
+        <div
+          className="d-flex align-items-center justify-center py-8 text-gray-500"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: "5px",
+            marginTop: "10px",
+          }}
+        >
+          <Iconify icon="mdi:alert-circle-outline" className="w-6 h-6 mr-2" />
+          <span>
+            No newly added products found. New items will be available soon!
+          </span>
         </div>
       ),
     },
@@ -99,7 +114,9 @@ const HomePage = () => {
             Advancing Science with Every Click
           </div>
           <div className="home-page-section__hero__content__subtitle">
-            1ClickChemistry offers over 10,000 high-quality building blocks, ready to ship worldwide, empowering researchers to drive breakthroughs in medicine and healthcare.
+            1ClickChemistry offers over 10,000 high-quality building blocks,
+            ready to ship worldwide, empowering researchers to drive
+            breakthroughs in medicine and healthcare.
           </div>
           <div className="home-page-section__hero__content__input-search-container">
             <form onSubmit={handleSearch} className="home-page-section__hero__content__input-search-container__input-container">
@@ -108,14 +125,21 @@ const HomePage = () => {
                 placeholder="Chemical name / CAS Number / MDL Number / Catalog..."
                 value={searchText}
                 onChange={(e) => setLocalSearchText(e.target.value)}
+                onKeyDown={(e) => {if (e.key === "Enter") {handleSearch()}}}
               />
               <DropdownWrapper
                 gap={10}
                 direction="left"
                 toggleElement={
                   <div className="home-page-section__hero__content__input-search-container__input-container__dropdown">
-                    <div className="home-page-section__hero__content__input-search-container__input-container__dropdown-label">{searchSelected}</div>
-                    <Iconify icon="iconamoon:arrow-down-2-light" width={20} height={20} />
+                    <div className="home-page-section__hero__content__input-search-container__input-container__dropdown-label">
+                      {searchSelected}
+                    </div>
+                    <Iconify
+                      icon="iconamoon:arrow-down-2-light"
+                      width={20}
+                      height={20}
+                    />
                   </div>
                 }
               >
@@ -132,7 +156,8 @@ const HomePage = () => {
                   ))}
                 </div>
               </DropdownWrapper>
-              <button type="submit"
+              <button
+                type="submit"
                 className="home-page-section__hero__content__input-search-container__search-button"
               >
                 Search
@@ -145,8 +170,23 @@ const HomePage = () => {
         <div className="home-page-section__main__contact-us-section">
           <div className="home-page-section__main__contact-us-section__left">
             <div className="title">Providing Chemical Solutions</div>
-            <div className="subtitle">1Click Chemistry is a leading supplier at the forefront of pharmaceutical and research innovation, offering over 180,000 building blocks (ready to ship worldwide) vital for research and development. Our vast and diverse portfolio is crafted to meet the exacting standards of modern science, paving the way for innovations that shape the future of medicine and healthcare. We are committed to fuelling progress by ensuring researchers have access to premium quality materials, enabling them to transform their ground-breaking ideas into reality.</div>
-            <Button variant="contained" endIcon="fluent:contact-card-28-regular">Contact Us</Button>
+            <div className="subtitle">
+              1Click Chemistry is a leading supplier at the forefront of
+              pharmaceutical and research innovation, offering over 180,000
+              building blocks (ready to ship worldwide) vital for research and
+              development. Our vast and diverse portfolio is crafted to meet the
+              exacting standards of modern science, paving the way for
+              innovations that shape the future of medicine and healthcare. We
+              are committed to fuelling progress by ensuring researchers have
+              access to premium quality materials, enabling them to transform
+              their ground-breaking ideas into reality.
+            </div>
+            <Button
+              variant="contained"
+              endIcon="fluent:contact-card-28-regular"
+            >
+              Contact Us
+            </Button>
           </div>
           <div className="home-page-section__main__contact-us-section__right">
             <Image
@@ -160,14 +200,31 @@ const HomePage = () => {
         <div className="home-page-section__main__tabs">
           <Tabs tabs={tabs} />
           <div className="home-page-section__main__tabs__button">
-            <Button variant="text" endIcon="iconamoon:arrow-right-2-duotone">View All</Button>
+            <Button variant="text" endIcon="iconamoon:arrow-right-2-duotone">
+              View All
+            </Button>
           </div>
         </div>
         <div className="home-page-section__main__about-us-section">
           <div className="home-page-section__main__about-us-section__left">
             <div className="title">Providing Chemical Solutions</div>
-            <div className="subtitle">1Click Chemistry is a leading supplier at the forefront of pharmaceutical and research innovation, offering over 180,000 building blocks (ready to ship worldwide) vital for research and development. Our vast and diverse portfolio is crafted to meet the exacting standards of modern science, paving the way for innovations that shape the future of medicine and healthcare. We are committed to fuelling progress by ensuring researchers have access to premium quality materials, enabling them to transform their ground-breaking ideas into reality.</div>
-            <Button variant="contained" endIcon="fluent:contact-card-28-regular">Contact Us</Button>
+            <div className="subtitle">
+              1Click Chemistry is a leading supplier at the forefront of
+              pharmaceutical and research innovation, offering over 180,000
+              building blocks (ready to ship worldwide) vital for research and
+              development. Our vast and diverse portfolio is crafted to meet the
+              exacting standards of modern science, paving the way for
+              innovations that shape the future of medicine and healthcare. We
+              are committed to fuelling progress by ensuring researchers have
+              access to premium quality materials, enabling them to transform
+              their ground-breaking ideas into reality.
+            </div>
+            <Button
+              variant="contained"
+              endIcon="fluent:contact-card-28-regular"
+            >
+              Contact Us
+            </Button>
           </div>
           <div className="home-page-section__main__about-us-section__right">
             <div className="home-page-section__main__about-us-section__right__image">
@@ -197,9 +254,14 @@ const HomePage = () => {
                     height={0}
                   />
                 </div>
-                <div className="home-page-section__offer-section_bg__offer-section__content__card__header__title">Building Blocks</div>
+                <div className="home-page-section__offer-section_bg__offer-section__content__card__header__title">
+                  Building Blocks
+                </div>
               </div>
-              <div className="home-page-section__offer-section_bg__offer-section__content__card__content">Novel collection of scaffolds and unique building blocks that can diversify your drug discovery process.</div>
+              <div className="home-page-section__offer-section_bg__offer-section__content__card__content">
+                Novel collection of scaffolds and unique building blocks that
+                can diversify your drug discovery process.
+              </div>
             </div>
             <div className="home-page-section__offer-section_bg__offer-section__content__card">
               <div className="home-page-section__offer-section_bg__offer-section__content__card__header">
@@ -211,9 +273,14 @@ const HomePage = () => {
                     height={0}
                   />
                 </div>
-                <div className="home-page-section__offer-section_bg__offer-section__content__card__header__title">Biopolymers</div>
+                <div className="home-page-section__offer-section_bg__offer-section__content__card__header__title">
+                  Biopolymers
+                </div>
               </div>
-              <div className="home-page-section__offer-section_bg__offer-section__content__card__content">Unique collection of PEGylation reagents & polymers, polysaccharides, fluorescent and biotinylated polymers.</div>
+              <div className="home-page-section__offer-section_bg__offer-section__content__card__content">
+                Unique collection of PEGylation reagents & polymers,
+                polysaccharides, fluorescent and biotinylated polymers.
+              </div>
             </div>
             <div className="home-page-section__offer-section_bg__offer-section__content__card">
               <div className="home-page-section__offer-section_bg__offer-section__content__card__header">
@@ -225,17 +292,20 @@ const HomePage = () => {
                     height={0}
                   />
                 </div>
-                <div className="home-page-section__offer-section_bg__offer-section__content__card__header__title">APIs & Ref. Compounds</div>
+                <div className="home-page-section__offer-section_bg__offer-section__content__card__header__title">
+                  APIs & Ref. Compounds
+                </div>
               </div>
-              <div className="home-page-section__offer-section_bg__offer-section__content__card__content">Offering novel life-science reagents, anticancer agents, kinase inhibitors and life science aimed R&D products.</div>
+              <div className="home-page-section__offer-section_bg__offer-section__content__card__content">
+                Offering novel life-science reagents, anticancer agents, kinase
+                inhibitors and life science aimed R&D products.
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div className="home-page-section__help-center">
-        <div className="home-page-section__help-center__title">
-          Help Center
-        </div>
+        <div className="home-page-section__help-center__title">Help Center</div>
         <div className="home-page-section__help-center__subtitle">
           Online Suport 24/7
         </div>

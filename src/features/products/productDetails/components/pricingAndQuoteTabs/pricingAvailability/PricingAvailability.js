@@ -137,7 +137,11 @@ const PricingAvailability = ({ catalogId }) => {
         return {
           skuPackSize: item.packSize ? `${item.packSize} ${unitLabel}` : "N/A",
           price: isAuthenticate ? (
-            item.price ? `$${item.price.toFixed(2)}` : "N/A"
+            item.price ? (
+              `$${item.price.toFixed(2)}`
+            ) : (
+              "N/A"
+            )
           ) : (
             <Link href="/login" style={{ color: "darkgray" }}>
               Please Log In
@@ -147,19 +151,29 @@ const PricingAvailability = ({ catalogId }) => {
             <Counter
               counts={quantities[item.priceId] || 1}
               onChange={(newCount) => handleCountChange(item.priceId, newCount)}
-              disabled={!isAuthenticate}
+              disabled={!isAuthenticate || item.price === 0}
             />
           ),
-          action:
-            <Tooltip label={isItemInCart ? "Already Added" : "Add to Cart"}>
+          action: (
+            item.price > 0 && <Tooltip
+              label={(isItemInCart ? "Already Added" : "Add to Cart")}
+            >
               <IconButton
                 variant="text"
                 icon="famicons:cart-outline"
                 shape="square"
-                onClick={() => handleAddToCart(item.sizeId, item.packSize, item.productId, item.priceId)}
+                onClick={() =>
+                  handleAddToCart(
+                    item.sizeId,
+                    item.packSize,
+                    item.productId,
+                    item.priceId
+                  )
+                }
                 disabled={isItemInCart}
               />
             </Tooltip>
+          ),
         };
       });
     }

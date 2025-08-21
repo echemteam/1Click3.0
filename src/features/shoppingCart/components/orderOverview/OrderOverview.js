@@ -98,9 +98,12 @@ const OrderOverview = () => {
   // };
 
   const handlePoNumberBlur = async (poNumber) => {
-
     if (poNumber) {
-      const res = await checkPoNumber({ poNumber }).unwrap();
+      const req = {
+        poNumber,
+        orderId
+      };
+      const res = await checkPoNumber(req).unwrap();
       if (res?.keyValue === 1) {
         setValidState((prev) => ({
           ...prev,

@@ -1,8 +1,9 @@
 // app/layout.js
 import React from 'react';
+import './globals.scss';
 import ReduxProvider from '../features/layout/ReduxProvider';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Header from '@components/header/Header';
+import Footer from '@components/footer/Footer';
 import FloatingButton from '@components/ui/floatingButton/FloatingButton'
 import Breadcrumb from '@components/ui/breadcrumb/BreadCrumb';
 import { TabProvider } from '@features/context/TabContext';

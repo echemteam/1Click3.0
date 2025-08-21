@@ -68,7 +68,7 @@
     }
   }
   &__placeholder {
-    color: lighten($color: $text-color, $amount: 20%);
+    color: lighten-color($color: $text-color, $amount: 20%);
   }
 
   &__search-and-chips {
@@ -117,7 +117,7 @@
     padding: 0;
 
     &::placeholder {
-      color: lighten($color: $text-color, $amount: 20%);
+      color: lighten-color($color: $text-color, $amount: 20%);
     }
   }
 

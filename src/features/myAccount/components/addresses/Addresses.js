@@ -34,9 +34,9 @@ const Addresses = () => {
   ] = useDeleteAddressMutation();
 
   useEffect(() => {
-    if(isAuthenticated){
+    if (isAuthenticated) {
       const request = {
-        userId : isAuthenticated
+        userId: isAuthenticated
       }
       getAddressListByUserId(request);
     }
@@ -79,9 +79,9 @@ const Addresses = () => {
   const handleSave = () => {
     setShowForm(false);
     setEditingAddress(null);
-    getAddressListByUserId();
+    getAddressListByUserId({ userId: isAuthenticated });
   };
-  
+
   const handleDelete = (id) => {
     confirm(
       "Delete Address?",
@@ -91,18 +91,19 @@ const Addresses = () => {
       true
     ).then((result) => {
       if (result) {
-      const request = {
-        addressId: id,
-      };
-      deleteAddress(request);
-    }})
+        const request = {
+          addressId: id,
+        };
+        deleteAddress(request);
+      }
+    })
   };
 
   useEffect(() => {
     if (isDeleteAddressSuccess && isDeleteAddressData) {
       if (isDeleteAddressData > 0) {
         toast("success", "Address deleted successfully");
-        getAddressListByUserId();
+        getAddressListByUserId({ userId: isAuthenticated });
       } else {
         toast("error", "Failed.");
       }
@@ -188,7 +189,7 @@ const Addresses = () => {
         // <div className="no-records-found">No records found</div>
         // }
         // </div>
-        
+
         <div className="list-sec">
           {[1, 2].map((type) => {
             const filtered = addresses.filter((a) => a.addressTypeId === type);
@@ -197,11 +198,12 @@ const Addresses = () => {
             return (
               <div key={type} className="address-card-container">
                 <div className="title">
-                  {type === 1 ? "Billing Address" : "Shipping Address"}
+                  {type === 1 ? "Shipping Address" : "Billing Address"}
                 </div>
                 <div className="item">
                   {filtered.map((address) => (
                     <div key={address.addressId} className="address-card">
+                      <h3>{address?.addressName}</h3>
                       <div className="content">
                         <div className="adress-wrapper">
                           <div className="icon">
@@ -261,7 +263,7 @@ const Addresses = () => {
                           onClick={() => handleDelete(address.addressId)}
                         />
                       </div>
-                     
+
                     </div>
                   ))
                   }
@@ -270,9 +272,9 @@ const Addresses = () => {
             );
           })}
         </div>
-        
+
       )}
-       
+
     </div>
   );
 };

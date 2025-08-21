@@ -7,7 +7,7 @@ import { getAuthProps } from 'src/lib/authenticationLibrary'
 const mutex = new Mutex()
 
 export const IsProdMode = false
-export const IsTestMode = false
+export const IsTestMode = true
 
 export const getAPIUrl = () => {
   if (IsProdMode) return process.env.NEXT_PUBLIC_PROD_SITE_URL;

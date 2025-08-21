@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import Label from "@components/ui/label/Label";
 import Select from "@components/ui/select/Select";
 import Input from "@components/ui/input/Input";
 import Checkbox from "@components/ui/checkbox/Checkbox";
-import Button from '@components/ui/button/Button';
+import Button from "@components/ui/button/Button";
 import "./AddEditAddress.scss";
 import { useLazyGetAllCitiesQuery, useLazyGetAllCountriesQuery, useLazyGetAllStatesQuery } from 'src/redux/serviceApi/commonAPI';
 import { Messages } from '@utils/Messages/Messages';
 import ValidationText from '@components/Common/validation/validationText';
-import { useAddEditAddressMutation, useLazyGetAddressDetailsByAddressIdQuery, useUSPSAddressValidationMutation } from 'src/redux/serviceApi/addressAPI';
+import { useAddEditAddressMutation, useLazyGetAddressDetailsByAddressIdQuery, useLazyGetUserAddressByIdQuery, useUSPSAddressValidationMutation } from 'src/redux/serviceApi/addressAPI';
 import SwalAlert from 'src/services/swal/SwalService';
 import Loading from 'src/app/loading';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 import { isValidForm, validate } from '@utils/Validations/CommonValidator';
 import Iconify from '@components/ui/iconify/Iconify';
+import { AddressType } from '@components/Common/Enum/CommonEnum';
 
 const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
   const { toast, confirm } = SwalAlert();
-
+  const [getShippingAddresses, { data: shippingData, isSuccess: isShippingSuccess, isFetching: isShippingFetching }] = useLazyGetUserAddressByIdQuery();
   const [formData, setFormData] = useState({
     addressTypeId: "",
     addressName: "",
@@ -46,60 +47,116 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
     isValid: true,
     error: {},
   });
-  const [uSPSAddressValidation,
-    { isLoading: isUSPSAddressValidationLoading,
+  const [
+    uSPSAddressValidation,
+    {
+      isLoading: isUSPSAddressValidationLoading,
       isSuccess: isUSPSAddressValidationSuccess,
-      data: isUSPSAddressValidationData, },
+      data: isUSPSAddressValidationData,
+    },
   ] = useUSPSAddressValidationMutation();
 
   const validationrules = {
     addressTypeId: [
       {
         type: "require",
-        message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "Address Type"),
+        message: Messages.CommonValidationMessages.FieldRequired.replace(
+          "{0}",
+          "Address Type"
+        ),
       },
     ],
     addressName: [
       {
         type: "require",
-        message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "Address Name"),
+        message: Messages.CommonValidationMessages.FieldRequired.replace(
+          "{0}",
+          "Address Name"
+        ),
       },
     ],
     attandantTo: [
       {
         type: "require",
-        message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "Attn To"),
+        message: Messages.CommonValidationMessages.FieldRequired.replace(
+          "{0}",
+          "Attn To"
+        ),
       },
     ],
     addressLine1: [
       {
         type: "require",
-        message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "Address Line 1"),
+        message: Messages.CommonValidationMessages.FieldRequired.replace(
+          "{0}",
+          "Address Line 1"
+        ),
       },
     ],
     zipCode: [
       {
         type: "require",
-        message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "Postcode / ZIP"),
+        message: Messages.CommonValidationMessages.FieldRequired.replace(
+          "{0}",
+          "Postcode / ZIP"
+        ),
       },
       {
-        type: 'isValidZipCode',
+        type: "isValidZipCode",
         message: Messages.CommonValidationMessages.zipcodenotValid,
-      }
+      },
     ],
     phoneNo: [
       {
         type: "phoneinput",
-        message: Messages.CommonValidationMessages.FieldRequired.replace("{0}", "Phone No"),
+        message: Messages.CommonValidationMessages.FieldRequired.replace(
+          "{0}",
+          "Phone No"
+        ),
       },
     ],
   };
 
-  const [getAllCountries, { isFetching: getAllCountriesFetching, isSuccess: getAllCountriesSuccess, data: getAllCountriesData }] = useLazyGetAllCountriesQuery();
-  const [getAllStates, { isFetching: getAllStatesFetching, isSuccess: getAllStatesSuccess, data: getAllStatesData }] = useLazyGetAllStatesQuery();
-  const [getAllCities, { isFetching: getAllCitiesFetching, isSuccess: getAllCitiesSuccess, data: getAllCitiesData }] = useLazyGetAllCitiesQuery();
-  const [addEditAddress, { isLoading: isAddEditAddressLoading, isSuccess: isAddEditAddressSuccess, data: isAddEditAddressData }] = useAddEditAddressMutation();
-  const [getAddressDetailsByAddressId, { isFetching: isGetAddressDetailsByAddressIdFetching, isSuccess: isGetAddressDetailsByAddressIdSuccess, data: isGetAddressDetailsByAddressIdData }] = useLazyGetAddressDetailsByAddressIdQuery();
+  const [
+    getAllCountries,
+    {
+      isFetching: getAllCountriesFetching,
+      isSuccess: getAllCountriesSuccess,
+      data: getAllCountriesData,
+    },
+  ] = useLazyGetAllCountriesQuery();
+  const [
+    getAllStates,
+    {
+      isFetching: getAllStatesFetching,
+      isSuccess: getAllStatesSuccess,
+      data: getAllStatesData,
+    },
+  ] = useLazyGetAllStatesQuery();
+  const [
+    getAllCities,
+    {
+      isFetching: getAllCitiesFetching,
+      isSuccess: getAllCitiesSuccess,
+      data: getAllCitiesData,
+    },
+  ] = useLazyGetAllCitiesQuery();
+  const [
+    addEditAddress,
+    {
+      isLoading: isAddEditAddressLoading,
+      isSuccess: isAddEditAddressSuccess,
+      data: isAddEditAddressData,
+    },
+  ] = useAddEditAddressMutation();
+  const [
+    getAddressDetailsByAddressId,
+    {
+      isFetching: isGetAddressDetailsByAddressIdFetching,
+      isSuccess: isGetAddressDetailsByAddressIdSuccess,
+      data: isGetAddressDetailsByAddressIdData,
+    },
+  ] = useLazyGetAddressDetailsByAddressIdQuery();
 
   useEffect(() => {
     if (editingAddress?.addressId) {
@@ -112,7 +169,11 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
   }, []);
 
   useEffect(() => {
-    if (!getAllCountriesFetching && getAllCountriesSuccess && getAllCountriesData) {
+    if (
+      !getAllCountriesFetching &&
+      getAllCountriesSuccess &&
+      getAllCountriesData
+    ) {
       const countryList = getAllCountriesData.map((country) => ({
         value: country.countryId,
         label: country.countryName,
@@ -120,9 +181,11 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
       }));
       setCountry(countryList);
       if (!formData.country && !editingAddress?.addressId) {
-        const defaultCountry = countryList.find(c => c.label === "United States");
+        const defaultCountry = countryList.find(
+          (c) => c.label === "United States"
+        );
         if (defaultCountry) {
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             country: defaultCountry.value,
           }));
@@ -154,11 +217,15 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
     }
   }, [getAllCitiesFetching, getAllCitiesSuccess, getAllCitiesData]);
 
-
   useEffect(() => {
-    if (!isGetAddressDetailsByAddressIdFetching && isGetAddressDetailsByAddressIdSuccess && isGetAddressDetailsByAddressIdData) {
-      const phonenumber = isGetAddressDetailsByAddressIdData.phoneCode + isGetAddressDetailsByAddressIdData.attendantPhoneNo
-      ;
+    if (
+      !isGetAddressDetailsByAddressIdFetching &&
+      isGetAddressDetailsByAddressIdSuccess &&
+      isGetAddressDetailsByAddressIdData
+    ) {
+      const phonenumber =
+        isGetAddressDetailsByAddressIdData.phoneCode +
+        isGetAddressDetailsByAddressIdData.attendantPhoneNo;
       setFormData({
         addressTypeId: isGetAddressDetailsByAddressIdData?.addressTypeId || "",
         addressName: isGetAddressDetailsByAddressIdData?.addressName || "",
@@ -176,17 +243,25 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
       });
 
       if (isGetAddressDetailsByAddressIdData?.countryId) {
-        getAllStates({ CountryId: isGetAddressDetailsByAddressIdData.countryId });
+        getAllStates({
+          CountryId: isGetAddressDetailsByAddressIdData.countryId,
+        });
       }
-      
+
       if (isGetAddressDetailsByAddressIdData?.stateId) {
-          getAllCities({ StateId: isGetAddressDetailsByAddressIdData.stateId });
+        getAllCities({ StateId: isGetAddressDetailsByAddressIdData.stateId });
       }
     }
-  }, [isGetAddressDetailsByAddressIdFetching, isGetAddressDetailsByAddressIdSuccess, isGetAddressDetailsByAddressIdData]);
-  
+  }, [
+    isGetAddressDetailsByAddressIdFetching,
+    isGetAddressDetailsByAddressIdSuccess,
+    isGetAddressDetailsByAddressIdData,
+  ]);
+
   useEffect(() => {
-    const selectedCountryObj = country.find(c => c.value === formData.country); 
+    const selectedCountryObj = country.find(
+      (c) => c.value === formData.country
+    );
     const isUS = selectedCountryObj?.label === "United States";
 
     setIsValidCountry(isUS);
@@ -196,8 +271,8 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
   }, [formData.country, country]);
 
   const Addressestype = [
-    { value: 1, label: "Billing Address" },
-    { value: 2, label: "Shipping Address" },
+    { value: 1, label: "Shipping Address" },
+    { value: 2, label: "Billing Address" },
   ];
 
   const handleInputChange = (e) => {
@@ -206,7 +281,9 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
   };
 
   const handleCountryChange = (selectedOption) => {
-    const selectedCountryObj = country.find(c => c.value === selectedOption?.value);
+    const selectedCountryObj = country.find(
+      (c) => c.value === selectedOption?.value
+    );
     const isUS = selectedCountryObj?.label === "United States";
 
     setFormData((prev) => ({
@@ -231,7 +308,6 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
       setCardShow(false);
     }
   };
-
 
   const handleStateChange = (selectedOption) => {
     setFormData((prev) => ({
@@ -271,65 +347,64 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
     }));
   };
 
-
   const handleSave = async (e) => {
+
     const data = formData;
     e.preventDefault();
     let localNumber = formData.phoneNo;
     localNumber = localNumber.slice(formData?.PhoneCode.length + 1);
-
-    const checkaddress = async () => {
-      if (isValid()) {
-        if (selectedCard === "valideted" ) {
-          const validaddressrequest = {
-            addressTypeId: formData.addressTypeId,
-            addressName: formData.addressName,
-            attendantName: formData.attandantTo,
-            addressLine1: validatedAddress.streetAddress,
-            addressLine2: validatedAddress.secondaryAddress ?? "",
-            zipCode: validatedAddress.zipCode,
-            attendantPhoneNo: localNumber,
-            fax: formData.fax,
-            isDefault: formData.isDefault,
-            countryId: formData.country,
-            stateId: formData.state,
-            cityId: formData.city,
-            phoneCode: formData.PhoneCode,
-          }
-          if (editingAddress?.addressId) {
-            validaddressrequest.addressId = editingAddress.addressId;
-          }
-          await addEditAddress(validaddressrequest).unwrap();
-        }
-        else {
-          const request = {
-            addressTypeId: formData.addressTypeId,
-            addressName: formData.addressName,
-            attendantName: formData.attandantTo,
-            addressLine1: formData.addressLine1,
-            addressLine2: formData.addressLine2,
-            zipCode: formData.zipCode,
-            attendantPhoneNo: localNumber,
-            fax: formData.fax,
-            isDefault: formData.isDefault,
-            countryId: formData.country,
-            stateId: formData.state,
-            cityId: formData.city,
-            phoneCode: formData.PhoneCode,
-          };
-
-          if (editingAddress?.addressId) {
-            request.addressId = editingAddress.addressId;
-          }
-          await addEditAddress(request).unwrap();
-        }
-
-      }
-      
+    if (!isValid()) {
+      return;
     }
+    const checkaddress = async () => {
+      if (selectedCard === "valideted") {
+        const validaddressrequest = {
+          addressTypeId: formData.addressTypeId,
+          addressName: formData.addressName,
+          attendantName: formData.attandantTo,
+          addressLine1: validatedAddress.streetAddress,
+          addressLine2: validatedAddress.secondaryAddress ?? "",
+          zipCode: validatedAddress.zipCode,
+          attendantPhoneNo: localNumber,
+          fax: formData.fax,
+          isDefault: formData.isDefault,
+          countryId: formData.country,
+          stateId: formData.state,
+          cityId: formData.city,
+          phoneCode: formData.PhoneCode,
+        };
+        if (editingAddress?.addressId) {
+          validaddressrequest.addressId = editingAddress.addressId;
+        }
+        await addEditAddress(validaddressrequest).unwrap();
+      } else {
+        const request = {
+          addressTypeId: formData.addressTypeId,
+          addressName: formData.addressName,
+          attendantName: formData.attandantTo,
+          addressLine1: formData.addressLine1,
+          addressLine2: formData.addressLine2,
+          zipCode: formData.zipCode,
+          attendantPhoneNo: localNumber,
+          fax: formData.fax,
+          isDefault: formData.isDefault,
+          countryId: formData.country,
+          stateId: formData.state,
+          cityId: formData.city,
+          phoneCode: formData.PhoneCode,
+        };
 
-    if (data.country === 233) {
+        if (editingAddress?.addressId) {
+          request.addressId = editingAddress.addressId;
+        }
+        await addEditAddress(request).unwrap();
+      }
 
+
+    };
+
+
+    if (data.country === 233 && (isEditing ? isAddressChanged : true)) {
       const validationResult = validateAddressBeforeSave(
         data,
         selectedCard,
@@ -349,11 +424,10 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
         return;
       }
       checkaddress();
-    }
-    else{
+    } else {
       checkaddress();
     }
-    
+
   };
 
   const resetForm = () => {
@@ -373,7 +447,6 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
     });
   };
 
-
   useEffect(() => {
     if (isAddEditAddressSuccess && isAddEditAddressData) {
       if (editingAddress?.addressId) {
@@ -382,11 +455,13 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
         toast("success", "Address added successfully");
       }
       resetForm();
-      if (onSave) onSave();
+      onSave();
+      getShippingAddresses({ AddressTypeId: formData.addressTypeId });
     }
   }, [isAddEditAddressSuccess, isAddEditAddressData]);
 
-  const getSelectedOption = (list, value) => list.find(item => item.value === value) || null;
+  const getSelectedOption = (list, value) =>
+    list.find((item) => item.value === value) || null;
 
   const isValid = () => {
     const returnValidState = isValidForm(formData, validationrules, validState);
@@ -401,7 +476,7 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
   };
 
   const handlePhoneChange = (phone, meta) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       phoneNo: phone,
       PhoneCode: meta?.country?.dialCode || "",
@@ -432,18 +507,17 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
       };
       uSPSAddressValidation(request);
     }
-  }
+  };
 
   useEffect(() => {
     if (isUSPSAddressValidationSuccess && isUSPSAddressValidationData) {
       setValidatedAddress(isUSPSAddressValidationData);
       setCardShow(true);
-
     }
   }, [isUSPSAddressValidationSuccess, isUSPSAddressValidationData]);
   const isDifferent = (current, validated) => {
-    const currentStr = (current ?? '').toString().trim();
-    const validatedStr = (validated ?? '').toString().trim();
+    const currentStr = (current ?? "").toString().trim();
+    const validatedStr = (validated ?? "").toString().trim();
     return currentStr !== validatedStr;
   };
 
@@ -453,29 +527,76 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
         <div className="card-header">
           <h5>Validated Address</h5>
           <span className="verified-badge">Verified</span>
-          {selectedCard === 'validated' && <Iconify icon="mdi:check-circle" className="check-icon" />}
+          {selectedCard === "validated" && (
+            <Iconify icon="mdi:check-circle" className="check-icon" />
+          )}
         </div>
         <div className="address-card">
-          <span className={`label-txt ${isDifferent(addedAddress?.addressLine1, validatedAddress?.streetAddress) ? 'highlight-diff' : ''}`}>
+          <span
+            className={`label-txt ${isDifferent(
+              addedAddress?.addressLine1,
+              validatedAddress?.streetAddress
+            )
+              ? "highlight-diff"
+              : ""
+              }`}
+          >
             {validatedAddress?.streetAddress}
           </span>
           {validatedAddress?.secondaryAddress && (
             <>
-              <span className={`label-txt ${isDifferent(addedAddress?.addressLine2, validatedAddress?.secondaryAddress) ? 'highlight-diff' : ''}`}>
+              <span
+                className={`label-txt ${isDifferent(
+                  addedAddress?.addressLine2,
+                  validatedAddress?.secondaryAddress
+                )
+                  ? "highlight-diff"
+                  : ""
+                  }`}
+              >
                 {validatedAddress?.secondaryAddress}
               </span>
             </>
           )}
           <span className="label-txt">
-            <span className={isDifferent(city, validatedAddress?.city) ? 'highlight-diff' : ''}>{validatedAddress?.city}</span>,{' '}
-            <span className={isDifferent(getStateCode(states?.label), validatedAddress?.state) ? 'highlight-diff' : ''}>
+            <span
+              className={
+                isDifferent(city, validatedAddress?.city)
+                  ? "highlight-diff"
+                  : ""
+              }
+            >
+              {validatedAddress?.city}
+            </span>
+            ,{" "}
+            <span
+              className={
+                isDifferent(
+                  getStateCode(states?.label),
+                  validatedAddress?.state
+                )
+                  ? "highlight-diff"
+                  : ""
+              }
+            >
               {validatedAddress?.state}
-            </span>{' '}
-            <span className={isDifferent(addedAddress?.zipCode, validatedAddress?.zipCode) ? 'highlight-diff' : ''}>
+            </span>{" "}
+            <span
+              className={
+                isDifferent(addedAddress?.zipCode, validatedAddress?.zipCode)
+                  ? "highlight-diff"
+                  : ""
+              }
+            >
               {validatedAddress?.zipCode}
             </span>
           </span>
-          <span className={`label-txt ${isDifferent(addedAddress?.countryName, validatedAddress?.country) ? 'highlight-diff' : ''}`}>
+          <span
+            className={`label-txt ${isDifferent(addedAddress?.countryName, validatedAddress?.country)
+              ? "highlight-diff"
+              : ""
+              }`}
+          >
             {validatedAddress?.country}
           </span>
         </div>
@@ -492,20 +613,17 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
 
   const handleSelectClick = (cardType) => {
     setSelectedCard(cardType);
-  }
-  const validateAddressBeforeSave = (
-    data,
-    selectedCard,
-    validatedAddress
-  ) => {
-
+  };
+  const validateAddressBeforeSave = (data, selectedCard, validatedAddress) => {
     if (!validatedAddress) {
       toast("error", "Please validate the address before saving.");
       return false;
     }
     if (data.country === 233) {
       if (!selectedCard) {
-        toast("error", "Please select either the current or validated address."
+        toast(
+          "error",
+          "Please select either the current or validated address."
         );
         return false;
       }
@@ -513,19 +631,32 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
         return "confirm";
       }
 
-      if (validatedAddress.isSuccess === false) {
-        toast("error", "Please select another address.");
-        return false;
-      }
+      // if ( validatedAddress.isSuccess === false) {
+      //   toast("error", "Please select another address.");
+      //   return false;
+      // }
     }
     return true;
-
   };
+
+  const isEditing = Boolean(editingAddress?.addressId); // or whatever variable indicates edit mode
+
+  const isAddressChanged =
+    formData.addressLine1 !==
+    isGetAddressDetailsByAddressIdData?.addressLine1 ||
+    formData.addressLine2 !==
+    isGetAddressDetailsByAddressIdData?.addressLine2 ||
+    formData.zipCode !== isGetAddressDetailsByAddressIdData?.zipCode ||
+    formData.state !== isGetAddressDetailsByAddressIdData?.stateId ||
+    formData.city !== isGetAddressDetailsByAddressIdData?.cityId;
 
   return (
     <div className="add-edit-address">
       <div className="add-address-container_form-container">
-        <form className="add-address-container_form-container_form" onSubmit={handleSave}>
+        <form
+          className="add-address-container_form-container_form"
+          onSubmit={handleSave}
+        >
           <div className="add-address-container_form-container_form_group">
             <Label label="Address Type" isRequired={true} />
             <Select
@@ -533,8 +664,14 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
               placeholder="Address Type"
               value={formData.addressTypeId}
               // value={Addressestype.find((item) => item.value === parseInt(formData.addressTypeId)) || null}
-              onChange={(selected) => handleSelectChange("addressTypeId", selected)}
-              onBlur={() => validation("addressTypeId", {addressTypeId: formData.addressTypeId})}
+              onChange={(selected) =>
+                handleSelectChange("addressTypeId", selected)
+              }
+              onBlur={() =>
+                validation("addressTypeId", {
+                  addressTypeId: formData.addressTypeId,
+                })
+              }
             />
             <ValidationText errorText={validState.error.addressTypeId} />
           </div>
@@ -546,7 +683,9 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
               placeholder="Address Name"
               value={formData.addressName}
               onChange={handleInputChange}
-              onBlur={() => validation("addressName", { addressName: formData.addressName })}
+              onBlur={() =>
+                validation("addressName", { addressName: formData.addressName })
+              }
               maxLength={100}
             />
             <ValidationText errorText={validState.error.addressName} />
@@ -559,7 +698,9 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
               placeholder="Attn To"
               value={formData.attandantTo}
               onChange={handleInputChange}
-              onBlur={() => validation("attandantTo", { attandantTo: formData.attandantTo })}
+              onBlur={() =>
+                validation("attandantTo", { attandantTo: formData.attandantTo })
+              }
               maxLength={100}
             />
             <ValidationText errorText={validState.error.attandantTo} />
@@ -572,13 +713,17 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
               name="addressLine1"
               value={formData.addressLine1}
               onChange={handleInputChange}
-              onBlur={() => validation("addressLine1", { addressLine1: formData.addressLine1 })}
+              onBlur={() =>
+                validation("addressLine1", {
+                  addressLine1: formData.addressLine1,
+                })
+              }
               maxLength={150}
             />
             <ValidationText errorText={validState.error.addressLine1} />
           </div>
           <div className="add-address-container_form-container_form_group">
-          <Label label="Address Line 2" />
+            <Label label="Address Line 2" />
             <Input
               type="text"
               placeholder="Address Line 2"
@@ -593,8 +738,9 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
             <Select
               options={country}
               placeholder="Country"
-              value={ formData.country}
+              value={formData.country}
               onChange={handleCountryChange}
+              isSearchable={false}
             />
             <ValidationText errorText={validState.error.country} />
           </div>
@@ -603,9 +749,10 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
             <Select
               options={states}
               placeholder="State"
-              value={ formData.state}
+              value={formData.state}
               onChange={handleStateChange}
               disabled={!formData.country}
+              isSearchable={false}
             />
             <ValidationText errorText={validState.error.state} />
           </div>
@@ -614,9 +761,10 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
             <Select
               options={city}
               placeholder="City"
-              value={ formData.city}
+              value={formData.city}
               onChange={handleCityChange}
               disabled={!formData.state}
+              isSearchable={false}
             />
             <ValidationText errorText={validState.error.city} />
           </div>
@@ -661,11 +809,11 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
               name="isDefault"
               label="Is Default Address"
               checked={formData.isDefault}
-              onChange={closed}
+              onChange={handleCheckboxChange}
             />
           </div>
 
-          {isValidCountry && (
+          {isValidCountry && (isEditing ? isAddressChanged : true) && (
             <div className="address-validation-wrapper">
               <Button
                 type="button"
@@ -675,26 +823,41 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
               >
                 Check Valid Address
               </Button>
-              <div style={{ display: 'flex', flexDirection: 'row-reverse', gap: '1rem' }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "5px",
+                  flexDirection: "row-reverse",
+                  gap: "1rem",
+                }}
+              >
                 {validatedAddress?.isSuccess === false && (
                   <div className="validate-address-error mt-3">
                     <div>
                       <strong>Address Validation Failed</strong>
-                      <p>{validatedAddress?.errorMessage || 'Unable to validate address. Please check the information and try again.'}</p>
+                      <p>
+                        {validatedAddress?.errorMessage ||
+                          "Unable to validate address. Please check the information and try again."}
+                      </p>
                     </div>
                   </div>
                 )}
 
                 {isCardShow && (
-                  <div className="address-card-row">
+                  < >
                     <div
-                      className={`address-card-container ${selectedCard === 'current' ? 'selected' : ''}`}
-                      onClick={() => handleSelectClick('current')}
+                      className={`address-card-container ${selectedCard === "current" ? "selected" : ""
+                        }`}
+                      onClick={() => handleSelectClick("current")}
                     >
                       <div className="card-header">
                         <h5>Current Address</h5>
-                        {selectedCard === 'current' && (
-                          <Iconify icon="mdi:check-circle" className="check-icon" />
+                        {selectedCard === "current" && (
+                          <Iconify
+                            icon="mdi:check-circle"
+                            className="check-icon"
+                          />
                         )}
                       </div>
                       {/* <div className="address-card">
@@ -711,15 +874,20 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
                       <span className="label-txt">{addedAddress?.countryName}</span>
                     </div> */}
 
-
                       <div className="address-card">
-                        <span className="label-txt">{addedAddress?.addressLine1}</span>
+                        <span className="label-txt">
+                          {addedAddress?.addressLine1}
+                        </span>
                         {addedAddress?.addressLine2 && (
-                          <span className="label-txt">{addedAddress?.addressLine2}</span>
+                          <span className="label-txt">
+                            {addedAddress?.addressLine2}
+                          </span>
                         )}
                         <span className="label-txt">
                           {getSelectedOption(city, formData.city)?.label},{" "}
-                          {getStateCode(getSelectedOption(states, formData.state)?.label)}{" "}
+                          {getStateCode(
+                            getSelectedOption(states, formData.state)?.label
+                          )}{" "}
                           {addedAddress?.zipCode}
                         </span>
                         <span className="label-txt">
@@ -731,28 +899,33 @@ const AddEditAddress = ({ editingAddress, onCancel, onSave }) => {
                     {/* Only show validated card if validation succeeded */}
                     {validatedAddress?.isSuccess === true && (
                       <div
-                        className={`address-card-container ${selectedCard === 'validated' ? 'selected validated' : ''}`}
-                        onClick={() => handleSelectClick('validated')}
+                        className={`address-card-container ${selectedCard === "validated"
+                          ? "selected validated"
+                          : ""
+                          }`}
+                        onClick={() => handleSelectClick("validated")}
                       >
                         {renderValidatedAddressSection()}
                       </div>
                     )}
-                  </div>
+                  </>
                 )}
               </div>
             </div>
           )}
           <div className="add-address-container_form-container_form_group-full">
-            <Button variant="contained" color="primary" type="submit" disabled={isAddEditAddressLoading}>
-              {isAddEditAddressLoading ? <Loading /> : "Save"}
-            </Button>
             <Button
               variant="contained"
-              color="secondary"
-              onClick={onCancel}
+              color="primary"
+              type="submit"
+              disabled={isAddEditAddressLoading}
             >
+              {isAddEditAddressLoading ? <Loading /> : "Save"}
+            </Button>
+            <Button variant="contained" color="secondary" onClick={onCancel} type="button">
               Cancel
             </Button>
+
           </div>
         </form>
 

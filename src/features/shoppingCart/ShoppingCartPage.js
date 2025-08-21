@@ -1,8 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import "./ShoppingCartPage.scss";
 import ShoppingCart from "./components/shoppingCart/ShoppingCart";
-import Checkout from "./components/checkout/Checkout";
 import Iconify from "@components/ui/iconify/Iconify";
 import OrderOverview from "./components/orderOverview/OrderOverview";
 import PaymentOption from "./components/paymentOption/PaymentOption";
@@ -11,7 +10,6 @@ import OrderComplete from "./components/orderComplete/OrderComplete";
 import ProtectedRoute from "src/app/protectedRoute";
 import { TabContext, TabProvider } from "../context/TabContext";
 import CheckoutMain from "./components/checkout/CheckoutMain";
-
 // Dynamic tab data
 export const tabData = [
   {

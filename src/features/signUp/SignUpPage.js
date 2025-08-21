@@ -58,15 +58,13 @@ const SignUpPage = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  
-
   const validationrules = {
     firstName: [
       {
         type: "require",
         message: Messages.CommonValidationMessages.FieldRequired.replace(
           "{0}",
-          "firstName"
+          "first Name"
         ),
       },
     ],
@@ -75,7 +73,7 @@ const SignUpPage = () => {
         type: "require",
         message: Messages.CommonValidationMessages.FieldRequired.replace(
           "{0}",
-          "lastName"
+          "last Name"
         ),
       },
     ],
@@ -93,7 +91,7 @@ const SignUpPage = () => {
         type: "require",
         message: Messages.CommonValidationMessages.FieldRequired.replace(
           "{0}",
-          "companyName"
+          "company Name"
         ),
       },
     ],
@@ -102,17 +100,16 @@ const SignUpPage = () => {
         type: "phoneinput",
         message: Messages.CommonValidationMessages.FieldRequired.replace(
           "{0}",
-          "phoneNo"
+          "phone No"
         ),
       },
-     
     ],
     emailAddress: [
       {
         type: "require",
         message: Messages.CommonValidationMessages.FieldRequired.replace(
           "{0}",
-          "emailAddress"
+          "email Address"
         ),
       },
       {
@@ -189,7 +186,7 @@ const SignUpPage = () => {
           isCompany: false,
           PhoneCode: "",
         });
-        setPhoneInputKey(prev => prev + 1);
+        setPhoneInputKey((prev) => prev + 1);
         setShowPopup(true);
       } else {
         toast("error", "User creation failed.");
@@ -216,17 +213,17 @@ const SignUpPage = () => {
   };
 
   const handleDropdownChange = (selectedValue) => {
-  const selectedCountry = country.find(c => c.value === selectedValue);
-  if (selectedCountry) {
-    setFormData((prev) => ({
-      ...prev,
-      countryId: selectedCountry.value,
-      PhoneCode: selectedCountry.dialCode,
-      phoneNo: selectedCountry.dialCode, 
-    }));
-    setPhoneInputKey(prev => prev + 1); 
-  }
-};
+    const selectedCountry = country.find(c => c.value === selectedValue);
+    if (selectedCountry) {
+      setFormData((prev) => ({
+        ...prev,
+        countryId: selectedCountry.value,
+        PhoneCode: selectedCountry.dialCode,
+        phoneNo: selectedCountry.dialCode,
+      }));
+      setPhoneInputKey(prev => prev + 1);
+    }
+  };
 
   const isValid = () => {
     const returnValidState = isValidForm(formData, validationrules, validState);
@@ -279,6 +276,7 @@ const SignUpPage = () => {
                 value={formData.countryId}
                 onChange={handleDropdownChange}
                 onBlur={() => validation("countryId", formData)}
+                isSearchable={false}
               />
               {/* <ValidationText errorText={validState.error.countryId} /> */}
             </div>
@@ -296,7 +294,7 @@ const SignUpPage = () => {
             </div>
             <div className="signup-form__box__form_form-field">
               <PhoneInput
-                key={phoneInputKey} 
+                key={phoneInputKey}
                 defaultCountry="us"
                 value={formData.phoneNo}
                 onChange={handlePhoneChange}

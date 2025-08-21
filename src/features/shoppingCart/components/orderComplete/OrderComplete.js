@@ -107,7 +107,11 @@ const OrderComplete = () => {
               <h2 className="page-title">Thank You!</h2>
               <p className="desc">Your Order has been received</p>
             </div>
-            <Button variant="contained" color="primary" onClick={handleHomeClick}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleHomeClick}
+            >
               Go To Home
             </Button>
           </div>
@@ -214,14 +218,23 @@ const OrderComplete = () => {
                 <div className="order-note_bill-detail_detail">
                   <span>Sub Total</span>
                   <span>${orderDetails?.subTotalPrice?.toFixed(2)}</span>
-                  <span>Shipping Charges</span>
-                  <span>${orderDetails?.shippingCharges?.toFixed(2)}</span>
-                  {orderDetails?.cardProcessingCharges !== 0 &&
+                  {orderDetails?.shippingCharges ? (
+                    <>
+                      <span>Shipping Charges</span>
+                      <span>${orderDetails?.shippingCharges?.toFixed(2)}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Handling Charges</span>
+                      <span>${orderDetails?.handlingCharges?.toFixed(2)}</span>
+                    </>
+                  )}
+                  {orderDetails?.cardProcessingCharges !== 0 && (
                     <>
                       <span>Card Processing fee</span>
                       <span>${orderDetails?.cardProcessingCharges?.toFixed(2)}</span>
                     </>
-                  }
+                  )}
                   <div className="total-price">
                     <span>Total</span>
                     <span>${orderDetails?.totalPrice?.toFixed(2)} </span>

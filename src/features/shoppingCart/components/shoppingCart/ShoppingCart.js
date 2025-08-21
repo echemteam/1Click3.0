@@ -8,9 +8,10 @@ import OrderContext from "@features/contextAPIs/OrderContext";
 import IconButton from "@components/ui/iconButton/IconButton";
 import { useLazyGetTotalCountByUseIdQuery } from "src/redux/serviceApi/commonAPI";
 import { useLazyGetShoppingCartByIdQuery, useUpdateQuantityMutation, useUpdateShoppingCartByIdMutation } from "src/redux/serviceApi/shoppingCartAPI";
+import { useRouter } from "next/navigation";
 
 const ShoppingCart = () => {
-
+  const router = useRouter();
   const { confirm, toast } = SwalAlert();
   const { setActiveTab, tabs } = useContext(TabContext);
   const { setShoppingCartListData } = useContext(OrderContext);
@@ -113,6 +114,10 @@ const ShoppingCart = () => {
       await updateShoppingCartById(request);
       await getTotalCountByUseId();
     }
+  }
+
+  const handleHomeClick = () => {
+    router.push('/')
   }
 
   return (
@@ -253,7 +258,7 @@ const ShoppingCart = () => {
                   <span>${totalPrice}</span>
                 </div>
                 <div className="bottom-btns">
-                  <Button variant="contained" color="primary" startIcon="ph:arrow-left-bold">
+                  <Button variant="contained" color="primary" startIcon="ph:arrow-left-bold" onClick={handleHomeClick}>
                     Continue Shopping
                   </Button>
                   <Button
@@ -261,6 +266,7 @@ const ShoppingCart = () => {
                     color="secondary"
                     endIcon="ph:arrow-right-bold"
                     onClick={handleProceedToCheckOut}
+                    disabled={shoppingCartData.length === 0}
                   >
                     Proceed to checkout
                   </Button>

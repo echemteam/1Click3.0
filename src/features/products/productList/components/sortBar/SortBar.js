@@ -4,8 +4,9 @@ import "./SortBar.scss";
 import Select from "@components/ui/select/Select";
 import Input from "@components/ui/input/Input";
 import IconButton from "@components/ui/iconButton/IconButton";
+import Button from "@components/ui/button/Button";
 
-const SortBar = ({ onViewChange, onSortChange, totalCount }) => {
+const SortBar = ({ onViewChange, onSortChange, totalCount, openMRFQForm, selectedProducts }) => {
   // Added sorting options for ProductName and ProductId to match stored procedure
   const sortOptions = [
     { value: "Ascending", label: "Ascending" },
@@ -23,7 +24,13 @@ const SortBar = ({ onViewChange, onSortChange, totalCount }) => {
           onChange={onSortChange}
         />
       </div>
+
       <div className="sort-bar_view-toggle">
+        {selectedProducts?.length > 0 &&
+          <Button variant="contained" color="tertiary" onClick={() => openMRFQForm()}>
+            RFQ
+          </Button>
+        }
         <div className="sort-bar_view-toggle_show-input">
           <label>Show:</label>
           {/* Retained original Input, no changes for sorting */}

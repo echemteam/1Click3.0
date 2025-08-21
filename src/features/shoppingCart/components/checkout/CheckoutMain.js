@@ -20,9 +20,11 @@ import { AddressType, carrierOptions } from "@components/Common/Enum/CommonEnum"
 import ValidationText from "@components/Common/validation/validationText";
 import { Messages } from "@utils/Messages/Messages";
 import { isValidForm, validate } from "@utils/Validations/CommonValidator";
-
+import AddEditAddress from "@features/myAccount/components/addresses/components/addEditAddress/AddEditAddress";
+import "./Checkout.scss"
+ 
 const CheckoutMain = () => {
-
+ 
   const currentTabIndex = 1;
   const { toast } = SwalAlert();
   const { setActiveTab, markTabAsCompleted, tabs } = useContext(TabContext);
@@ -35,6 +37,7 @@ const CheckoutMain = () => {
   const [isShiipingAddressModalOpen, setShippingIsAddressModalOpen] = useState(false);
   const [isBillingAddressModalOpen, setBillingAddressModalOpen] = useState(false);
   const [shoppingCartItemDetail, setShoppingCartItemDetail] = useState(null);
+  const [editingAddress, setEditingAddress] = useState(null);
   const [validState, setValidState] = useState({
     isValid: true,
     error: {},
@@ -50,7 +53,7 @@ const CheckoutMain = () => {
     carrier: null,
     handlingCharges: 10.00
   });
-
+ 
   const [getShippingAddresses, { data: shippingData, isSuccess: isShippingSuccess, isFetching: isShippingFetching }] = useLazyGetUserAddressByIdQuery();
   const [getBillingAddresses, { data: billingData, isSuccess: isBillingSuccess, isFetching: isBillingFetching }] = useLazyGetUserAddressByIdQuery();
   const [getShipingAddressDetailsByAddressId, { data: GetShippingAddressDetailsByAddressIdData, isSuccess: isShippingGetAddressDetailsByAddressIdSuccess, isFetching: isGetShippingAddressDetailsByAddressIdFetching }] = useLazyGetAddressDetailsByAddressIdQuery();
@@ -59,7 +62,7 @@ const CheckoutMain = () => {
   const [addEditOrderAddress, { isLoading: isaddEditOrderAddressLoading, isSuccess: isaddEditOrderAddressSuccess, data: addEditOrderAddressData }] = useAddEditOrderAddressMutation();
   const [getCheckoutTabDataByOrderId, { isFetching: isGetCheckoutTabDataByOrderIdFetching, data: isGetCheckoutTabDataByOrderIdData, isSuccess: isGetCheckoutTabDataByOrderIdSuccess },] = useLazyGetCheckoutTabDataByOrderIdQuery();
   const [getItemByOrderId, { isFetching: isGetItemByOrderIdFetch, isSuccess: isGetItemByOrderIdSuccess, data: isGetItemByOrderIdData }] = useLazyGetItemByOrderIdQuery();
-
+ 
   const validationrule = {
     shippingNumber: [
       {
@@ -103,8 +106,7 @@ const CheckoutMain = () => {
     getBillingAddresses({ AddressTypeId: AddressType.BILLING });
   }, []);
   useEffect(() => {
-    if (orderId > 0) {
-
+    if (orderId > 0 || !isBillingAddressModalOpen) {
       getShippingAddresses({ AddressTypeId: AddressType.SHIPPING });
       getBillingAddresses({ AddressTypeId: AddressType.BILLING });
     }
@@ -114,18 +116,19 @@ const CheckoutMain = () => {
       let transformedShipping = shippingData.map((item) => ({
         value: item.addressId,
         label: item.addressName,
+        isDefault: item.isDefault,
       }));
       setShippingAddressList(transformedShipping);
-
+ 
       if (!orderId) {
-        if (transformedShipping.length > 0) {
-          let firstItem = transformedShipping[0];
+        const defaultAddress = transformedShipping.find(item => item.isDefault === true);
+        if (transformedShipping.length > 0 && defaultAddress ) {
           setFormData(prev => ({
             ...prev,
-            selectedShippingAddress: firstItem.value,
+            selectedShippingAddress: defaultAddress.value,
           }));
-
-          getShipingAddressDetailsByAddressId({ addressId: firstItem.value });
+ 
+          getShipingAddressDetailsByAddressId({ addressId: defaultAddress.value });
         }
       }
     }
@@ -135,23 +138,25 @@ const CheckoutMain = () => {
       let transformedBilling = billingData.map((item) => ({
         value: item.addressId,
         label: item.addressName,
+        isDefault: item.isDefault
       }));
       setBillingAddressList(transformedBilling);
       if (!orderId) {
-        if (transformedBilling.length > 0) {
-          let firstItem = transformedBilling[0];
+        const defaultAddress = transformedBilling.find(item => item.isDefault === true);
+        if (transformedBilling.length > 0 && defaultAddress ) {
+         
           setFormData(prev => ({
             ...prev,
-            selectedBillingAddress: firstItem.value,
+            selectedBillingAddress: defaultAddress.value,
           }));
-
-          getBillingAddressDetailsByAddressId({ addressId: firstItem.value });
+ 
+          getBillingAddressDetailsByAddressId({ addressId: defaultAddress.value });
         }
       }
     }
   }, [isBillingFetching, isBillingSuccess, billingData]);
   useEffect(() => {
-
+ 
     if (orderId > 0) {
       getCheckoutTabDataByOrderId(orderId)
       getItemByOrderId(orderId)
@@ -169,11 +174,11 @@ const CheckoutMain = () => {
             selectedBillingAddress: setbillingOption?.value
           }));
           getBillingAddressDetailsByAddressId({ addressId: setbillingOption?.value })
-
+ 
         }
-
+ 
         let setOption = shippingAddressList.find((item) => item.value === isGetCheckoutTabDataByOrderIdData.shippingAddress.addressId)
-
+ 
         setFormData(prev => ({
           ...prev,
           shippingAddress: isGetCheckoutTabDataByOrderIdData?.shippingAddress,
@@ -181,22 +186,24 @@ const CheckoutMain = () => {
           shippingMethod: isGetCheckoutTabDataByOrderIdData?.shippingMethod,
           shippingNumber: isGetCheckoutTabDataByOrderIdData?.ownShippingNumber,
           carrier: isGetCheckoutTabDataByOrderIdData?.ownShippingProvider
-
+ 
         }));
         getShipingAddressDetailsByAddressId({ addressId: setOption?.value })
       }
-
+ 
     }
   }, [isGetCheckoutTabDataByOrderIdFetching, isGetCheckoutTabDataByOrderIdSuccess, isGetCheckoutTabDataByOrderIdData, shippingAddressList, billingAddressList])
   useEffect(() => {
-
+ 
     if (!isGetShippingAddressDetailsByAddressIdFetching && isShippingGetAddressDetailsByAddressIdSuccess && GetShippingAddressDetailsByAddressIdData) {
 
+
+ {
       setFormData(prev => ({
         ...prev,
         shippingAddress: GetShippingAddressDetailsByAddressIdData,
       }));
-
+    }
       const countryId = GetShippingAddressDetailsByAddressIdData.countryId;
       if (countryId) {
         getShippingMethodsById(countryId);
@@ -233,7 +240,7 @@ const CheckoutMain = () => {
       setShippingOptions(allOptions);
     }
   }, [isgetShippingMethodsByIdSuccess, isgetShippingMethodsByIdData, isfetch])
-
+ 
   const handleLoginClick = () => {
     router.push("/login");
   };
@@ -255,7 +262,7 @@ const CheckoutMain = () => {
   const total = shoppingCartListData.reduce((sum, product) => sum + product.price * product.quantity, 0);
   const totalPrice = useMemo(() => {
     let extraCharge = 0;
-
+ 
     if (formData?.shippingMethod === "own_shipping") {
       extraCharge = parseFloat(formData?.handlingCharges ?? 0);
     } else {
@@ -264,7 +271,7 @@ const CheckoutMain = () => {
     const orderAmount = parseFloat(total) + extraCharge;
     return orderAmount.toFixed(2);
   }, [total, formData?.shippingCharges, formData?.handlingCharges, formData?.shippingMethod, shoppingCartListData]);
-
+ 
   const handleBack = () => {
     setActiveTab(prev => Math.max(prev - 1, 0));
   }
@@ -291,7 +298,7 @@ const CheckoutMain = () => {
       }
       return;
     }
-
+ 
     if (type === "shipping") {
       setFormData(prev => ({
         ...prev,
@@ -316,7 +323,7 @@ const CheckoutMain = () => {
   };
   useEffect(() => {
     if (!isGetItemByOrderIdFetch && isGetItemByOrderIdSuccess && isGetItemByOrderIdData) {
-
+ 
       let transformData = isGetItemByOrderIdData.orderItemList.map((item) => ({
         ...item,
         productName: item.chemicalName,
@@ -326,7 +333,7 @@ const CheckoutMain = () => {
       setShoppingCartItemDetail(isGetItemByOrderIdData)
     }
   }, [isGetItemByOrderIdData, isGetItemByOrderIdSuccess, isGetItemByOrderIdFetch]);
-
+ 
   const handleFormChange = (field, val) => {
     setFormData(prev => ({
       ...prev,
@@ -353,7 +360,7 @@ const CheckoutMain = () => {
         return;
       }
       if (formData.selectedShippingAddress && formData.shippingMethod) {
-
+ 
         let OrderItemList = shoppingCartListData.map(
           (data) => ({
             orderItemId: data?.orderItemId || 0,
@@ -383,7 +390,13 @@ const CheckoutMain = () => {
       }
     }
   };
-
+  const handleSave = () => {
+    setEditingAddress(null);
+    setShippingIsAddressModalOpen(false);
+    setBillingAddressModalOpen(false);
+  };
+ 
+ 
   // const handleQuantityChange = (index, newQuantity) => {
   //   setShoppingCartListData((prevData) =>
   //     prevData.map((item, i) =>
@@ -391,7 +404,7 @@ const CheckoutMain = () => {
   //     )
   //   );
   // };
-
+ 
   useEffect(() => {
     if (isaddEditOrderAddressSuccess && addEditOrderAddressData) {
       const orderId = parseInt(addEditOrderAddressData.keyValue);
@@ -403,7 +416,7 @@ const CheckoutMain = () => {
       });
     }
   }, [isaddEditOrderAddressSuccess, addEditOrderAddressData]);
-
+ 
   const validation = (key, object) => {
     const validRules = { ...validationrule };
     const vaildStates = { ...validState };
@@ -428,7 +441,7 @@ const CheckoutMain = () => {
         </p>
       </div>
     </div>
-
+ 
     <div className={`coupon-section ${showCoupon ? "active" : ""}`}>
       <p className="coupon-section_title">If you have a coupon code, please apply it below.</p>
       <div className="input-btn">
@@ -445,7 +458,7 @@ const CheckoutMain = () => {
         <Iconify icon="mdi:close" onClick={() => setShowCoupon(false)} />
       </div>
     </div>
-
+ 
     <div className="form-details">
       <div className="form-left">
         <div className="form-main-sec">
@@ -650,7 +663,7 @@ const CheckoutMain = () => {
             </div>
             <div className="full-form">
               <div className="input-field">
-                <Label label="Order notes (optional)" isRequired={false} />
+                <Label label="Order notes (optional)" isRequired={false} />
                 <Textarea
                   placeholder="Notes about your order, e.g. special notes for delivery."
                   name="message"
@@ -760,15 +773,20 @@ const CheckoutMain = () => {
         </div>
       </div>
     </div>
-
+ 
     <CenterModal isOpen={isShiipingAddressModalOpen || isBillingAddressModalOpen}
       onClose={isShiipingAddressModalOpen ? closeShippingAddressModal : closeBillingAddressModal}
       modalTitle={isShiipingAddressModalOpen ? "Shipping Address" : "Billing Address"}
       transition="grow" transitionDirection="fromBottom" modalSize="w-50">
-      <AddAddress onClose={isShiipingAddressModalOpen ? closeShippingAddressModal : closeBillingAddressModal}
-        addressTypeId={isShiipingAddressModalOpen ? AddressType.SHIPPING : AddressType.BILLING} getShippingAddresses={getShippingAddresses} />
+      <AddEditAddress
+            onCancel={isShiipingAddressModalOpen ? closeShippingAddressModal : closeBillingAddressModal}
+            //addressTypeId={isShiipingAddressModalOpen ? AddressType.SHIPPING : AddressType.BILLING} getShippingAddresses={getShippingAddresses}
+            onSave={handleSave}
+            editingAddress={editingAddress}
+          />
     </CenterModal>
   </div>)
 }
-
+ 
 export default CheckoutMain;
+ 

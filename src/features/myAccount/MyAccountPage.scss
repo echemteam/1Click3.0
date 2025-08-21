@@ -27,7 +27,7 @@
                 &.active {
                     color: $primary-color;
                     border-right: 2px solid $primary-color;
-                    background-color: lighten($primary-color, 33%);
+                    background-color: lighten-color($primary-color, 33%);
                 }
             }
         }

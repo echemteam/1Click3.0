@@ -22,7 +22,7 @@ const MyProfile = () => {
   const userId = isAuthorized() ? getAuthProps().userId : 0;
   const [getUserById, { isSuccess: isGetUserByIdSuccess, data: isGetUserByIdData },] = useLazyGetUserByIdQuery();
   const [updateUser, { isLoading: isUpdateUserLoading, isSuccess: isUpdateUserSuccess, data: isUpdateUserData },] = useUpdateUserMutation();
-  const [getAllCountries, { isFetching:getAllCountriesFetching, isSuccess:getAllCountriesSuccess, data:getAllCountriesData }] = useLazyGetAllCountriesQuery();
+  const [getAllCountries, { isFetching: getAllCountriesFetching, isSuccess: getAllCountriesSuccess, data: getAllCountriesData }] = useLazyGetAllCountriesQuery();
   const [updateUserPassword, { isLoading: isUpdateUserPasswordLoding, isSuccess: isUpdateUserPasswordSuccess, data: isUpdateUserPasswordData }] = useUpdateUserPasswordMutation();
   const list = [
     { value: 1, label: "USA" },
@@ -42,7 +42,7 @@ const MyProfile = () => {
     phoneNo: '',
     emailAddress: '',
     designation: '',
-    PhoneCode:'',
+    PhoneCode: '',
   });
   const [country, setCountry] = useState([]);
 
@@ -220,18 +220,18 @@ const MyProfile = () => {
 
   useEffect(() => {
     getAllCountries();
-}, [])
+  }, [])
 
-useEffect(() => {
+  useEffect(() => {
     if (!getAllCountriesFetching && getAllCountriesSuccess && getAllCountriesData) {
-        const countryList = getAllCountriesData.map((country) => ({
-            value: country.countryId,
-            label: country.countryName,
-            dialCode: `+${country.phoneCode}`,
-        }));
-        setCountry(countryList);
+      const countryList = getAllCountriesData.map((country) => ({
+        value: country.countryId,
+        label: country.countryName,
+        dialCode: `+${country.phoneCode}`,
+      }));
+      setCountry(countryList);
     }
-}, [getAllCountriesFetching, getAllCountriesSuccess, getAllCountriesData]);
+  }, [getAllCountriesFetching, getAllCountriesSuccess, getAllCountriesData]);
 
 
 
@@ -263,7 +263,7 @@ useEffect(() => {
         ...prev,
         countryId: selectedCountry.value,
         PhoneCode: selectedCountry.dialCode,
-        phoneNo: selectedCountry.dialCode, 
+        phoneNo: selectedCountry.dialCode,
       }));
     }
   };
@@ -282,7 +282,7 @@ useEffect(() => {
         lastName: formData.lastName,
         countryId: formData.countryId,
         companyName: formData.companyName,
-        phoneNo:localNumber,
+        phoneNo: localNumber,
         emailAddress: formData.emailAddress,
         designation: formData.designation,
         phoneCode: formData.PhoneCode,
@@ -305,7 +305,7 @@ useEffect(() => {
     }
   }
 
-  
+
 
   const validation = (key, object) => {
     const validRules = { ...validationruleforuserdetails };
@@ -385,6 +385,7 @@ useEffect(() => {
                 placeholder="Country"
                 value={formData.countryId}
                 onChange={handleDropdownChange}
+                isSearchable={false}
               />
               {/* <ValidationText errorText={validState.error.countryId} /> */}
             </div>
@@ -430,7 +431,7 @@ useEffect(() => {
           <div className="myprofile-container_main-container_edit-profile-form_full-group">
             <div className="save-btn">
               <Button variant="contained" color="primary" disabled={isUpdateUserLoading}>
-                {isUpdateUserLoading ?<Loading /> : "SAVE"}
+                {isUpdateUserLoading ? <Loading /> : "SAVE"}
               </Button>
             </div>
           </div>
@@ -487,8 +488,8 @@ useEffect(() => {
           </div>
           <div className="myprofile-container_main-container_edit-profile-form_full-group">
             <div className="save-btn">
-              <Button variant="contained" color="primary" disabled = {isUpdateUserPasswordLoding}>
-              {isUpdateUserLoading ?<Loading /> : " UPDATE PASSWORD"}
+              <Button variant="contained" color="primary" disabled={isUpdateUserPasswordLoding}>
+                {isUpdateUserLoading ? <Loading /> : " UPDATE PASSWORD"}
               </Button>
             </div>
           </div>

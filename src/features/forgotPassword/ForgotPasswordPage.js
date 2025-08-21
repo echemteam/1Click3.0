@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { isValidForm, validate } from "@utils/Validations/CommonValidator";
 import ValidationText from "@components/Common/validation/validationText";
 import { Messages } from "@utils/Messages/Messages";
+import Loading from "src/app/loading";
 
 const ForgotPasswordPage = () => {
   const { toast } = SwalAlert();
@@ -65,7 +66,7 @@ const ForgotPasswordPage = () => {
         });
         router.push("/login");
       } else {
-        toast("error", "Failed.");
+        toast("error", "This Email address does not exist.");
       }
     }
   }, [isForgotPasswordSuccess, isForgotPasswordData]);
@@ -120,7 +121,11 @@ const ForgotPasswordPage = () => {
               onClick={handleforgotPassword}
               disabled={isForgotPasswordLoading}
             >
-              Send Reset Password Link
+              {isForgotPasswordLoading ? (
+                <Loading />
+              ) : (
+                "Send Reset Password Link"
+              )}
             </button>
             <span className="forgot-password-form__box__form_signup">
               Back to <Link href="/login">Login</Link>

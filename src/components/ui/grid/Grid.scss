@@ -150,7 +150,7 @@
             color: $text-color-dark;
             text-transform: uppercase;
             font-size: $font-size-sm;
-            background-color: lighten($primary-color, 32%);
+            background-color: lighten-color($primary-color, 32%);
             padding: 4px 8px;
             margin-right: 10px;
             min-width: 135px;

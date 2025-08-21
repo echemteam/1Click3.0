@@ -89,8 +89,8 @@ const AddAddress = ({ onClose, addressTypeId, getShippingAddresses }) => {
             },
             {
                 type: 'isValidZipCode',
-                message: Messages.CommonValidationMessages.zipcodenotValid, 
-              }
+                message: Messages.CommonValidationMessages.zipcodenotValid,
+            }
         ],
     };
 
@@ -261,7 +261,7 @@ const AddAddress = ({ onClose, addressTypeId, getShippingAddresses }) => {
 
                 <div className="myprofile-container_main-container_edit-profile-form_group">
                     <Label label="Country" isRequired={true} />
-                    <Select options={country} value={formData.country} onChange={handleCountryChange}  
+                    <Select options={country} value={formData.country} onChange={handleCountryChange} isSearchable={false}
                     // onBlur={() => validation("country", formData)} 
                     />
                     {/* <ValidationText errorText={validState.error.country}  */}
@@ -270,7 +270,7 @@ const AddAddress = ({ onClose, addressTypeId, getShippingAddresses }) => {
 
                 <div className="myprofile-container_main-container_edit-profile-form_group">
                     <Label label="State" isRequired={true} />
-                    <Select options={states} value={formData.state} onChange={handleStateChange} 
+                    <Select options={states} value={formData.state} onChange={handleStateChange} isSearchable={false}
                     // onBlur={() => validation("city", formData)}
                     />
                     {/* <ValidationText errorText={validState.error.state}  */}
@@ -279,7 +279,7 @@ const AddAddress = ({ onClose, addressTypeId, getShippingAddresses }) => {
 
                 <div className="myprofile-container_main-container_edit-profile-form_group">
                     <Label label="Town / City" isRequired={true} />
-                    <Select options={city} value={formData.city} onChange={handleCityChange} 
+                    <Select options={city} value={formData.city} onChange={handleCityChange} isSearchable={false}
                     // onBlur={() => validation("city", formData.city)}
                     />
                     {/* <ValidationText errorText={validState.error.city} /> */}
@@ -294,7 +294,7 @@ const AddAddress = ({ onClose, addressTypeId, getShippingAddresses }) => {
                         value={formData.zipCode}
                         onBlur={() => validation("zipCode", formData)}
                         onChange={handleChange}
-                        maxLength ={10}
+                        maxLength={10}
                     />
                     <ValidationText errorText={validState.error.zipCode} />
                 </div>

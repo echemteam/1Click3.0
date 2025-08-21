@@ -398,7 +398,7 @@
                 font-family: $font-family-primary;
                 font-size: $font-size-sm;
                 font-weight: $font-weight-medium;
-                color: lighten($color: $text-color, $amount: 20%);
+                color: lighten-color($color: $text-color, $amount: 20%);
               }
             }
           }

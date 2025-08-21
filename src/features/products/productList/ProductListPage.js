@@ -16,30 +16,44 @@ import { encryptUrlData } from "src/services/crypto/CryptoService";
 import DataLoader from "@components/Common/Loader/DataLoader";
 import NoProductFound from "@components/ui/noProductFound/NoProductFound";
 import { useLazyGetTotalCountByUseIdQuery } from "src/redux/serviceApi/commonAPI";
+import CenterModal from "@components/ui/centerModal/CenterModal";
+import RFQModal from "./components/rfqModal/RFQModal";
 
 const ProductListPage = () => {
-
   const [viewType, setViewType] = useState("grid");
   const [isOpen, setIsOpen] = useState(false);
+
   const router = useRouter();
+  // const { structureRequest, isStructure } = router.query;
+  // const requestStructure=JSON.parse(structureRequest);
   const searchParams = useSearchParams();
   const [orderBy, setOrderBy] = useState(searchParams.get("orderBy") || "ProductName");
   const [dataSource, setDataSource] = useState();
   const [totalCount, setTotalCount] = useState();
-  const [getAllProductTextSearch, { isFetching, isSuccess, data }] = useGetAllProductTextSearchMutation();
+
+  const [getAllProductTextSearch, { isLoading, isSuccess, data }] =
+    useGetAllProductTextSearchMutation();
+  const [getTotalCountByUseId] = useLazyGetTotalCountByUseIdQuery();
   const dispatch = useDispatch();
+  const [structureSearchList, setStructureSearchList] = useState([])
+  // const [getAllProductStructureSearch, {isFetching: isGetAllProductStructureSearchFetching, isSuccess: isGetAllProductStructureSearchSuccess, data: GetAllProductStructureSearchData}] = useLazyGetAllProductStructureSearchQuery();
 
   const searchText = useSelector((state) => state.productSearch.searchText);
+  // const [structureSearchList, setStructureSearchList] = useState([])
+
+
 
   const [pageIndex, setPageIndex] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [allData, setAllData] = useState([]);
   const [showLessLoading, setShowLessLoading] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [openMRFQForm, setOpenMRFQForm] = useState(false);
   const defaultFilterState = {
     availability: [],
     priceFrom: 0,
     priceTo: 10000,
-    molFormula: '',
+    molFormula: "",
     molWeightFrom: null,
     molWeightTo: null,
     logPFrom: null,
@@ -57,7 +71,7 @@ const ProductListPage = () => {
     availability: [],
     priceFrom: 0,
     priceTo: 10000,
-    molFormula: '',
+    molFormula: "",
     molWeightFrom: null,
     molWeightTo: null,
     logPFrom: null,
@@ -72,7 +86,28 @@ const ProductListPage = () => {
     rotBondTo: null,
   };
   const [filters, setFilters] = useState({ ...defaultFilterState });
-  const [appliedFilters, setAppliedFilters] = useState({ ...defaultFilterState });
+  const [appliedFilters, setAppliedFilters] = useState({
+    ...defaultFilterState,
+  });
+
+  useEffect(() => {
+    fetchProductList(1, false);
+  }, []);
+
+  // useEffect(() => {
+  //   if (isStructure === true && requestStructure) {
+  //     getAllProductStructureSearch(requestStructure)
+  //   }
+  // }, [isStructure,requestStructure])
+
+
+  // useEffect(() => {
+  //   if (!isGetAllProductStructureSearchFetching && isGetAllProductStructureSearchSuccess && GetAllProductStructureSearchData) {
+  //     if (GetAllProductStructureSearchData) {
+  //       setDataSource(GetAllProductStructureSearchData)
+  //     }
+  //   }
+  // }, [isGetAllProductStructureSearchFetching, isGetAllProductStructureSearchSuccess, GetAllProductStructureSearchData])
 
   useEffect(() => {
     if (searchText) {
@@ -88,37 +123,24 @@ const ProductListPage = () => {
   }, [searchText, orderBy, appliedFilters]);
 
   useEffect(() => {
-    if (!isFetching && isSuccess && data) {
-      const transformedData = data.data.map((product) => ({
-        application_id: product.productId,
-        title: product.productName,
-        catalogNumber: product.catalogId,
-        casNumber: product.casNo,
-        mdlNumber: product.mdlNo,
-        price: product.price,
-        isFavourite: product.isFavourite,
-        inChikey: product.inChiKey
-      }
-
-      ));
-
+    if (!isLoading && isSuccess && data) {
       if (data.count === 1) {
-        const product = transformedData[0];
-        const productId = encryptUrlData(product.application_id);
+        const product = data?.data[0] || null;
+        const productId = encryptUrlData(product.productId);
         router.push(`/products/${productId}`);
         return;
       }
 
       const updatedAllData =
-        pageIndex === 1 ? transformedData : [...(allData || []), ...transformedData];
+        pageIndex === 1 ? data?.data : [...(allData || []), ...data?.data];
 
       setAllData(updatedAllData);
       setDataSource(updatedAllData.slice(0, pageIndex * 10));
 
       setTotalCount(updatedAllData.length);
-      setHasMore((pageIndex * 10) < data.count);
+      setHasMore(pageIndex * 10 < data.count);
     }
-  }, [isFetching, isSuccess, data]);
+  }, [isLoading, isSuccess, data]);
 
   useEffect(() => {
     if (searchText) {
@@ -126,22 +148,21 @@ const ProductListPage = () => {
     }
   }, [searchText]);
 
-  const fetchProductList = (page,shouldAppend = false) => {
+  const fetchProductList = (page, shouldAppend = false) => {
     const requestData = {
       searchText,
       pageIndex: page,
       pageSize: 10,
       orderby: orderBy,
-      ...appliedFilters, 
+      ...appliedFilters,
       availability: appliedFilters.availability?.join(",") || null,
     };
-    console.log("📦 API Request Data:", requestData);
     getAllProductTextSearch(requestData);
   };
 
-  const toggleWishlistStatus = (catalogNumber) => {
+  const toggleWishlistStatus = (catalogId) => {
     const updated = allData.map((product) =>
-      product.catalogNumber === catalogNumber
+      product.catalogId === catalogId
         ? { ...product, isFavourite: !product.isFavourite }
         : product
     );
@@ -149,7 +170,6 @@ const ProductListPage = () => {
     setDataSource(updated.slice(0, pageIndex * 10));
     getTotalCountByUseId();
   };
-
 
   const handlePageChange = () => {
     const nextPage = pageIndex + 1;
@@ -166,7 +186,7 @@ const ProductListPage = () => {
   };
 
   const handleNavigation = (product) => {
-    let productId = encryptUrlData(product.application_id)
+    let productId = encryptUrlData(product.productId);
     router.push(`/products/${productId}`);
   };
 
@@ -177,6 +197,7 @@ const ProductListPage = () => {
         const newPage = pageIndex - 1;
         const newData = allData.slice(0, newPage * 10);
         setPageIndex(newPage);
+        setAllData(newData);
         setDataSource(newData);
         setTotalCount(newData.length);
         setHasMore(true);
@@ -185,16 +206,16 @@ const ProductListPage = () => {
     }, 300);
   };
 
-  const onApplyBaseFilters =()=>{
-  setPageIndex(1);
-  setAppliedFilters({ ...filters });
-  fetchProductList(1,true)
+  const onApplyBaseFilters = () => {
+    setPageIndex(1);
+    setAppliedFilters({ ...filters });
+    fetchProductList(1, true)
   }
 
   const onApplyAdvancedFilters = () => {
     setPageIndex(1);
     setAppliedFilters({ ...filters });
-    fetchProductList(1,true)
+    fetchProductList(1, true)
 
   };
   const resetAllFilters = () => {
@@ -204,80 +225,119 @@ const ProductListPage = () => {
     setPageIndex(1);
     fetchProductList(1, true);
   };
-  
+
+  const handleSelectedProduct = (selectedProducts) => {
+    setSelectedProducts(selectedProducts);
+  };
+  const handleMRFQForm = () => {
+    if (openMRFQForm) {
+      // when closing modal → clear selected products
+      setSelectedProducts([]);
+      fetchProductList(1, false);
+    }
+    setOpenMRFQForm(!openMRFQForm);
+  };
+
   return (
-    <div className={`main-container ${isOpen ? "backdrop-filter" : ""}`}>
-      <div className={`sidebar ${isOpen ? "open" : ""}`}>
-        <aside className="filter-sidebar">
-          {/* <Filters /> */}
-          <Filters filters={filters} setFilters={setFilters} onApplyBaseFilters={ onApplyBaseFilters}
-            onApplyAdvancedFilters={onApplyAdvancedFilters} defaultFilterState={defaultFilterState} setAppliedFilters={setAppliedFilters} resetAllFilters={resetAllFilters}isFetching={isFetching}
-          />
-        </aside>
-        <div className="sidebar-filter">
-          <IconButton
-            variant="contained"
-            icon={`${isOpen ? "material-symbols:close-rounded" : "mage:filter"
-              }`}
-            shape="square"
-            onClick={() => setIsOpen(!isOpen)}
-          />
-        </div>
-      </div>
-      <div className="content-area">
-        <SortBar onViewChange={manageProductView} onSortChange={handleSortChange} totalCount={totalCount} orderBy={orderBy} />
-        {isFetching && pageIndex === 1 ? (
-          <DataLoader />
-        ) : !isFetching && !totalCount ? (
-          <h3 style={{ textAlign: "center", }}>
-            <NoProductFound />
-          </h3>
-        ) : (
-          <>
-            {viewType === "list" ? (
-              <ProductListView products={dataSource} onProductClick={handleNavigation} onWishlistToggle={toggleWishlistStatus} />
-            ) : (
-              <ProductGridView products={dataSource} onProductClick={handleNavigation} onWishlistToggle={toggleWishlistStatus} />
-            )}
-          </>
-        )}
+    <>
+      <div className={`main-container ${isOpen ? "backdrop-filter" : ""}`}>
 
-        {dataSource && dataSource.length > 0 && (
-          <div style={{ textAlign: "center", marginTop: "1rem" }}>
-            {pageIndex > 1 && (
-              <Button
-                color="secondary"
-                onClick={handleShowLess}
-                disabled={showLessLoading}
-                style={{ marginRight: "1rem", display: "inline-block" }}
-              >
-                {showLessLoading ? (
-                  "Loading..."
-                ) : (
-                  "Show Less"
-                )}
-              </Button>
-            )}
-            {hasMore && (
-              <Button
-                color="secondary"
-                onClick={handlePageChange}
-                disabled={isFetching}
-                style={{ marginRight: "1rem", display: "inline-block" }}
-              >
-                {isFetching ? (
-                  "Loading..."
-                ) : (
-                  "Show More"
-                )}
-              </Button>
-            )}
-
+        <div className={`sidebar ${isOpen ? "open" : ""}`}>
+          <aside className="filter-sidebar">
+            {/* <Filters /> */}
+            <Filters filters={filters} setFilters={setFilters} onApplyBaseFilters={onApplyBaseFilters}
+              onApplyAdvancedFilters={onApplyAdvancedFilters} defaultFilterState={defaultFilterState} setAppliedFilters={setAppliedFilters} resetAllFilters={resetAllFilters}
+            // isFetching={isFetching}
+            />
+          </aside>
+          <div className="sidebar-filter">
+            <IconButton
+              variant="contained"
+              icon={`${isOpen ? "material-symbols:close-rounded" : "mage:filter"
+                }`}
+              shape="square"
+              onClick={() => setIsOpen(!isOpen)}
+            />
           </div>
-        )}
+        </div>
+        <div className="content-area">
+          <SortBar
+            onViewChange={manageProductView}
+            onSortChange={handleSortChange}
+            totalCount={totalCount}
+            orderBy={orderBy}
+            openMRFQForm={handleMRFQForm}
+            selectedProducts={selectedProducts}
+          />
+          {!isLoading && isSuccess && data?.data.length > 0 ? (
+            <>
+              {viewType === "list" && (
+                <ProductListView
+                  products={dataSource}
+                  onProductClick={handleNavigation}
+                  onWishlistToggle={toggleWishlistStatus}
+                  handleSelectedProduct={handleSelectedProduct}
+                />
+              )}
+              {viewType !== "list" && (
+                <ProductGridView
+                  products={dataSource}
+                  onProductClick={handleNavigation}
+                  onWishlistToggle={toggleWishlistStatus}
+                  handleSelectedProduct={handleSelectedProduct}
+                />
+              )}
+            </>
+          ) : (
+            isLoading && !isSuccess && <DataLoader />
+          )}
+          {!isLoading && isSuccess && data?.data.length === 0 && (
+            <NoProductFound />
+          )}
 
+          {dataSource && dataSource.length > 0 && (
+            <div style={{ textAlign: "center", marginTop: "1rem" }}>
+              {pageIndex > 1 && (
+                <Button
+                  color="secondary"
+                  onClick={handleShowLess}
+                  disabled={showLessLoading}
+                  style={{ marginRight: "1rem", display: "inline-block" }}
+                >
+                  {showLessLoading ? "Loading..." : "Show Less"}
+                </Button>
+              )}
+              {hasMore && (
+                <Button
+                  color="secondary"
+                  onClick={handlePageChange}
+                  disabled={isLoading}
+                  style={{ marginRight: "1rem", display: "inline-block" }}
+                >
+                  {isLoading ? "Loading..." : "Show More"}
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
+        {openMRFQForm && (
+          <CenterModal
+            isOpen={openMRFQForm}
+            onClose={handleMRFQForm}
+            modalTitle="Request Quote"
+            transition="grow"
+            modalSize="w-60"
+            className="mobile-w"
+          >
+            <RFQModal
+              onClose={handleMRFQForm}
+              isMultiRFQForm={true}
+              selectedProducts={selectedProducts}
+            />
+          </CenterModal>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

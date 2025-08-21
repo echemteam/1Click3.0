@@ -15,6 +15,7 @@ import { useAddEditWishListMutation } from "src/redux/serviceApi/wishListAPI";
 import SwalAlert from "src/services/swal/SwalService";
 import { useLazyGetRenderImagebychemProductIdAndInchikeyQuery } from "src/redux/serviceApi/ImageAPI";
 import Loading from "src/app/loading";
+import Checkbox from "../checkbox/Checkbox";
 
 const ProductDetailCard = ({
   // imageSrc = "",
@@ -129,9 +130,9 @@ const ProductDetailCard = ({
         )}
 
         {isGetRenderImagebychemProductIdAndInchikeyLoading ? (
-          <Loading/>
+          <Loading />
         ) : imageSrc && !imgError ? (
-          <div  className="product-detail-image">
+          <div className="product-detail-image">
             <Image
               src={imageSrc}
               alt="product-image"
@@ -150,16 +151,17 @@ const ProductDetailCard = ({
             />
           </div>
         )}
+
         {actionButtons && (
           <div className="product-detail-card-detail-action-button">
             <div className="add-to-cart-btn">
+
               <Button variant="outlined" color="secondary" startIcon="famicons:cart-outline">
                 View
               </Button>
             </div>
             {isAuthenticate && isClient &&
               <div className={`wishlist-btn ${isFavourite ? 'add-to-wishlist' : ''}`}>
-
                 <IconButton
                   variant="outlined"
                   color="secondary"
@@ -169,6 +171,7 @@ const ProductDetailCard = ({
                 />
               </div>}
             <div className="view-product-btn">
+
               <IconButton
                 variant="outlined"
                 color="secondary"

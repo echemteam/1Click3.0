@@ -1,11 +1,11 @@
-@import   "../helpers/functions.scss";
-@import  "../helpers/mediaQueries.scss";
+//Reset and Base Typography
+@use "../base/reset";
+@use "../base/typography";
 
-@import  "../base/variables.scss";
-@import  "../base/mixins.scss";
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+@use "../helpers/mediaQueries" as *;
 
-@import  "../base/reset.scss";
-@import  "../base/typography.scss";
 
 // Global Styles
 html {

@@ -8,13 +8,21 @@ import ConfirmationModal from "@features/myAccount/components/myCardOptions/comp
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Constants } from "@components/Common/Enum/CommonEnum";
-import { useCreatePaymentIntentMutation, useLazyGetStripeCardDetailsQuery } from "src/redux/serviceApi/paymentAPI";
+import {
+  useCreatePaymentIntentMutation,
+  useLazyGetStripeCardDetailsQuery,
+} from "src/redux/serviceApi/paymentAPI";
 import DataLoader from "@components/Common/Loader/DataLoader";
 import { useSelector } from "react-redux";
 import SwalAlert from "src/services/swal/SwalService";
 import { TabContext } from "@features/context/TabContext";
 import OrderContext from "@features/contextAPIs/OrderContext";
-import { useLazyGetPaymentOptionbyOrderIdQuery, usePlaceOrderMutation, useLazyGetItemByOrderIdQuery } from "src/redux/serviceApi/OrderAPI";
+import {
+  useLazyGetPaymentOptionbyOrderIdQuery,
+  usePlaceOrderMutation,
+  useLazyGetItemByOrderIdQuery,
+} from "src/redux/serviceApi/OrderAPI";
+import Loading from "src/app/loading";
 
 const Paymentdetails = () => {
   const currentTabIndex = 4;
@@ -29,21 +37,56 @@ const Paymentdetails = () => {
   const closeModal = () => setAddEditCardModalOpen(false);
   const user = useSelector((state) => state.auth);
   const [OrderitemData, setOrderitemData] = useState([]);
-  const [GetPaymentMethodsList, { isFetching: isFetchingGetPaymentMethods, isSuccess: isGetPaymentMethodsSuccess, data: isGetPaymentMethodsData }] = useLazyGetStripeCardDetailsQuery();
-  const [createPaymentIntent, { isLoading, isSuccess: isCreatePaymentIntentSuccess, data: isCreatePaymentIntentData }] = useCreatePaymentIntentMutation();
-  const [placeOrder, { isLoading: isPlaceOrderLoading, isSuccess: isPlaceOrderSuccess, data: isPlaceOrderData }] = usePlaceOrderMutation();
-  const [getItemByOrderId, { isFetching: isGetItemByOrderIdFetch, isSuccess: isGetItemByOrderIdSuccess, data: isGetItemByOrderIdData }] = useLazyGetItemByOrderIdQuery();
+  const [
+    GetPaymentMethodsList,
+    {
+      isFetching: isFetchingGetPaymentMethods,
+      isSuccess: isGetPaymentMethodsSuccess,
+      data: isGetPaymentMethodsData,
+    },
+  ] = useLazyGetStripeCardDetailsQuery();
+  const [
+    createPaymentIntent,
+    {
+      isLoading,
+      isSuccess: isCreatePaymentIntentSuccess,
+      data: isCreatePaymentIntentData,
+    },
+  ] = useCreatePaymentIntentMutation();
+  const [
+    placeOrder,
+    {
+      isLoading: isPlaceOrderLoading,
+      isSuccess: isPlaceOrderSuccess,
+      data: isPlaceOrderData,
+    },
+  ] = usePlaceOrderMutation();
+  const [
+    getItemByOrderId,
+    {
+      isFetching: isGetItemByOrderIdFetch,
+      isSuccess: isGetItemByOrderIdSuccess,
+      data: isGetItemByOrderIdData,
+    },
+  ] = useLazyGetItemByOrderIdQuery();
 
   useEffect(() => {
     GetPaymentMethodsList();
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (isGetPaymentMethodsSuccess && isGetPaymentMethodsData && !isFetchingGetPaymentMethods) {
-
+    if (
+      isGetPaymentMethodsSuccess &&
+      isGetPaymentMethodsData &&
+      !isFetchingGetPaymentMethods
+    ) {
       setPaymentMethodListData(isGetPaymentMethodsData);
     }
-  }, [isGetPaymentMethodsSuccess, isGetPaymentMethodsData, isFetchingGetPaymentMethods]);
+  }, [
+    isGetPaymentMethodsSuccess,
+    isGetPaymentMethodsData,
+    isFetchingGetPaymentMethods,
+  ]);
 
   useEffect(() => {
     if (orderId) {
@@ -52,11 +95,18 @@ const Paymentdetails = () => {
   }, [orderId]);
 
   useEffect(() => {
-    if (!isGetItemByOrderIdFetch && isGetItemByOrderIdSuccess && isGetItemByOrderIdData) {
+    if (
+      !isGetItemByOrderIdFetch &&
+      isGetItemByOrderIdSuccess &&
+      isGetItemByOrderIdData
+    ) {
       setOrderitemData(isGetItemByOrderIdData);
-
     }
-  }, [isGetItemByOrderIdData, isGetItemByOrderIdSuccess, isGetItemByOrderIdFetch]);
+  }, [
+    isGetItemByOrderIdData,
+    isGetItemByOrderIdSuccess,
+    isGetItemByOrderIdFetch,
+  ]);
 
   useEffect(() => {
     if (isCreatePaymentIntentSuccess && isCreatePaymentIntentData) {
@@ -69,28 +119,29 @@ const Paymentdetails = () => {
 
   const onEdit = () => {
     openModal();
-  }
+  };
 
   const onDelete = (data) => {
     openMainModal(data);
-  }
+  };
 
-  const [openConfirmationModal, setopenConfirmationModal] = React.useState(false);
+  const [openConfirmationModal, setopenConfirmationModal] =
+    React.useState(false);
 
   const closeThisModal = () => setopenConfirmationModal(false);
 
   const openMainModal = (data) => {
-    setSelectedCard(
-      data,
-    );
+    setSelectedCard(data);
     setopenConfirmationModal(true);
   };
 
-  const handleCardCheck = (data) => {
-
-    setSelectedCard(data);
+  const handleCardCheck = (card) => {
+    if (selcectedCard?.paymentMethodId === card.paymentMethodId) {
+      setSelectedCard(null); // Uncheck if already selected
+    } else {
+      setSelectedCard(card); // Select new card
+    }
   };
-
 
   const handlePlaceOrder = () => {
     if (!selcectedCard) {
@@ -101,7 +152,7 @@ const Paymentdetails = () => {
       const request = {
         orderId: orderId,
         tokenId: null,
-        amount: parseFloat(OrderitemData?.orderPrice),
+        amount: parseFloat(OrderitemData?.orderPrice ?? 0),
         description: "Order payment",
         paymentMethodId: selcectedCard.paymentMethodId,
         paymentIntentId: selcectedCard.paymentIntentId,
@@ -109,13 +160,12 @@ const Paymentdetails = () => {
         cardHolderName: selcectedCard?.cardHolderName,
         cardLastFourNumber: selcectedCard.cardLastFourNumber,
         customerStripeId: selcectedCard?.customerStripeId,
-        cardProcessingCharges: 252.82
+        cardProcessingCharges: 252.82,
       };
 
       placeOrder(request);
     }
   };
-
 
   useEffect(() => {
     if (isPlaceOrderSuccess && isPlaceOrderData) {
@@ -123,17 +173,17 @@ const Paymentdetails = () => {
         toast("success", "Place order successfully!");
         setOrderId(isPlaceOrderData);
         markTabAsCompleted(currentTabIndex);
-        setActiveTab(prevTab => {
+        setActiveTab((prevTab) => {
           const nextTab = prevTab + 1;
           return nextTab < tabs.length ? nextTab : prevTab;
         });
       }
     }
-  }, [isPlaceOrderSuccess, isPlaceOrderData])
+  }, [isPlaceOrderSuccess, isPlaceOrderData]);
 
   const handleBack = () => {
-    setActiveTab(prev => Math.max(prev - 1, 0));
-  }
+    setActiveTab((prev) => Math.max(prev - 1, 0));
+  };
 
   return (
     <>
@@ -150,7 +200,6 @@ const Paymentdetails = () => {
           <div className="cart-lists">
             <div className="mycardoptions-container">
               <div className="mycardoptions-container_header">
-
                 <div className="mycardoptions-container_btn">
                   <Button
                     variant="contained"
@@ -167,12 +216,14 @@ const Paymentdetails = () => {
                   <DataLoader />
                 ) : paymentMethodListData?.length > 0 ? (
                   paymentMethodListData.map((method) => {
-                    const { paymentMethodId, stripeCardId, } = method;
-                    const brand = method?.type?.toLowerCase() || 'default';
-                    const cardNumber = `XXXX XXXX XXXX ${method?.cardLastFourNumber || '0000'}`;
-                    const name = method?.cardHolderName || 'Unknown';
+                    const { paymentMethodId, stripeCardId } = method;
+                    const brand = method?.type?.toLowerCase() || "default";
+                    const cardNumber = `XXXX XXXX XXXX ${
+                      method?.cardLastFourNumber || "0000"
+                    }`;
+                    const name = method?.cardHolderName || "Unknown";
                     const validTill = method?.expires;
-                    const cvv = '***';
+                    const cvv = "***";
 
                     return (
                       <PaymentCard
@@ -184,7 +235,9 @@ const Paymentdetails = () => {
                         cvv={cvv}
                         onEdit={() => onEdit(paymentMethodId)}
                         onDelete={() => onDelete(method)}
-                        checked={selcectedCard?.paymentMethodId === paymentMethodId}
+                        checked={
+                          selcectedCard?.paymentMethodId === paymentMethodId
+                        }
                         onCheck={() => handleCardCheck(method)}
                       />
                     );
@@ -202,7 +255,10 @@ const Paymentdetails = () => {
                 modalSize="w-40"
               >
                 <Elements stripe={stripePromise}>
-                  <AddEditCardDetails onClose={closeModal} GetPaymentMethodsList={GetPaymentMethodsList} />
+                  <AddEditCardDetails
+                    onClose={closeModal}
+                    GetPaymentMethodsList={GetPaymentMethodsList}
+                  />
                 </Elements>
               </CenterModal>
 
@@ -213,7 +269,11 @@ const Paymentdetails = () => {
                 modalSize="w-40"
                 className="confirmation-modal-container"
               >
-                <ConfirmationModal onClose={closeThisModal} GetPaymentMethodsList={GetPaymentMethodsList} cardDetails={selcectedCard} />
+                <ConfirmationModal
+                  onClose={closeThisModal}
+                  GetPaymentMethodsList={GetPaymentMethodsList}
+                  cardDetails={selcectedCard}
+                />
               </CenterModal>
             </div>
           </div>
@@ -226,27 +286,32 @@ const Paymentdetails = () => {
               </div>
               <div className="cart-heading">
                 <span className="heading-txt">Order Total</span>
-                <span className="heading-total">${OrderitemData?.subTotalPrice?.toFixed(2) || "0.00"}</span>
+                <span className="heading-total">
+                  ${OrderitemData?.subTotalPrice?.toFixed(2) || "0.00"}
+                </span>
               </div>
-              {OrderitemData?.shippingCharges > 0 &&
+              {OrderitemData?.shippingCharges > 0 && (
                 <div className="cart-heading">
                   <span className="heading-txt">Shipping Charges</span>
-                  <span className="heading-total">${OrderitemData?.shippingCharges?.toFixed(2) || "0.00"}</span>
+                  <span className="heading-total">
+                    ${OrderitemData?.shippingCharges?.toFixed(2) || "0.00"}
+                  </span>
                 </div>
-              }
-              {OrderitemData?.handlingCharges > 0 &&
+              )}
+              {OrderitemData?.handlingCharges > 0 && (
                 <div className="cart-heading">
                   <span className="heading-txt">Handling Charges </span>
-                  <span className="heading-total">${OrderitemData?.handlingCharges?.toFixed(2) || "0.00"}</span>
+                  <span className="heading-total">
+                    ${OrderitemData?.handlingCharges?.toFixed(2) || "0.00"}
+                  </span>
                 </div>
-              }
-              {selcectedCard &&
+              )}
+              {selcectedCard && (
                 <div className="cart-heading">
                   <span className="heading-txt">Card Processing Charges </span>
                   <span className="heading-total">$252.82</span>
                 </div>
-
-              }
+              )}
               {/* <div className="cart-heading">
                 <span className="heading-txt">Discount</span>
                 <span className="heading-total">${OrderitemData?.discountPrice}</span>
@@ -254,7 +319,6 @@ const Paymentdetails = () => {
 
               <div className="form-sec">
                 {selcectedCard ? (
-
                   <div className="total-price">
                     <span>Total</span>
                     <span>
@@ -264,7 +328,9 @@ const Paymentdetails = () => {
                 ) : (
                   <div className="total-price">
                     <span>Total</span>
-                    <span>${OrderitemData?.orderPrice?.toFixed(2) || "0.00"}</span>
+                    <span>
+                      ${OrderitemData?.orderPrice?.toFixed(2) || "0.00"}
+                    </span>
                   </div>
                 )}
                 <div className="bottom-note">
@@ -286,7 +352,7 @@ const Paymentdetails = () => {
                     disabled={!selcectedCard || isPlaceOrderLoading}
                     onClick={handlePlaceOrder}
                   >
-                    Place Order
+                    {isPlaceOrderLoading ? <Loading /> : "Place Order"}
                   </Button>
                 </div>
               </div>
@@ -294,7 +360,7 @@ const Paymentdetails = () => {
           </div>
           <div className="bottom-navigation"></div>
         </div>
-      </div >
+      </div>
     </>
   );
 };
